@@ -19,7 +19,7 @@ class CreateCliniqueTable extends Migration
             $table->string('adresse');
             $table->string('num_tel');
             $table->timestamps();
-            $table->integer('id_med_res')->unsigned();
+            $table->integer('id_med_res')->nullable()->unsigned();
         });
     }
 

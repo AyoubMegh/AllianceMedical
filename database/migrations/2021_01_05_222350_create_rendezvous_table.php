@@ -21,7 +21,7 @@ class CreateRendezvousTable extends Migration
             $table->text('motif');
             $table->timestamps();
             $table->integer('id_med')->unsigned();
-            $table->integer('id_sec')->unsigned();
+            $table->integer('id_sec')->nullable()->unsigned();
             $table->integer('id_pat')->unsigned();
             $table->foreign('id_med')->references('id_med')->on('medecins');
             $table->foreign('id_sec')->references('id_sec')->on('secretaires');
