@@ -36,15 +36,15 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'secretaire' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'secretaires',
+        ],
+        'medecin' => [
+            'driver' => 'session',
+            'provider' => 'medecins',
         ],
 
-        'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
-        ],
     ],
 
     /*
@@ -65,15 +65,15 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'medecins' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Medecin::class,
+        ],
+        'secretaires' => [
+            'driver' => 'eloquent',
+            'model' => App\Secretaire::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*

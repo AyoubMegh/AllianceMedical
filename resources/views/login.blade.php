@@ -41,11 +41,14 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4"><i>" Qui n'a santé n'a rien. "</i></h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user"  method="POST" action="{{ route('login') }}">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
-                                                id="exampleInputLogin" aria-describedby="LoginHelp"
-                                                placeholder="Enter votre Login" required>
+                                            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                                            @if ($errors->has('email'))
+                                                <span class="help-block">
+                                                    <strong>{{ $errors->first('email') }}</strong>
+                                                </span>
+                                            @endif
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"

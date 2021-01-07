@@ -188,7 +188,7 @@
                 <div class="modal-body">En cliquant sur "Déconnexion" vous serez rediriger vers la page d'authentification</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                    <a class="btn btn-primary" href="#">Déconnexion</a>
+                    <a class="btn btn-primary" href="{{route('secretaire.logout')}}">Déconnexion</a>
                 </div>
             </div>
         </div>
