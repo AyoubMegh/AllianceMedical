@@ -22,7 +22,7 @@ class MedecinLoginContoller extends Controller
         if(Auth::guard('medecin')->attempt([ 'login'=> $request->login ,'password'=> $request->password ],$request->remember)){
             return redirect()->intended(route('medecin.dashboard'));
         }
-        return redirect()->back()->withInput($request->only('login','remember'));
+        return redirect()->back()->withErrors(['Login ou mot de passe incorrecte !'])->withInput($request->only('login','remember'));
         
     }
     public function logout(Request $request){

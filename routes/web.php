@@ -17,23 +17,21 @@ Route::get('/', function () {
 
 Route::get('/forgot-password',function(){
     return view('forgot-password');
+})->name('forgot-password');
+
+Route::prefix('medecin')->group(function(){
+    Route::get('/login','Auth\MedecinLoginContoller@showLoginForm')->name('medecin.login');
+    Route::post('/login','Auth\MedecinLoginContoller@login')->name('medecin.login.submit');
+    Route::get('/logout','Auth\MedecinLoginContoller@logout')->name('medecin.logout');
+    Route::get('/dashboard','MedecinController@index')->name('medecin.dashboard');
 });
-
-
-
-Route::get('/medecin/login','Auth\MedecinLoginContoller@showLoginForm')->name('medecin.login');
-Route::post('/medecin/login','Auth\MedecinLoginContoller@login')->name('medecin.login.submit');
-Route::get('/secretaire/login','Auth\SecretaireLoginContoller@showLoginForm')->name('secretaire.login');
-Route::post('/secretaire/login','Auth\SecretaireLoginContoller@login')->name('secretaire.login.submit');
-
-Route::get('/medecin/dashboard','MedecinController@index')->name('medecin.dashboard');
-Route::get('/secretaire/dashboard','SecretaireController@index')->name('secretaire.dashboard');
-
-Route::get('/medecin/logout','Auth\MedecinLoginContoller@logout')->name('medecin.logout');
-Route::get('/secretaire/logout','Auth\SecretaireLoginContoller@logout')->name('secretaire.logout');
-
-
-
+Route::prefix('secretaire')->group(function(){
+    Route::get('/login','Auth\SecretaireLoginContoller@showLoginForm')->name('secretaire.login');
+    Route::post('/login','Auth\SecretaireLoginContoller@login')->name('secretaire.login.submit');
+    Route::get('/logout','Auth\SecretaireLoginContoller@logout')->name('secretaire.logout');
+    Route::get('/dashboard','SecretaireController@index')->name('secretaire.dashboard');
+    
+});
 
         /*Route::get('admin/statistiques', function () {
             return view('MedecinAdmin.statistiques');
