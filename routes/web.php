@@ -11,6 +11,8 @@
 |
 */
 
+use App\Http\Controllers\MedecinController;
+
 Route::get('/', function () {
     return view('auth/preLogin');
 })->name('/');
@@ -24,6 +26,7 @@ Route::prefix('medecin')->group(function(){
     Route::post('/login','Auth\MedecinLoginContoller@login')->name('medecin.login.submit');
     Route::get('/logout','Auth\MedecinLoginContoller@logout')->name('medecin.logout');
     Route::get('/dashboard','MedecinController@index')->name('medecin.dashboard');
+    Route::get('/statistiques','MedecinController@statistiques')->name('medecin.statistiques');
 });
 Route::prefix('secretaire')->group(function(){
     Route::get('/login','Auth\SecretaireLoginContoller@showLoginForm')->name('secretaire.login');

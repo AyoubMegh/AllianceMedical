@@ -10822,15 +10822,29 @@ a:focus {
     height: calc(20rem - 43px) !important;
   }
 }
-
-.bg-login-image {
+/*Image Content*/
+.bg-login-image-entre {
   background-image: url("../img/login-photo.jpg");
   background-position: left;
   background-repeat: no-repeat;
   background-size: contain;
   height: 500px;
 }
-
+.bg-login-image-medecin {
+  background-image: url("../img/login-photo.jpg");
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 500px;
+}
+.bg-login-image-secretaire {
+  background-image: url("../img/login-photo.jpg");
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 500px;
+}
+/*End Image Content*/
 .bg-register-image {
   background: url("https://source.unsplash.com/Mv9hjnEUHR4/600x800");
   background-position: center;

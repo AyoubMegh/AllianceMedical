@@ -48,6 +48,12 @@
                     <span>Dashboard</span>
                 </a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{route('medecin.statistiques')}}">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Statistiques</span>
+                </a>
+            </li>
              <!-- Divider -->
              <hr class="sidebar-divider d-none d-md-block">
              <div class="sidebar-heading">

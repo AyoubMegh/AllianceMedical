@@ -13,4 +13,7 @@ class MedecinController extends Controller
     public function index(){
         return view('Medecin.dash');
     }
+    public function statistiques(){
+        return view('Medecin.Statistiques');
+    }
 }
