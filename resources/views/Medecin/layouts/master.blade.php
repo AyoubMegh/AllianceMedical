@@ -31,7 +31,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url('/medecin/dashboard')}}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{route('medecin.dashboard')}}">
                 <div class="sidebar-brand-icon">
                     <i class="fa fa-user-md"></i>
                 </div>
@@ -43,17 +43,19 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{url('/medecin/dashboard')}}">
+                <a class="nav-link" href="{{route('medecin.dashboard')}}">
                     <i class="fas fa-desktop"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{{route('medecin.statistiques')}}">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Statistiques</span>
-                </a>
-            </li>
+            @if($isAdmin)
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{route('medecin.statistiques')}}">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Statistiques</span>
+                    </a>
+                </li>
+            @endif
              <!-- Divider -->
              <hr class="sidebar-divider d-none d-md-block">
              <div class="sidebar-heading">
@@ -62,15 +64,15 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{url('/medecin/ListePatients')}}">
+                <a class="nav-link collapsed" href="{{route('medecin.listePatients')}}">
                     <i class="fas fa-users"></i>
                     <span>Liste Patients</span>
                 </a>
-                <a class="nav-link collapsed" href="{{url('/medecin/EtablireDossierPatient')}}">
+                <a class="nav-link collapsed" href="{{route('medecin.etablireDossierPatient')}}">
                     <i class="fas fa-file-medical-alt"></i>
                     <span>Etablire Dossier Patient</span>
                 </a>
-                <a class="nav-link collapsed" href="{{url('/medecin/PrendreRDV')}}">
+                <a class="nav-link collapsed" href="{{route('medecin.prendreRDV')}}">
                     <i class="far fa-calendar-check"></i>
                     <span>Prendre Rendez-vous</span>
                 </a>
@@ -82,7 +84,7 @@
             </div>
              <!-- Nav Item - Pages Collapse Menu -->
              <li class="nav-item">
-                <a class="nav-link collapsed" href="{{url('/medecin/EtablireOrdonnance')}}">
+                <a class="nav-link collapsed" href="{{route('medecin.etablireOrdonnance')}}">
                     <i class="far fa-file-alt"></i>
                     <span>Etablire Ordonnace</span>
                 </a>
@@ -109,15 +111,51 @@
                 Divers détails
             </div>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{url('/medecin/VisualisationPatient')}}">
+                <a class="nav-link collapsed" href="{{route('medecin.visualisationPatient')}}">
                     <i class="far fa-eye"></i>
                     <span>Visualisation Patient</span>
                 </a>
-                <a class="nav-link collapsed" href="{{url('/medecin/VisualisationPrescription')}}">
+                <a class="nav-link collapsed" href="{{route('medecin.visualisationPrescription')}}">
                     <i class="fas fa-align-justify"></i>
                     <span>Prescriptions</span>
                 </a>
             </li>
+            @if($isAdmin)
+                <hr class="sidebar-divider d-none d-md-block">
+            <div class="sidebar-heading">
+                G.R.H
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMedecin"
+                    aria-expanded="true" aria-controls="collapseMedecin">
+                    <i class="fas fa-id-card-alt"></i>
+                    <span>Medecins</span>
+                </a>
+                <div id="collapseMedecin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{route('medecin.ajouterMedecinForm')}}">Ajouter</a>
+                        <a class="collapse-item" href="{{route('medecin.modifierMedecinForm')}}">Modifier</a>
+                        <a class="collapse-item" href="{{route('medecin.supprimerMedecinForm')}}">Supprimer</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSecretaire"
+                    aria-expanded="true" aria-controls="collapseSecretaire">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Secretaires</span>
+                </a>
+                <div id="collapseSecretaire" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{route('medecin.ajouterSecretaireForm')}}">Ajouter</a>
+                        <a class="collapse-item" href="{{route('medecin.modifierSecretaireForm')}}">Modifier</a>
+                        <a class="collapse-item" href="{{route('medecin.supprimerSecretaireForm')}}">Supprimer</a>
+                    </div>
+                </div>
+            </li>
+            @endif
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -137,7 +175,9 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+                    <div class="input-group" style="color: #200540;font-size: large">
+                       Clinique  {{App\Clinique::find(1)->nom}}
+                    </div>
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>

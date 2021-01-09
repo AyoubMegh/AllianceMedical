@@ -1,7 +1,7 @@
-@extends('MedecinAdmin.layouts.master')
+@extends('Medecin.layouts.master')
 @section('content')
 <div class="container center-div">
-    <center><h1>Modifier Medecin</h1></center>
+    <center><h1>Modifier Secretaire</h1></center>
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row">
@@ -20,8 +20,8 @@
                     <div class="col-sm-12 col-md-6">
                         <div id="dataTable_filter" class="dataTables_filter">
                             <label style="width: 100%;">
-                                Recherche Medecin :
-                                <input type="search" class="form-control form-control-sm" placeholder="Nom du Medecin" aria-controls="dataTable">
+                                Recherche Secretaire :
+                                <input type="search" class="form-control form-control-sm" placeholder="Nom du Secretaire" aria-controls="dataTable">
                             </label>
                         </div>
                     </div>
@@ -34,7 +34,6 @@
                         <tr>
                             <th>Nom et Prenom</th>
                             <th>Adresse Email</th>
-                            <th>Spécialité</th>
                             <th>Mettre a jour</th>
                         </tr>
                     </thead>
@@ -42,18 +41,17 @@
                         <tr>
                             <td>Flen BenFlen</td>
                             <td>FlenBenflen@gmail.com</td>
-                            <td>Generaliste</td>
                             <td>
-                                <center>
-                                    <form action="MajMedecin.html" method="GET">
-                                        <input type="hidden" name="id" value="1">
-                                            <button type="submit" class="btn">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                    </form>
-                                </center>
+                                <form action="MajSecretaire.html" method="GET">
+                                   <center>
+                                       <input type="hidden" name="id" id="id" value="1">
+                                        <button type="submit" class="btn">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                   </center>
+                                </form>
                             </td>
-                        </tr>  
+                        </tr>
                     </tbody>
                 </table>
             </div>

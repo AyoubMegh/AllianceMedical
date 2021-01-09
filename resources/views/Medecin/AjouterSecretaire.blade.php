@@ -1,4 +1,4 @@
-@extends('MedecinAdmin.layouts.master')
+@extends('Medecin.layouts.master')
 @section('content')
 <div class="container center-div">
     <center><h1>Ajouter Secretaire</h1></center>

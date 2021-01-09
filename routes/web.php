@@ -25,8 +25,20 @@ Route::prefix('medecin')->group(function(){
     Route::get('/login','Auth\MedecinLoginContoller@showLoginForm')->name('medecin.login');
     Route::post('/login','Auth\MedecinLoginContoller@login')->name('medecin.login.submit');
     Route::get('/logout','Auth\MedecinLoginContoller@logout')->name('medecin.logout');
-    Route::get('/dashboard','MedecinController@index')->name('medecin.dashboard');
-    Route::get('/statistiques','MedecinController@statistiques')->name('medecin.statistiques');
+    Route::get('/Dashboard','MedecinController@index')->name('medecin.dashboard');
+    Route::get('/Statistiques','MedecinController@statistiques')->name('medecin.statistiques');
+    Route::get('/ListePatients','MedecinController@listePatients')->name('medecin.listePatients');
+    Route::get('/EtablireDossierPatient','MedecinController@etablireDossierPatient')->name('medecin.etablireDossierPatient');
+    Route::get('/PrendreRDV','MedecinController@prendreRDV')->name('medecin.prendreRDV');
+    Route::get('/EtablireOrdonnance','MedecinController@etablireOrdonnance')->name('medecin.etablireOrdonnance');
+    Route::get('/VisualisationPatient','MedecinController@visualisationPatient')->name('medecin.visualisationPatient');
+    Route::get('/VisualisationPrescription','MedecinController@visualisationPatient')->name('medecin.visualisationPrescription');
+    Route::get('/AjouterMedecin','MedecinController@ajouterMedecinForm')->name('medecin.ajouterMedecinForm');
+    Route::get('/ModifierMedecin','MedecinController@modifierMedecinForm')->name('medecin.modifierMedecinForm');
+    Route::get('/SupprimerMedecin','MedecinController@supprimerMedecinForm')->name('medecin.supprimerMedecinForm');
+    Route::get('/AjouterSecretaire','MedecinController@ajouterSecretaireForm')->name('medecin.ajouterSecretaireForm');
+    Route::get('/ModifierSecretaire','MedecinController@modifierSecretaireForm')->name('medecin.modifierSecretaireForm');
+    Route::get('/SupprimerSecretaire','MedecinController@supprimerSecretaireForm')->name('medecin.supprimerSecretaireForm');
 });
 Route::prefix('secretaire')->group(function(){
     Route::get('/login','Auth\SecretaireLoginContoller@showLoginForm')->name('secretaire.login');
