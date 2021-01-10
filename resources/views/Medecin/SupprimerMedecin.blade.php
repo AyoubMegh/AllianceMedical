@@ -27,9 +27,8 @@
                     </div>
             </div>
             <div class="row">
-                <center>
                         @if($errors->any())
-                            <div class="alert alert-danger col-sm-12" id="warningSubmit" role="alert">
+                            <div class="alert alert-danger col-12 mt-1 mb-0" id="warningSubmit" role="alert">
                                 <ul>
                                     @foreach($errors->all() as $error)
                                     <li>{{$error}}</li>
@@ -38,11 +37,12 @@
                             </div>
                         @endif
                         @if(session()->has('success'))
-                            <div class="alert alert-success col-sm-12">
-                                {{ session()->get('success') }}
+                            <div class="alert alert-success col-12 mt-1 mb-0" style="width:100%">
+                                   <center> 
+                                        {{ session()->get('success') }}
+                                   </center>
                             </div>
                         @endif
-                </center>
             </div>
         </div>
         <div class="card-body">

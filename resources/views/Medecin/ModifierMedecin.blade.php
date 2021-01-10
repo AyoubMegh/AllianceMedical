@@ -46,8 +46,8 @@
                                 <td>{{$medecin->specialite}}</td>
                                 <td>
                                     <center>
-                                        <form action="MajMedecin.html" method="GET">
-                                            <input type="hidden" name="id" value="1">
+                                        <form action="{{route('medecin.mettreAjourMedecinForm')}}" method="GET">
+                                            <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
                                                 <button type="submit" class="btn">
                                                     <i class="fas fa-sync-alt"></i>
                                                 </button>

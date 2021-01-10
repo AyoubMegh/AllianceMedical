@@ -26,6 +26,24 @@
                         </div>
                     </div>
             </div>
+            <div class="row">
+                        @if($errors->any())
+                            <div class="alert alert-danger col-12 mt-1 mb-0" id="warningSubmit" role="alert">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                    <li>{{$error}}</li>
+                                    @endforeach
+                                <ul>
+                            </div>
+                        @endif
+                        @if(session()->has('success'))
+                            <div class="alert alert-success col-12 mt-1 mb-0" style="width:100%">
+                                   <center> 
+                                        {{ session()->get('success') }}
+                                   </center>
+                            </div>
+                        @endif
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -34,62 +52,30 @@
                         <tr>
                             <th>Nom et Prenom</th>
                             <th>Adresse Email</th>
+                            <th>Numéro Téléphone</th>
                             <th>Supprimer</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($secretaires as $sec)
                         <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
+                            <td>{{$sec->nom}} {{$sec->prenom}}</td>
+                            <td>{{$sec->email}}</td>
+                            <td>{{$sec->num_tel}}</td>
                             <td>
-                                <form action="#" method="post">
-                                   <center>
-                                        <button type="submit" class="btn">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                   </center>
+                                <form action="{{route('medecin.supprimerSecretaire')}}" method="post">
+                                    {{ csrf_field() }}
+                                    {{ method_field('DELETE') }}
+                                    <input type="hidden" name="id_sec" value="{{$sec->id_sec}}">
+                                    <center>
+                                            <button type="submit" class="btn">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                    </center>
                                 </form>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
-                            <td>
-                                <form action="#" method="post">
-                                   <center>
-                                        <button type="submit" class="btn">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                   </center>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
-                            <td>
-                                <form action="#" method="post">
-                                   <center>
-                                        <button type="submit" class="btn">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                   </center>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
-                            <td>
-                                <form action="#" method="post">
-                                   <center>
-                                        <button type="submit" class="btn">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                   </center>
-                                </form>
-                            </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
