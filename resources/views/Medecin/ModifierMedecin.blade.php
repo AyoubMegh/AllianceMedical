@@ -39,21 +39,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
-                            <td>Generaliste</td>
-                            <td>
-                                <center>
-                                    <form action="MajMedecin.html" method="GET">
-                                        <input type="hidden" name="id" value="1">
-                                            <button type="submit" class="btn">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                    </form>
-                                </center>
-                            </td>
-                        </tr>  
+                        @foreach($medecins as $medecin)
+                            <tr>
+                                <td>{{$medecin->nom}} {{$medecin->prenom}}</td>
+                                <td>{{$medecin->email}}</td>
+                                <td>{{$medecin->specialite}}</td>
+                                <td>
+                                    <center>
+                                        <form action="MajMedecin.html" method="GET">
+                                            <input type="hidden" name="id" value="1">
+                                                <button type="submit" class="btn">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                </button>
+                                        </form>
+                                    </center>
+                                </td>
+                            </tr>  
+                        @endforeach
                     </tbody>
                 </table>
             </div>

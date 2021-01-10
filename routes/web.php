@@ -22,9 +22,11 @@ Route::get('/forgot-password',function(){
 })->name('forgot-password');
 
 Route::prefix('medecin')->group(function(){
+    /*Auth*/
     Route::get('/login','Auth\MedecinLoginContoller@showLoginForm')->name('medecin.login');
     Route::post('/login','Auth\MedecinLoginContoller@login')->name('medecin.login.submit');
     Route::get('/logout','Auth\MedecinLoginContoller@logout')->name('medecin.logout');
+    /*Get*/
     Route::get('/Dashboard','MedecinController@index')->name('medecin.dashboard');
     Route::get('/Statistiques','MedecinController@statistiques')->name('medecin.statistiques');
     Route::get('/ListePatients','MedecinController@listePatients')->name('medecin.listePatients');
@@ -39,6 +41,10 @@ Route::prefix('medecin')->group(function(){
     Route::get('/AjouterSecretaire','MedecinController@ajouterSecretaireForm')->name('medecin.ajouterSecretaireForm');
     Route::get('/ModifierSecretaire','MedecinController@modifierSecretaireForm')->name('medecin.modifierSecretaireForm');
     Route::get('/SupprimerSecretaire','MedecinController@supprimerSecretaireForm')->name('medecin.supprimerSecretaireForm');
+    /*Post*/
+    Route::post('/AjouterMedecin','MedecinController@ajouterMedecin')->name('medecin.ajouterMedecin');
+    /*Delete*/
+    Route::delete('/SupprimerMedecin','MedecinController@supprimerMedecin')->name('medecin.supprimerMedecin');
 });
 Route::prefix('secretaire')->group(function(){
     Route::get('/login','Auth\SecretaireLoginContoller@showLoginForm')->name('secretaire.login');

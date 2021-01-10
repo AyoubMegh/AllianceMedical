@@ -328,6 +328,7 @@
 
    <!-- Custom scripts for all pages-->
    <script src="{{asset('js/sb-admin-2.js')}}"></script>
+   <script src="{{asset('js/scriptForm.js')}}"></script>
 
     <!-- Page level plugins -->
     <script src="{{asset('vendor/chart.js/Chart.min.js')}}"></script>

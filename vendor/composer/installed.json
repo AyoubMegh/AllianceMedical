@@ -457,6 +457,51 @@
         "description": "Update helper"
     },
     {
+        "name": "laravel-lang/lang",
+        "version": "3.0.62",
+        "version_normalized": "3.0.62.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Laravel-Lang/lang.git",
+            "reference": "fcb8cec051b175278e0a9efa440f0b1033d12dd7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/fcb8cec051b175278e0a9efa440f0b1033d12dd7",
+            "reference": "fcb8cec051b175278e0a9efa440f0b1033d12dd7",
+            "shasum": ""
+        },
+        "require-dev": {
+            "friendsofphp/php-cs-fixer": "^2.10"
+        },
+        "suggest": {
+            "ablunier/laravel-lang-installer": "Command for easily add languages to a Laravel project",
+            "andrey-helldar/laravel-lang-publisher": "Easy installation and update of translation files for your project",
+            "arcanedev/laravel-lang": "Translations manager and checker for Laravel 5",
+            "overtrue/laravel-lang": "Command to add languages in your project"
+        },
+        "time": "2019-03-17T10:36:46+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "caouecs",
+                "email": "caouecs@caouecs.net"
+            }
+        ],
+        "description": "Languages for Laravel",
+        "keywords": [
+            "lang",
+            "languages",
+            "laravel",
+            "lpm"
+        ]
+    },
+    {
         "name": "laravel/framework",
         "version": "v5.4.36",
         "version_normalized": "5.4.36.0",

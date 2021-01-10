@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96098e473b028cdb2529580554a1ae3e",
+    "content-hash": "48875f5bfaa2b881dafa11ad73dc3ae5",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -297,6 +297,49 @@
             ],
             "description": "Update helper",
             "time": "2020-04-07T20:44:10+00:00"
+        },
+        {
+            "name": "laravel-lang/lang",
+            "version": "3.0.62",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Laravel-Lang/lang.git",
+                "reference": "fcb8cec051b175278e0a9efa440f0b1033d12dd7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/fcb8cec051b175278e0a9efa440f0b1033d12dd7",
+                "reference": "fcb8cec051b175278e0a9efa440f0b1033d12dd7",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.10"
+            },
+            "suggest": {
+                "ablunier/laravel-lang-installer": "Command for easily add languages to a Laravel project",
+                "andrey-helldar/laravel-lang-publisher": "Easy installation and update of translation files for your project",
+                "arcanedev/laravel-lang": "Translations manager and checker for Laravel 5",
+                "overtrue/laravel-lang": "Command to add languages in your project"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "caouecs",
+                    "email": "caouecs@caouecs.net"
+                }
+            ],
+            "description": "Languages for Laravel",
+            "keywords": [
+                "lang",
+                "languages",
+                "laravel",
+                "lpm"
+            ],
+            "time": "2019-03-17T10:36:46+00:00"
         },
         {
             "name": "laravel/framework",

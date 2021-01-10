@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
+use Redirect;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Clinique;
 use App\Medecin;
 use Auth;
+
 
 class MedecinController extends Controller
 {
@@ -52,11 +55,13 @@ class MedecinController extends Controller
     }
     public function modifierMedecinForm(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.ModifierMedecin',['isAdmin'=>$isAdmin]);
+        $listeMedecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
+        return view('Medecin.ModifierMedecin',['isAdmin'=>$isAdmin,'medecins'=>$listeMedecins]);
     }
     public function supprimerMedecinForm(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.SupprimerMedecin',['isAdmin'=>$isAdmin]);
+        $listeMedecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
+        return view('Medecin.SupprimerMedecin',['isAdmin'=>$isAdmin,'medecins'=>$listeMedecins]);
     }
     public function ajouterSecretaireForm(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
@@ -69,5 +74,44 @@ class MedecinController extends Controller
     public function supprimerSecretaireForm(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
         return view('Medecin.SupprimerSecretaire',['isAdmin'=>$isAdmin]);
+    }
+    public function ajouterMedecin(Request $request){
+        $validator = Validator::make($request->all(),[
+            'nom' => 'required|min:3|max:255',
+            'prenom' => 'required|min:3|max:255',
+            'login' => 'required|unique:medecins|max:255',
+            'email' => 'required|unique:medecins|max:255',
+            'password' => 'min:8|required_with:confirmPassword|same:confirmPassword',
+            'confirmPassword' => 'min:8',
+            'specialite'=> 'required|min:3|max:255',
+            'tel' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $medecin = new Medecin;
+            $medecin->nom = $request->input('nom');
+            $medecin->prenom = $request->input('prenom');
+            $medecin->login = $request->input('login');
+            $medecin->email = $request->input('email');
+            $medecin->num_tel = $request->input('tel');
+            $medecin->specialite = $request->input('specialite');
+            $medecin->password = bcrypt($request->input('password'));
+            $medecin->id_clq = Auth::user()->id_clq;
+            $medecin->save();
+            return redirect()->back()->with('success', 'Medecin Bien Ajouté !');
+        }
+    }
+    public function supprimerMedecin(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_med' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $medecin = Medecin::find($request->input('id_med'));
+            $medecin->delete();
+            return redirect()->back()->with('success', 'Medecin Bien Supprimé !');
+        }
     }
 }
