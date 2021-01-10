@@ -34,6 +34,7 @@
                         <tr>
                             <th>Nom et Prenom</th>
                             <th>Adresse Email</th>
+                            <th>Numéro Télephone</th>
                             <th>Spécialité</th>
                             <th>Mettre a jour</th>
                         </tr>
@@ -43,6 +44,7 @@
                             <tr>
                                 <td>{{$medecin->nom}} {{$medecin->prenom}}</td>
                                 <td>{{$medecin->email}}</td>
+                                <td>{{$medecin->num_tel}}</td>
                                 <td>{{$medecin->specialite}}</td>
                                 <td>
                                     <center>

@@ -12,6 +12,7 @@ use App\Clinique;
 use App\Medecin;
 use App\Secretaire;
 use Auth;
+use Mail;
 
 
 class MedecinController extends Controller
@@ -104,6 +105,20 @@ class MedecinController extends Controller
             $medecin->password = bcrypt($request->input('password'));
             $medecin->id_clq = Auth::user()->id_clq;
             $medecin->save();
+            /*Envoie Email---------------*/
+            $date = date('Y/m/d H:i:s');
+            $message =  "Bonjour DR.".$request->input('nom')." ".$request->input('prenom')."\n";
+            $message .=  "Bienvenue dans Alliance Medical Votre Compte a été créé le : ".$date."\n";
+            $message .= "Voici Votre Login : ".$request->input('login')."\n";
+            $message .= "Voici Votre Mot de Passe : ".$request->input('password')."\n";
+            $message .= "Important : Nous vous prions de bien vouloir Changer votre Mot de Passe une fois connecté ! \n";
+            $message .= "Merci";
+            $query = Medecin::all()->where('email',$request->input('email'))->first();
+            Mail::raw($message,function($mail) use ($query){
+                $mail->from('Alliance.Medical.Mail@gmail.com','Alliance Medicale');
+                $mail->to($query->email,$query->nom.' '.$query->prenom)->subject('Bienvenue dans Alliance Medical');
+            });
+            /*---------------------------*/
             return redirect()->back()->with('success', 'Medecin Bien Ajouté !');
         }
     }
@@ -177,6 +192,20 @@ class MedecinController extends Controller
             $secretaire->password = bcrypt($request->input('password'));
             $secretaire->id_clq = Auth::user()->id_clq;
             $secretaire->save();
+            /*Envoie Email---------------*/
+            $date = date('Y/m/d H:i:s');
+            $message =  "Bonjour ".$request->input('nom')." ".$request->input('prenom')."\n";
+            $message .= "Bienvenue dans Alliance Medical Votre Compte a été créé le : ".$date."\n";
+            $message .= "Voici Votre Login : ".$request->input('login')."\n";
+            $message .= "Voici Votre Mot de Passe : ".$request->input('password')."\n";
+            $message .= "Important : Nous vous prions de bien vouloir Changer votre Mot de Passe une fois connecté ! \n";
+            $message .= "Merci";
+            $query = Secretaire::all()->where('email',$request->input('email'))->first();
+            Mail::raw($message,function($mail) use ($query){
+                $mail->from('Alliance.Medical.Mail@gmail.com','Alliance Medicale');
+                $mail->to($query->email,$query->nom.' '.$query->prenom)->subject('Bienvenue dans Alliance Medical');
+            });
+            /*---------------------------*/
             return redirect()->back()->with('success', 'Secretaire Bien Ajouté !');
         }
     }

@@ -21,6 +21,8 @@ Route::get('/forgot-password',function(){
     return view('forgot-password');
 })->name('forgot-password');
 
+Route::post('/forgot-password','ForgotPasswordController@resetPassword')->name('resetPassword');
+
 Route::prefix('medecin')->group(function(){
     /*Auth*/
     Route::get('/login','Auth\MedecinLoginContoller@showLoginForm')->name('medecin.login');

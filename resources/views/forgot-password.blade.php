@@ -42,15 +42,30 @@
                                         <h1 class="h4 text-gray-900 mb-2">Mot de passe oublié?</h1>
                                         <p class="mb-4">Ne vous inquiétez pas, s'arrive de temps en temps d'oublier le mot de passe. pour le récupérer il suffit juste de faire entrer votre adresse email pour obtenir le nouveau mot de passe!</p>
                                     </div>
-                                    <form class="user">
+                                    <form action="{{route('resetPassword')}}" method="POST" class="user">
+                                        {{ csrf_field() }}
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
+                                            <input type="email" name="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="Enter Votre Adresse Email .....">
                                         </div>
-                                        <a href="login.html" class="btn btn-primary btn-user btn-block">
+                                        @if($errors->any())
+                                            <div class="alert alert-danger" id="warningSubmit" role="alert">
+                                                <ul>
+                                                @foreach($errors->all() as $error)
+                                                <li>{{$error}}</li>
+                                                @endforeach
+                                                <ul>
+                                            </div>
+                                        @endif
+                                        @if(session()->has('success'))
+                                            <div class="alert alert-success">
+                                                {{ session()->get('success') }}
+                                            </div>
+                                        @endif
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
                                             Réinitialiser le mot de passe
-                                        </a>
+                                        </button>
                                     </form>
                                     <hr>
                                     <div class="text-center">
