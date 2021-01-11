@@ -69,7 +69,7 @@
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="{{url('/')}}">Already have an account? Login!</a>
+                                        <a class="small" href="{{url('/')}}">Vous avez déjà un compte? S'identifier!</a>
                                     </div>
                                 </div>
                             </div>
