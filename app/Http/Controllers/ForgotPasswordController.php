@@ -52,7 +52,7 @@ class ForgotPasswordController extends Controller
                     $mail->from('Alliance.Medical.Mail@gmail.com','Alliance Medicale');
                     $mail->to($query->email,$query->nom.' '.$query->prenom)->subject('réinitialisation de votre mot de passe');
                 });
-                return redirect()->back()->with('success',"Mot de Passe Bien Réinitialisé veuillez consulter votre boite mail");
+                return redirect('/')->with('success',"Mot de Passe Bien Réinitialisé veuillez consulter votre boite mail");
             }   
         }
     }

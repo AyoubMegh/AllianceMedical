@@ -13,6 +13,13 @@
     <center>
     <a class="btn btn-primary btn-user btn-block" href="{{route('medecin.login')}}">Medecin</a>
     <a class="btn btn-primary btn-user btn-block" href="{{route('secretaire.login')}}">Secretaire</a>
+    @if(session()->has('success'))
+    <center>
+        <div class="alert alert-success mt-3">
+            {{ session()->get('success') }}
+        </div>
+    </center>
+@endif
 </div>
 @endsection
 
