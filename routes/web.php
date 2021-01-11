@@ -45,6 +45,13 @@ Route::prefix('secretaire')->group(function(){
     Route::post('/login','Auth\SecretaireLoginContoller@login')->name('secretaire.login.submit');
     Route::get('/logout','Auth\SecretaireLoginContoller@logout')->name('secretaire.logout');
     Route::get('/dashboard','SecretaireController@index')->name('secretaire.dashboard');
+    Route::get('/ListePatients','SecretaireController@listePatients')->name('secretaire.listePatients');
+    Route::get('/PrendreRDV','SecretaireController@prendreRDV')->name('secretaire.prendreRDV');
+    Route::get('/MettreAjourRDV','SecretaireController@mettreAjourRDV')->name('secretaire.mettreAjourRDV');
+    Route::get('/AnnulerRDV','SecretaireController@annulerRDV')->name('secretaire.annulerRDV');
+    Route::get('/VisualisationRDV','SecretaireController@visualisationRDV')->name('secretaire.visualisationRDV');
+    Route::get('/ReprendreRDV','SecretaireController@reprendreRDV')->name('secretaire.reprendreRDV');
+    Route::get('/DetailsPatient','SecretaireController@detailsPatient')->name('secretaire.detailsPatient');
     
 });
 

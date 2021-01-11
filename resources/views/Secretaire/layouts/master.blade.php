@@ -56,7 +56,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{route('secretaire.listePatients')}}">
                     <i class="fas fa-users"></i>
                     <span>Liste Patients</span>
                 </a>
@@ -68,19 +68,19 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{route('secretaire.prendreRDV')}}">
                     <i class="far fa-calendar-check"></i>
                     <span>Prendre Rendez-vous</span>
                 </a>
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{route('secretaire.mettreAjourRDV')}}">
                     <i class="fas fa-sync-alt"></i>
                     <span>Mettre a jour Rendez-vous</span>
                 </a>
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{route('secretaire.annulerRDV')}}">
                     <i class="far fa-calendar-times"></i>
                     <span>Annuler Rendez-vous</span>
                 </a>
-                <a class="nav-link collapsed" href="#">
+                <a class="nav-link collapsed" href="{{route('secretaire.visualisationRDV')}}">
                     <i class="far fa-eye"></i>
                     <span> Visualisation Rendez-vous</span>
                 </a>

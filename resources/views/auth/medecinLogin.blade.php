@@ -3,9 +3,12 @@
 <div class="col-lg-6 d-none d-lg-block bg-login-image-medecin" style="margin-right: -75px;"></div>
 @endsection
 @section('slogan')
-<h1 class="h4 text-gray-900 mb-4"><i>" Qui n'a santé n'a rien. " Medecin</i></h1>
+<h1 class="h4 text-gray-900 mb-4"><i>"L'exercice et la propreté entretiennent la santé."</i></h1>
 @endsection
 @section('form-login')
+<center>
+ <h6 class="font-weight-light "> Compte du Medecin</h6>
+<center>
 <form action="{{route('medecin.login.submit')}}" method="POST" class="user">
 <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
     <div class="form-group">
@@ -38,5 +41,8 @@
 <hr>
 <div class="text-center">
     <a class="small" href="{{url('/forgot-password')}}">Mot de passe oublié?</a>
+</div>
+<div class="text-left">
+<a class= "btn btn-outline-primary" href="{{route('/')}}" > << </a>
 </div>
 @endsection
