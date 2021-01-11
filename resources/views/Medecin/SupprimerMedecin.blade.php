@@ -5,7 +5,7 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="row">
-                <div class="col-sm-12 col-md-6" id="dataTable_length">
+                    <div class="col-sm-12 col-md-6" id="dataTable_length">
                             <label>
                                 Show 
                                 <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
@@ -26,6 +26,24 @@
                         </div>
                     </div>
             </div>
+            <div class="row">
+                        @if($errors->any())
+                            <div class="alert alert-danger col-12 mt-1 mb-0" id="warningSubmit" role="alert">
+                                <ul>
+                                    @foreach($errors->all() as $error)
+                                    <li>{{$error}}</li>
+                                    @endforeach
+                                <ul>
+                            </div>
+                        @endif
+                        @if(session()->has('success'))
+                            <div class="alert alert-success col-12 mt-1 mb-0" style="width:100%">
+                                   <center> 
+                                        {{ session()->get('success') }}
+                                   </center>
+                            </div>
+                        @endif
+            </div>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -39,62 +57,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
-                            <td>Generaliste</td>
-                            <td>
-                                <form action="#" method="post">
-                                   <center>
-                                        <button type="submit" class="btn">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                   </center>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
-                            <td>Generaliste</td>
-                            <td>
-                                <form action="#" method="post">
-                                   <center>
-                                        <button type="submit" class="btn">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                   </center>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
-                            <td>Généraliste</td>
-                            <td>
-                                <form action="#" method="post">
-                                   <center>
-                                        <button type="submit" class="btn">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                   </center>
-                                </form>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
-                            <td>Generaliste</td>
-                            <td>
-                                <form action="#" method="post">
-                                   <center>
-                                        <button type="submit" class="btn">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                   </center>
-                                </form>
-                            </td>
-                        </tr>
+                        @foreach($medecins as $medecin)
+                            <tr>
+                                <td>{{$medecin->nom}} {{$medecin->prenom}}</td>
+                                <td>{{$medecin->email}}</td>
+                                <td>{{$medecin->specialite}}</td>
+                                <td>
+                                    <form action="{{route('medecin.supprimerMedecin')}}" method="post">
+                                    <center>
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                            <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
+                                            <button type="submit" class="btn">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                    </center>
+                                    </form>
+                                </td>
+                            </tr>  
+                        @endforeach
                     </tbody>
                 </table>
             </div>

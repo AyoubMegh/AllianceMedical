@@ -21,10 +21,14 @@ Route::get('/forgot-password',function(){
     return view('forgot-password');
 })->name('forgot-password');
 
+Route::post('/forgot-password','ForgotPasswordController@resetPassword')->name('resetPassword');
+
 Route::prefix('medecin')->group(function(){
+    /*Auth*/
     Route::get('/login','Auth\MedecinLoginContoller@showLoginForm')->name('medecin.login');
     Route::post('/login','Auth\MedecinLoginContoller@login')->name('medecin.login.submit');
     Route::get('/logout','Auth\MedecinLoginContoller@logout')->name('medecin.logout');
+    /*Get*/
     Route::get('/Dashboard','MedecinController@index')->name('medecin.dashboard');
     Route::get('/Statistiques','MedecinController@statistiques')->name('medecin.statistiques');
     Route::get('/ListePatients','MedecinController@listePatients')->name('medecin.listePatients');
@@ -33,12 +37,26 @@ Route::prefix('medecin')->group(function(){
     Route::get('/EtablireOrdonnance','MedecinController@etablireOrdonnance')->name('medecin.etablireOrdonnance');
     Route::get('/VisualisationPatient','MedecinController@visualisationPatient')->name('medecin.visualisationPatient');
     Route::get('/VisualisationPrescription','MedecinController@visualisationPatient')->name('medecin.visualisationPrescription');
+    /*CRUD MEDECIN*/
     Route::get('/AjouterMedecin','MedecinController@ajouterMedecinForm')->name('medecin.ajouterMedecinForm');
     Route::get('/ModifierMedecin','MedecinController@modifierMedecinForm')->name('medecin.modifierMedecinForm');
     Route::get('/SupprimerMedecin','MedecinController@supprimerMedecinForm')->name('medecin.supprimerMedecinForm');
+    Route::get('/MettreAjourMedecin','MedecinController@MettreAjourMedecinForm')->name('medecin.mettreAjourMedecinForm');
+    /*CRUD SECRETAIRE*/
     Route::get('/AjouterSecretaire','MedecinController@ajouterSecretaireForm')->name('medecin.ajouterSecretaireForm');
     Route::get('/ModifierSecretaire','MedecinController@modifierSecretaireForm')->name('medecin.modifierSecretaireForm');
     Route::get('/SupprimerSecretaire','MedecinController@supprimerSecretaireForm')->name('medecin.supprimerSecretaireForm');
+    Route::get('/MettreAjourSecretaire','MedecinController@MettreAjourSecretaireForm')->name('medecin.mettreAjourSecretaireForm');
+    /*Post*/
+    Route::post('/AjouterMedecin','MedecinController@ajouterMedecin')->name('medecin.ajouterMedecin');
+    Route::post('/AjouterSecretaire','MedecinController@ajouterSecretaire')->name('medecin.ajouterSecretaire');
+    /*Delete*/
+    Route::delete('/SupprimerMedecin','MedecinController@supprimerMedecin')->name('medecin.supprimerMedecin');
+    Route::delete('/SupprimerSecretaire','MedecinController@supprimerSecretaire')->name('medecin.supprimerSecretaire');
+    /*PUT*/
+    Route::put('/MettreAjourMedecin','MedecinController@mettreAjourMedecin')->name('medecin.mettreAjourMedecin');
+    Route::put('/MettreAjourSecretaire','MedecinController@mettreAjourSecretaire')->name('medecin.mettreAjourSecretaire');
+
 });
 Route::prefix('secretaire')->group(function(){
     Route::get('/login','Auth\SecretaireLoginContoller@showLoginForm')->name('secretaire.login');
@@ -55,70 +73,6 @@ Route::prefix('secretaire')->group(function(){
     
 });
 
-        /*Route::get('admin/statistiques', function () {
-            return view('MedecinAdmin.statistiques');
-        });
-        Route::get('admin/ListePatients', function () {
-            return view('MedecinAdmin.ListePatients');
-        });
-        Route::get('admin/EtablireDossierPatient', function () {
-            return view('MedecinAdmin.EtablireDossierPatient');
-        });
-        Route::get('admin/PrendreRDV', function () {
-            return view('MedecinAdmin.PrendreRDV');
-        });
-        Route::get('admin/EtablireOrdonnance', function () {
-            return view('MedecinAdmin.EtablireOrdonnance');
-        });
-        Route::get('admin/VisualisationPatient', function () {
-            return view('MedecinAdmin.VisualisationPatient');
-        });
-        Route::get('admin/VisualisationPrescription', function () {
-            return view('MedecinAdmin.VisualisationPrescription');
-        });
-        Route::get('admin/AjouterMedecin', function () {
-            return view('MedecinAdmin.AjouterMedecin');
-        });
-        Route::get('admin/ModifierMedecin', function () {
-            return view('MedecinAdmin.ModifierMedecin');
-        });
-        Route::get('admin/SupprimerMedecin', function () {
-            return view('MedecinAdmin.SupprimerMedecin');
-        });
-        Route::get('admin/AjouterSecretaire', function () {
-            return view('MedecinAdmin.AjouterSecretaire');
-        });
-        Route::get('admin/ModifierSecretaire', function () {
-            return view('MedecinAdmin.ModifierSecretaire');
-        });
-        Route::get('admin/SupprimerSecretaire', function () {
-            return view('MedecinAdmin.SupprimerSecretaire');
-        });
-
-        //Route::get('/medecin/dashboard', function () {
-          //  return view('Medecin.dash');
-        //});
-
-        Route::get('medecin/ListePatients', function () {
-            return view('Medecin.ListePatients');
-        });
-        Route::get('medecin/EtablireDossierPatient', function () {
-            return view('Medecin.EtablireDossierPatient');
-        });
-        Route::get('medecin/PrendreRDV', function () {
-            return view('Medecin.PrendreRDV');
-        });
-        Route::get('medecin/EtablireOrdonnance', function () {
-            return view('Medecin.EtablireOrdonnance');
-        });
-        Route::get('medecin/VisualisationPatient', function () {
-            return view('Medecin.VisualisationPatient');
-        });
-        Route::get('medecin/VisualisationPrescription', function () {
-            return view('Medecin.VisualisationPrescription');
-        });
-*/
-        
 
 
 

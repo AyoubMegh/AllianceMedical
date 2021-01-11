@@ -34,26 +34,30 @@
                         <tr>
                             <th>Nom et Prenom</th>
                             <th>Adresse Email</th>
+                            <th>Numéro Télephone</th>
                             <th>Spécialité</th>
                             <th>Mettre a jour</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
-                            <td>Generaliste</td>
-                            <td>
-                                <center>
-                                    <form action="MajMedecin.html" method="GET">
-                                        <input type="hidden" name="id" value="1">
-                                            <button type="submit" class="btn">
-                                                <i class="fas fa-sync-alt"></i>
-                                            </button>
-                                    </form>
-                                </center>
-                            </td>
-                        </tr>  
+                        @foreach($medecins as $medecin)
+                            <tr>
+                                <td>{{$medecin->nom}} {{$medecin->prenom}}</td>
+                                <td>{{$medecin->email}}</td>
+                                <td>{{$medecin->num_tel}}</td>
+                                <td>{{$medecin->specialite}}</td>
+                                <td>
+                                    <center>
+                                        <form action="{{route('medecin.mettreAjourMedecinForm')}}" method="GET">
+                                            <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
+                                                <button type="submit" class="btn">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                </button>
+                                        </form>
+                                    </center>
+                                </td>
+                            </tr>  
+                        @endforeach
                     </tbody>
                 </table>
             </div>

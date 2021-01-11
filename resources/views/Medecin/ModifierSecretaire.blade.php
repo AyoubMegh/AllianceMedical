@@ -34,24 +34,28 @@
                         <tr>
                             <th>Nom et Prenom</th>
                             <th>Adresse Email</th>
+                            <th>Numero Téléphone</th>
                             <th>Mettre a jour</th>
                         </tr>
                     </thead>
                     <tbody>
+                    @foreach($secretaires as $sec)
                         <tr>
-                            <td>Flen BenFlen</td>
-                            <td>FlenBenflen@gmail.com</td>
+                            <td>{{$sec->nom}} {{$sec->prenom}}</td>
+                            <td>{{$sec->email}}</td>
+                            <td>{{$sec->num_tel}}</td>
                             <td>
-                                <form action="MajSecretaire.html" method="GET">
-                                   <center>
-                                       <input type="hidden" name="id" id="id" value="1">
-                                        <button type="submit" class="btn">
-                                            <i class="fas fa-sync-alt"></i>
-                                        </button>
-                                   </center>
-                                </form>
+                                    <center>
+                                        <form action="{{route('medecin.mettreAjourSecretaireForm')}}" method="GET">
+                                            <input type="hidden" name="id_sec" value="{{$sec->id_sec}}">
+                                                <button type="submit" class="btn">
+                                                    <i class="fas fa-sync-alt"></i>
+                                                </button>
+                                        </form>
+                                    </center>
                             </td>
                         </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
