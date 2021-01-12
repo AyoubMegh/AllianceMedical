@@ -3,7 +3,7 @@
 <div class="col-lg-6 d-none d-lg-block bg-login-image-entre" style="margin-right: -75px;"></div>
 @endsection
 @section('slogan')
-<h1 class="h4 text-gray-900 mb-4"><i>" Qui jouit d'une santé parfaite possède un trésor.  "</i></h1>
+<h1 class="h4 text-gray-900 mb-4"><i>"  Qui jouit d'une santé parfaite possède un trésor.  "</i></h1>
 @endsection
 @section('form-login')
 

@@ -17,6 +17,7 @@ return array(
     'App\\Http\\Controllers\\Auth\\SecretaireLoginContoller' => $baseDir . '/app/Http/Controllers/Auth/SecretaireLoginContoller.php',
     'App\\Http\\Controllers\\CliniqueController' => $baseDir . '/app/Http/Controllers/CliniqueController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
+    'App\\Http\\Controllers\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/ForgotPasswordController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
     'App\\Http\\Controllers\\ImageController' => $baseDir . '/app/Http/Controllers/ImageController.php',
     'App\\Http\\Controllers\\LettreController' => $baseDir . '/app/Http/Controllers/LettreController.php',

@@ -35,40 +35,38 @@
                                         <thead>
                                             <tr>
                                                 <th>Nom et Prenom</th>
-                                                <th>Date Naissance</th>
-                                                <th>N° Sécurité Sociale</th>
                                                 <th>Téléphone</th>
                                                 <th>Détails</th>
                                                 <th>Prendre RDV</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Flen BenFlen</td>
-                                                <td>16-04-1999</td>
-                                                <td>99 32372619</td>
-                                                <td>05-56-99-87-00</td>
-                                                <td>
-                                                    <center> 
-                                                        <form method="GET" action="{{route('secretaire.detailsPatient')}}">
-                                                            <input type="hidden" name="id" value="1">
-                                                            <button type="submit" class="btn">
-                                                                <i class="far fa-eye"></i>
-                                                            </button>
-                                                        </form>
-                                                    </center>
-                                                </td>
-                                                <td>
-                                                    <center>
-                                                        <form method="GET" action="{{route('secretaire.reprendreRDV')}}">
-                                                            <input type="hidden" name="id" value="1">
-                                                            <button type="submit" class="btn">
-                                                                <i class="far fa-calendar-check"></i>
-                                                            </button>
-                                                        </form>
-                                                    </center>
-                                                </td>
-                                            </tr>
+                                            @foreach ($patients as $patient)
+                                                <tr>
+                                                    <td>{{$patient->nom}} {{$patient->prenom}}</td>
+                                                    <td>{{$patient->num_tel}}</td>
+                                                    <td>
+                                                        <center> 
+                                                            <form method="GET" action="{{route('secretaire.detailsPatient')}}">
+                                                                <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                                                <button type="submit" class="btn">
+                                                                    <i class="far fa-eye"></i>
+                                                                </button>
+                                                            </form>
+                                                        </center>
+                                                    </td>
+                                                    <td>
+                                                        <center>
+                                                            <form method="GET" action="{{route('secretaire.reprendreRDV')}}">
+                                                                <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                                                <button type="submit" class="btn">
+                                                                    <i class="far fa-calendar-check"></i>
+                                                                </button>
+                                                            </form>
+                                                        </center>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
