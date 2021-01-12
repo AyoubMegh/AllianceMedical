@@ -318,6 +318,7 @@ class ComposerStaticInit7aaf8f59f0228ccb5b3c3f67b9f3aaea
         'App\\Http\\Controllers\\Auth\\SecretaireLoginContoller' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/SecretaireLoginContoller.php',
         'App\\Http\\Controllers\\CliniqueController' => __DIR__ . '/../..' . '/app/Http/Controllers/CliniqueController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/ForgotPasswordController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\ImageController' => __DIR__ . '/../..' . '/app/Http/Controllers/ImageController.php',
         'App\\Http\\Controllers\\LettreController' => __DIR__ . '/../..' . '/app/Http/Controllers/LettreController.php',

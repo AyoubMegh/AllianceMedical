@@ -21,10 +21,10 @@ class CreatePatientTable extends Migration
             $table->date('date_naissance');
             $table->string('num_tel');
             $table->string('email')->unique();
-            $table->text('maladies');
-            $table->text('allergies');
-            $table->text('antecedents');
-            $table->text('commentaires');
+            $table->text('maladies')->nullable();
+            $table->text('allergies')->nullable();
+            $table->text('antecedents')->nullable();
+            $table->text('commentaires')->nullable();
             $table->timestamps();
            
         });
