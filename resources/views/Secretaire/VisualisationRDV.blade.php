@@ -8,18 +8,7 @@
                             <div class="card-header py-3">
 
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6" id="dataTable_length">
-                                        <label>
-                                                    Show 
-                                                    <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
-                                                        <option value="10">10</option>
-                                                        <option value="25">25</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select>
-                                                </label>
-
-                                    </div>
+                                    <div class="col-sm-12 col-md-6" id="dataTable_length"></div>
                                     <div class="col-sm-12 col-md-6">
                                         <div id="dataTable_filter" class="dataTables_filter">
                                             <label style="width: 100%;">
@@ -61,39 +50,38 @@
                                                                        </tr>
                                                                  </thead>
                                                                  <tbody>
-                                                                      <tr >
-                                                                        <td>Flen BenFlen</td>
-                                                                        <td>16-04-1999</td>
-                                                                        <td>05-56-99-87-00</td>
-                                                                        <td> 07-01-2021
-                                                                          <hr> 07-01-2021
-                                                                        </td>
-                                                                        <td>14:30
-                                                                          <hr> 15:30
-                                                                        </td>
-                                                                        <td> docteur flen
-                                                                          <hr> docteur flena
-                                                                       </td>
-                                                                        
-                                                                       </tr>
-                                                                       <tr >
-                                                                        <td>dek siyed</td>
-                                                                        <td>20-01-1999</td>
-                                                                        <td>05-56-99-87-00</td>
-                                                                        <td> 09-01-2021
-                                                                          <hr> 14-01-2021
-                                                                          <hr> 14-10-2021
-                                                                        </td>
-                                                                        <td>10:30
-                                                                          <hr> 08:00
-                                                                          <hr> 13:45
-                                                                        </td>
-                                                                        <td> docteur flen2
-                                                                          <hr> docteur flena3
-                                                                          <hr> docteur alphabet
-                                                                       </td>
-                                                                        
-                                                                       </tr>
+                                                                   @foreach($rdvs as $rdv)
+                                                                    <tr>
+                                                                      <td>{{$rdv[1]['nom']}} {{$rdv[1]['prenom']}}</td>
+                                                                      <td>{{$rdv[1]['date_naissance']}}</td>
+                                                                      <td>{{$rdv[1]['num_tel']}}</td>
+                                                                      <td>
+                                                                        @foreach($rdv[0] as $r)
+                                                                          {{$r->date_rdv}}
+                                                                          @if(! $loop->last)
+                                                                            <hr>
+                                                                          @endif
+                                                                        @endforeach
+                                                                      </td>
+                                                                      <td>
+                                                                        @foreach($rdv[0] as $r)
+                                                                          {{$r->heure_debut}}
+                                                                          @if(! $loop->last)
+                                                                            <hr>
+                                                                          @endif
+                                                                        @endforeach
+                                                                      </td>
+                                                                      <td>
+                                                                        @foreach($rdv[0] as $r)
+                                                                          {{$r->nom}} {{$r->prenom}}
+                                                                          @if(! $loop->last)
+                                                                            <hr>
+                                                                          @endif
+                                                                        @endforeach
+                                                                      </td>
+                                                                    </tr>
+                                                                   @endforeach
+                                                                      
                                                                     </tbody>
                                                                </table>
                                                              </div>
@@ -107,59 +95,32 @@
                                                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                                 <div class="card-body">
                                                               <div class="table-responsive">
-                                                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                                  <thead>
-                                                                  <h5>docteur A</h5>
+                                                              @foreach($meds as $med)
+                                                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                                    <thead>
+                                                                      <h5>DR. {{$med[1]['nom']}} {{$med[1]['prenom']}}</h5>
                                                                       <tr>
                                                                         <th>Nom et Prenom</th>
                                                                         <th>Date Naissance</th>
                                                                         <th>N° Téléphone</th>
                                                                         <th>Jour de consultation</th>
                                                                         <th>Heure de consultation</th>
-                                                                        
-                                                                       </tr>
-                                                                 </thead>
-                                                                 <tbody>
-                                                                      <tr>
-                                                                        <td>Flen BenFlen</td>
-                                                                        <td>16-04-1999</td>
-                                                                        <td>05-56-99-87-00</td>
-                                                                        <td>07-01-2021</td>
-                                                                        <td>14:30</td>
-                                                                        
-                                                                       </tr>
+                                                                      </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach ($med[0] as $m)
+                                                                            <tr>
+                                                                                <td>{{$m->nom}} {{$m->prenom}}</td>
+                                                                                <td>{{$m->date_naissance}}</td>
+                                                                                <td>{{$m->num_tel}}</td>
+                                                                                <td>{{$m->date_rdv}}</td>
+                                                                                <td>{{$m->heure_debut}}</td>
+                                                                            </tr>
+                                                                        @endforeach
                                                                     </tbody>
-                                                               </table>
-                                                              
-                                                                    <h5>docteur B</h5>
-                                                               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                                  <thead>
-                                                                      <tr>
-                                                                        <th>Nom et Prenom</th>
-                                                                        <th>Date Naissance</th>
-                                                                        <th>N° Téléphone</th>
-                                                                        <th>Jour de consultation</th>
-                                                                        <th>Heure de consultation</th>
-                                                                       </tr>
-                                                                 </thead>
-                                                                 <tbody>
-                                                                      <tr>
-                                                                        <td>Flen BenFlen</td>
-                                                                        <td>16-04-1999</td>
-                                                                        <td>05-56-99-87-00</td>
-                                                                        <td>07-01-2021</td>
-                                                                        <td>14:30</td>
-                                                                       </tr>
-                                                                       <tr>
-                                                                        <td>Flena BentFlen</td>
-                                                                        <td>16-04-1999</td>
-                                                                        <td>05-56-99-87-00</td>
-                                                                        <td>06-01-2021</td>
-                                                                        <td>14:30</td>
-                                                                       </tr>
-                                                                    </tbody>
-                                                               </table>
-
+                                                                </table>  
+                                                              @endforeach
+                                                             
                                                              </div>
                                                         </div>
                                                 </div>
