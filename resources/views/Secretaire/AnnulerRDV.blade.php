@@ -37,7 +37,7 @@
                                                 <th>Nom et Prenom</th>
                                                 <th>Date Naissance</th>
                                                 <th>N° Téléphone</th>                                    
-                                                <th>RDV a Annuler</th>
+                                                <th><center>Divers RDV a Annuler</center></th>
                                             </tr>
                                         </thead>
                                         <tbody>
