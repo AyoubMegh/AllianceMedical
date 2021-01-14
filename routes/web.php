@@ -56,12 +56,18 @@ Route::prefix('medecin')->group(function(){
     /*PUT*/
     Route::put('/MettreAjourMedecin','MedecinController@mettreAjourMedecin')->name('medecin.mettreAjourMedecin');
     Route::put('/MettreAjourSecretaire','MedecinController@mettreAjourSecretaire')->name('medecin.mettreAjourSecretaire');
-
+    /*maj*/
+    Route::get('/MettreAjourProfil','MedecinController@mettreAjourProfil')->name('medecin.mettreAjourProfil');
+    Route::put('/MettreAjourProfil','MedecinController@update')->name('medecin.update');
+    /*password*/
+    Route::get('/MettreAjourMDPS','MedecinController@mettreAjourMDPSForm')->name('medecin.mettreAjourMDPSForm');
+    Route::put('/MettreAjourMDPS','MedecinController@mettreAjourMDPS')->name('medecin.mettreAjourMDPS');
 });
 Route::prefix('secretaire')->group(function(){
     Route::get('/login','Auth\SecretaireLoginContoller@showLoginForm')->name('secretaire.login');
     Route::post('/login','Auth\SecretaireLoginContoller@login')->name('secretaire.login.submit');
     Route::get('/logout','Auth\SecretaireLoginContoller@logout')->name('secretaire.logout');
+
     Route::get('/dashboard','SecretaireController@index')->name('secretaire.dashboard');
     Route::get('/ListePatients','SecretaireController@listePatients')->name('secretaire.listePatients');
     Route::get('/PrendreRDV','SecretaireController@prendreRDV')->name('secretaire.prendreRDV');
@@ -70,6 +76,12 @@ Route::prefix('secretaire')->group(function(){
     Route::get('/VisualisationRDV','SecretaireController@visualisationRDV')->name('secretaire.visualisationRDV');
     Route::get('/ReprendreRDV','SecretaireController@reprendreRDV')->name('secretaire.reprendreRDV');
     Route::get('/DetailsPatient','SecretaireController@detailsPatient')->name('secretaire.detailsPatient');
+    /*maj*/
+    Route::get('/MettreAjourProfil','SecretaireController@mettreAjourProfil')->name('secretaire.mettreAjourProfil');
+    Route::put('/MettreAjourProfil','SecretaireController@update')->name('secretaire.update');
+    /*password*/
+    Route::get('/MettreAjourMDPS','SecretaireController@mettreAjourMDPSForm')->name('secretaire.mettreAjourMDPSForm');
+    Route::put('/MettreAjourMDPS','SecretaireController@mettreAjourMDPS')->name('secretaire.mettreAjourMDPS');
     
 });
 
