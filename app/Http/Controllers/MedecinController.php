@@ -13,6 +13,7 @@ use App\Medecin;
 use App\Secretaire;
 use Auth;
 use Mail;
+use Hash;
 
 
 class MedecinController extends Controller
@@ -255,5 +256,57 @@ class MedecinController extends Controller
             $secretaire->save();
             return redirect()->back()->with('success', 'Secretaire Mis a jour !');
         }
+    }
+    public function mettreAjourProfil(){
+        $id=Auth::user()->id_med;
+        $medecin= Medecin::find($id);
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        return view('Medecin.MettreAjourProfil',['medecin'=>$medecin, 'isAdmin'=>$isAdmin]);
+    }
+
+    public function update(Request $request){
+        $id_med=$request->input('id_med');
+        $validator = Validator::make($request->all(),[
+            'id_med'=>'required',
+            'nom' => 'required|min:3|max:255',
+            'prenom' => 'required|min:3|max:255',
+            'email' => 'required|max:255|unique:medecins,email,'.$id_med.','.(New Medecin)->getKeyName(),
+            'tel' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $medecin = Medecin::find($request->input('id_med'));
+            $medecin->nom = $request->input('nom');
+            $medecin->prenom = $request->input('prenom');
+            $medecin->email = $request->input('email');
+            $medecin->num_tel = $request->input('tel');
+            $medecin->save();
+            return redirect()->back()->with('success', 'Profil Mis à jour !');
+        }
+    }
+
+    public function mettreAjourMDPSForm(){
+        $id=Auth::user()->id_med;
+        $medecin= Medecin::find($id);
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        return view('Medecin.MettreAjourMDPS',['medecin'=>$medecin, 'isAdmin'=>$isAdmin]);
+    }
+
+    public function mettreAjourMDPS(Request $request){
+
+        if(!(Hash::check($request->get('apassword'),Auth::user()->password))){
+            return back()->withErrors(['Mot de passe incorrecte']);
+        } 
+        if(strcmp($request->get('apassword'),$request->get('npassword'))==0){
+            return back()->withErrors(['Veuillez ajouté un Mot de passe différent de l ancien']);
+        }
+        if(strcmp($request->get('npassword'),$request->get('cpassword'))!=0){
+            return back ()-> withErrors (['Le nouveau Mot de passe et la confirmation ne sont pas identique']);
+        }  
+        $user= Auth::user();
+        $user->password= bcrypt($request->get('npassword'));
+        $user->save();
+        return redirect()->back()->with('success', 'Mot de passe modifié avec success');
     }
 }

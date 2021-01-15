@@ -42,6 +42,8 @@ Route::prefix('medecin')->group(function(){
     Route::get('/ModifierMedecin','MedecinController@modifierMedecinForm')->name('medecin.modifierMedecinForm');
     Route::get('/SupprimerMedecin','MedecinController@supprimerMedecinForm')->name('medecin.supprimerMedecinForm');
     Route::get('/MettreAjourMedecin','MedecinController@MettreAjourMedecinForm')->name('medecin.mettreAjourMedecinForm');
+    Route::get('/MettreAjourMDPS','MedecinController@mettreAjourMDPSForm')->name('medecin.mettreAjourMDPSForm');
+    Route::get('/MettreAjourProfil','MedecinController@mettreAjourProfil')->name('medecin.mettreAjourProfil');
     /*CRUD SECRETAIRE*/
     Route::get('/AjouterSecretaire','MedecinController@ajouterSecretaireForm')->name('medecin.ajouterSecretaireForm');
     Route::get('/ModifierSecretaire','MedecinController@modifierSecretaireForm')->name('medecin.modifierSecretaireForm');
@@ -56,6 +58,8 @@ Route::prefix('medecin')->group(function(){
     /*PUT*/
     Route::put('/MettreAjourMedecin','MedecinController@mettreAjourMedecin')->name('medecin.mettreAjourMedecin');
     Route::put('/MettreAjourSecretaire','MedecinController@mettreAjourSecretaire')->name('medecin.mettreAjourSecretaire');
+    Route::put('/MettreAjourMDPS','MedecinController@mettreAjourMDPS')->name('medecin.mettreAjourMDPS');
+    Route::put('/MettreAjourProfil','MedecinController@update')->name('medecin.update');
 
 });
 
@@ -71,11 +75,15 @@ Route::prefix('secretaire')->group(function(){
     Route::get('/RePrendreRDV','SecretaireController@rePrendreRDV')->name('secretaire.reprendreRDV');
     Route::get('/DetailsPatient','SecretaireController@detailsPatient')->name('secretaire.detailsPatient');
     Route::get('/MettreAjourRDVForm','SecretaireController@MAJRDVForm')->name('secretaire.MAJRDV');
+    Route::get('/MettreAjourMDPS','SecretaireController@mettreAjourMDPSForm')->name('secretaire.mettreAjourMDPSForm');
+    Route::get('/MettreAjourProfil','SecretaireController@mettreAjourProfil')->name('secretaire.mettreAjourProfil');
     /*Post*/
     Route::Post('/PrendreRDV','SecretaireController@AjouterRDV')->name('secretaire.ajouterRDV');
     Route::Post('/RePrendreRDV','SecretaireController@ajouterAutreRDV')->name('secretaire.ajouterAutreRDV');
     /*PUT*/
     Route::put('/MettreAjourRDVForm','SecretaireController@MAJRDV')->name('secretaire.MAJRDV');
+    Route::put('/MettreAjourMDPS','SecretaireController@mettreAjourMDPS')->name('secretaire.mettreAjourMDPS');
+    Route::put('/MettreAjourProfil','SecretaireController@update')->name('secretaire.update');
     /*Delete*/
     Route::delete('/AnnulerUnRDV','SecretaireController@supprimerRDV')->name('secretaire.supprimerRDV');
 
