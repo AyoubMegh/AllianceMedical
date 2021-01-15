@@ -76,16 +76,12 @@ Route::prefix('secretaire')->group(function(){
     Route::get('/VisualisationRDV','SecretaireController@visualisationRDV')->name('secretaire.visualisationRDV');
     Route::get('/RePrendreRDV','SecretaireController@rePrendreRDV')->name('secretaire.reprendreRDV');
     Route::get('/DetailsPatient','SecretaireController@detailsPatient')->name('secretaire.detailsPatient');
-<<<<<<< HEAD
     /*maj*/
     Route::get('/MettreAjourProfil','SecretaireController@mettreAjourProfil')->name('secretaire.mettreAjourProfil');
     Route::put('/MettreAjourProfil','SecretaireController@update')->name('secretaire.update');
     /*password*/
     Route::get('/MettreAjourMDPS','SecretaireController@mettreAjourMDPSForm')->name('secretaire.mettreAjourMDPSForm');
     Route::put('/MettreAjourMDPS','SecretaireController@mettreAjourMDPS')->name('secretaire.mettreAjourMDPS');
-=======
-    Route::get('/AnnulerUnRDV','SecretaireController@listeRDVaAnnuler')->name('secretaire.annulerUnRDV');
-    Route::get('/MettreAjourUnRDV','SecretaireController@listeRDVaMettreAjour')->name('secretaire.MettreAjourUnRDV');
     Route::get('/MettreAjourRDVForm','SecretaireController@MAJRDVForm')->name('secretaire.MAJRDV');
     /*Post*/
     Route::Post('/PrendreRDV','SecretaireController@AjouterRDV')->name('secretaire.ajouterRDV');
@@ -94,8 +90,6 @@ Route::prefix('secretaire')->group(function(){
     Route::put('/MettreAjourRDVForm','SecretaireController@MAJRDV')->name('secretaire.MAJRDV');
     /*Delete*/
     Route::delete('/AnnulerUnRDV','SecretaireController@supprimerRDV')->name('secretaire.supprimerRDV');
-
->>>>>>> d36baea8856446c532f6dfd1e4047bd7f7d2ae24
     
 });
 

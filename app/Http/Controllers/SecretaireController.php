@@ -7,19 +7,13 @@ use Redirect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-<<<<<<< HEAD
-use Validator;
-use Redirect;
-use Auth;
-use Hash;
 use App\Secretaire;
-=======
 use App\Medecin;
 use App\Rendezvous;
 use App\Patient;
 use Auth;
+use Hash;
 
->>>>>>> d36baea8856446c532f6dfd1e4047bd7f7d2ae24
 
 class SecretaireController extends Controller
 {
@@ -415,7 +409,6 @@ class SecretaireController extends Controller
             }
         }
     }
-    /////////////////////////////////////////////////////////////////
     public function mettreAjourProfil(){
         $id=Auth::user()->id_sec;
         $secretaire= Secretaire::find($id);
@@ -465,5 +458,6 @@ class SecretaireController extends Controller
         $user->password= bcrypt($request->get('npassword'));
         $user->save();
             return redirect()->back()->with('success', 'Mot de passe modifié avec success');
+
     }
 }
