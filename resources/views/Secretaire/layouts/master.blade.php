@@ -72,14 +72,6 @@
                     <i class="far fa-calendar-check"></i>
                     <span>Prendre Rendez-vous</span>
                 </a>
-                <a class="nav-link collapsed" href="{{route('secretaire.mettreAjourRDV')}}">
-                    <i class="fas fa-sync-alt"></i>
-                    <span>Mettre a jour Rendez-vous</span>
-                </a>
-                <a class="nav-link collapsed" href="{{route('secretaire.annulerRDV')}}">
-                    <i class="far fa-calendar-times"></i>
-                    <span>Annuler Rendez-vous</span>
-                </a>
                 <a class="nav-link collapsed" href="{{route('secretaire.visualisationRDV')}}">
                     <i class="far fa-eye"></i>
                     <span> Visualisation Rendez-vous</span>
@@ -103,7 +95,9 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+                    <div class="input-group" style="color: #200540;font-size: large">
+                        Clinique  {{App\Clinique::find(1)->nom}}
+                     </div>
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
