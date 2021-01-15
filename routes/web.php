@@ -58,20 +58,18 @@ Route::prefix('medecin')->group(function(){
     Route::put('/MettreAjourSecretaire','MedecinController@mettreAjourSecretaire')->name('medecin.mettreAjourSecretaire');
 
 });
+
 Route::prefix('secretaire')->group(function(){
     Route::get('/login','Auth\SecretaireLoginContoller@showLoginForm')->name('secretaire.login');
     Route::post('/login','Auth\SecretaireLoginContoller@login')->name('secretaire.login.submit');
     Route::get('/logout','Auth\SecretaireLoginContoller@logout')->name('secretaire.logout');
     Route::get('/dashboard','SecretaireController@index')->name('secretaire.dashboard');
     Route::get('/ListePatients','SecretaireController@listePatients')->name('secretaire.listePatients');
+    Route::get('/ListeRendezVous','SecretaireController@listeRendezVous')->name('secretaire.listeRendezVous');
     Route::get('/PrendreRDV','SecretaireController@prendreRDV')->name('secretaire.prendreRDV');
-    Route::get('/MettreAjourRDV','SecretaireController@mettreAjourRDV')->name('secretaire.mettreAjourRDV');
-    Route::get('/AnnulerRDV','SecretaireController@annulerRDV')->name('secretaire.annulerRDV');
     Route::get('/VisualisationRDV','SecretaireController@visualisationRDV')->name('secretaire.visualisationRDV');
     Route::get('/RePrendreRDV','SecretaireController@rePrendreRDV')->name('secretaire.reprendreRDV');
     Route::get('/DetailsPatient','SecretaireController@detailsPatient')->name('secretaire.detailsPatient');
-    Route::get('/AnnulerUnRDV','SecretaireController@listeRDVaAnnuler')->name('secretaire.annulerUnRDV');
-    Route::get('/MettreAjourUnRDV','SecretaireController@listeRDVaMettreAjour')->name('secretaire.MettreAjourUnRDV');
     Route::get('/MettreAjourRDVForm','SecretaireController@MAJRDVForm')->name('secretaire.MAJRDV');
     /*Post*/
     Route::Post('/PrendreRDV','SecretaireController@AjouterRDV')->name('secretaire.ajouterRDV');

@@ -7,26 +7,31 @@
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6" id="dataTable_length">
-                                        <label>
-                                                    Show 
-                                                    <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
-                                                        <option value="10">10</option>
-                                                        <option value="25">25</option>
-                                                        <option value="50">50</option>
-                                                        <option value="100">100</option>
-                                                    </select>
-                                                </label>
-
-                                    </div>
+                                    <div class="col-sm-12 col-md-6" id="dataTable_length"></div>
                                     <div class="col-sm-12 col-md-6">
                                         <div id="dataTable_filter" class="dataTables_filter">
                                             <label style="width: 100%;">
                                                     Recherche Patient :
-                                                    <input type="search" class="form-control form-control-sm" placeholder="Nom du Patient" aria-controls="dataTable">
+                                                    <input type="search" class="form-control form-control-sm" placeholder="N° Sécurité Sociale du Patient" aria-controls="dataTable">
                                                 </label>
                                         </div>
                                     </div>
+                                    @if($errors->any())
+                                    <div class="alert alert-danger col-12 mt-1 mb-0" id="warningSubmit" role="alert">
+                                        <ul>
+                                            @foreach($errors->all() as $error)
+                                            <li>{{$error}}</li>
+                                            @endforeach
+                                        <ul>
+                                    </div>
+                                    @endif
+                                    @if(session()->has('success'))
+                                    <div class="alert alert-success col-12 mt-1 mb-0" style="width:100%">
+                                        <center> 
+                                                {{ session()->get('success') }}
+                                        </center>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="card-body">
@@ -35,16 +40,17 @@
                                         <thead>
                                             <tr>
                                                 <th>Nom et Prenom</th>
-                                                <th>Téléphone</th>
+                                                <th>N° Sécurité Sociale</th>
                                                 <th>Détails</th>
                                                 <th>Prendre RDV</th>
+                                                <th>Divers RDV</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($patients as $patient)
                                                 <tr>
                                                     <td>{{$patient->nom}} {{$patient->prenom}}</td>
-                                                    <td>{{$patient->num_tel}}</td>
+                                                    <td>{{$patient->num_ss}}</td>
                                                     <td>
                                                         <center> 
                                                             <form method="GET" action="{{route('secretaire.detailsPatient')}}">
@@ -61,6 +67,16 @@
                                                                 <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                                                                 <button type="submit" class="btn">
                                                                     <i class="far fa-calendar-check"></i>
+                                                                </button>
+                                                            </form>
+                                                        </center>
+                                                    </td>
+                                                    <td>
+                                                        <center>
+                                                            <form method="GET" action="{{route('secretaire.listeRendezVous')}}">
+                                                                <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                                                <button type="submit" class="btn">
+                                                                    <i class="far fa-calendar-alt"></i>
                                                                 </button>
                                                             </form>
                                                         </center>

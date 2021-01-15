@@ -25,18 +25,29 @@ class SecretaireController extends Controller
         $patients = Patient::all();
         return view('Secretaire.ListePatients',['patients'=>$patients]);
     }
+    public function listeRendezVous(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+               return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $rdv = Rendezvous::all()->where('id_pat',$request->input('id_pat'));
+                return view('Secretaire.ListeRDVParPatient',['rdvs'=>$rdv,'patient'=>$patient]);
+            }
+        }
+
+    }
     public function prendreRDV(Request $request){
         $medecins = Medecin::all();
         return view('Secretaire.PrendreRDV',['medecins'=>$medecins]);
     }
-    public function mettreAjourRDV(Request $request){
-        $patients = Patient::all();
-        return view('Secretaire.MettreAjourRDV',['patients'=>$patients]);
-    }
-    public function annulerRDV(Request $request){
-        $patients = Patient::all();
-        return view('Secretaire.AnnulerRDV',['patients'=>$patients]);
-    }
+
+
     public function visualisationRDV(Request $request){
         $res=[];
         $res1=[];
@@ -76,7 +87,8 @@ class SecretaireController extends Controller
             if(is_null($patient)){
                return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
-                return view('Secretaire.DetailsPatient',['patient'=>$patient]);
+                $rdv = Rendezvous::all()->where('id_pat',$request->input('id_pat'));
+                return view('Secretaire.DetailsPatient',['patient'=>$patient,'rdvs'=>$rdv]);
             }
         }
     }
@@ -266,48 +278,7 @@ class SecretaireController extends Controller
             }
         }
     }
-    public function listeRDVaAnnuler(Request $request){
-        $validator = Validator::make($request->all(),[
-            'id_pat' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator);
-        }else{
-            $patient = Patient::find($request->input('id_pat'));
-            if(is_null($patient)){
-               return Redirect::back()->withErrors(['Patient Intouvable']);
-            }else{
-                $rdv_medecin_sec = DB::table('rendezvouss')
-                                    ->join('medecins','rendezvouss.id_med','=','medecins.id_med')
-                                    ->select('rendezvouss.*','medecins.nom','medecins.prenom')
-                                    ->where('id_pat',$request->input('id_pat'))
-                                    ->orderBy('rendezvouss.date_rdv', 'desc')
-                                    ->get();
-                return view('Secretaire.ListeRDVaAnnuler',['details'=>$rdv_medecin_sec]);
-            }
-        }
-    }
-    public function listeRDVaMettreAjour(Request $request){
-        $validator = Validator::make($request->all(),[
-            'id_pat' => 'required'
-        ]);
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator);
-        }else{
-            $patient = Patient::find($request->input('id_pat'));
-            if(is_null($patient)){
-               return Redirect::back()->withErrors(['Patient Intouvable']);
-            }else{
-                $rdv_medecin_sec = DB::table('rendezvouss')
-                                    ->join('medecins','rendezvouss.id_med','=','medecins.id_med')
-                                    ->select('rendezvouss.*','medecins.nom','medecins.prenom')
-                                    ->where('id_pat',$request->input('id_pat'))
-                                    ->orderBy('rendezvouss.date_rdv', 'desc')
-                                    ->get();
-                return view('Secretaire.ListeRDVaMettreAjour',['details'=>$rdv_medecin_sec]);
-            }
-        }
-    }
+   
     public function MAJRDVForm(Request $request){
         $validator = Validator::make($request->all(),[
             'id_rdv' => 'required'
