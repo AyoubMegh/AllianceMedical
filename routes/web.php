@@ -32,22 +32,19 @@ Route::prefix('medecin')->group(function(){
     Route::get('/Dashboard','MedecinController@index')->name('medecin.dashboard');
     Route::get('/Statistiques','MedecinController@statistiques')->name('medecin.statistiques');
     Route::get('/ListePatients','MedecinController@listePatients')->name('medecin.listePatients');
-    Route::get('/EtablireDossierPatient','MedecinController@etablireDossierPatient')->name('medecin.etablireDossierPatient');
-    Route::get('/PrendreRDV','MedecinController@prendreRDV')->name('medecin.prendreRDV');
-    Route::get('/EtablireOrdonnance','MedecinController@etablireOrdonnance')->name('medecin.etablireOrdonnance');
+    Route::get('/ListeMedecins','MedecinController@listeMedecins')->name('medecin.listeMedecins');
+    Route::get('/ListeSecretaires','MedecinController@listeSecretaires')->name('medecin.listeSecretaires');
+    Route::get('/MesRendezVous','MedecinController@MesRendezVous')->name('medecin.mesRendezVous');
+    Route::get('/MesOrdonnances','MedecinController@MesOrdonnances')->name('medecin.mesOrdonnances');
     Route::get('/VisualisationPatient','MedecinController@visualisationPatient')->name('medecin.visualisationPatient');
     Route::get('/VisualisationPrescription','MedecinController@visualisationPatient')->name('medecin.visualisationPrescription');
     /*CRUD MEDECIN*/
     Route::get('/AjouterMedecin','MedecinController@ajouterMedecinForm')->name('medecin.ajouterMedecinForm');
-    Route::get('/ModifierMedecin','MedecinController@modifierMedecinForm')->name('medecin.modifierMedecinForm');
-    Route::get('/SupprimerMedecin','MedecinController@supprimerMedecinForm')->name('medecin.supprimerMedecinForm');
     Route::get('/MettreAjourMedecin','MedecinController@MettreAjourMedecinForm')->name('medecin.mettreAjourMedecinForm');
     Route::get('/MettreAjourMDPS','MedecinController@mettreAjourMDPSForm')->name('medecin.mettreAjourMDPSForm');
     Route::get('/MettreAjourProfil','MedecinController@mettreAjourProfil')->name('medecin.mettreAjourProfil');
     /*CRUD SECRETAIRE*/
     Route::get('/AjouterSecretaire','MedecinController@ajouterSecretaireForm')->name('medecin.ajouterSecretaireForm');
-    Route::get('/ModifierSecretaire','MedecinController@modifierSecretaireForm')->name('medecin.modifierSecretaireForm');
-    Route::get('/SupprimerSecretaire','MedecinController@supprimerSecretaireForm')->name('medecin.supprimerSecretaireForm');
     Route::get('/MettreAjourSecretaire','MedecinController@MettreAjourSecretaireForm')->name('medecin.mettreAjourSecretaireForm');
     /*Post*/
     Route::post('/AjouterMedecin','MedecinController@ajouterMedecin')->name('medecin.ajouterMedecin');

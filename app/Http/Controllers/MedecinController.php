@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 
 use App\Clinique;
 use App\Medecin;
+use App\Patient;
 use App\Secretaire;
 use Auth;
 use Mail;
@@ -32,56 +33,38 @@ class MedecinController extends Controller
     }
     public function listePatients(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.ListePatients',['isAdmin'=>$isAdmin]);
+        $patients = Patient::all();
+        return view('Medecin.ListePatients',['isAdmin'=>$isAdmin,'patients'=>$patients]);
     }
-    public function etablireDossierPatient(Request $request){
+    public function listeMedecins(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.etablireDossierPatient',['isAdmin'=>$isAdmin]);
+        $medecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
+        return view('Medecin.ListeMedecins',['isAdmin'=>$isAdmin,'medecins'=>$medecins]);
     }
-    public function prendreRDV(Request $request){
+    public function listeSecretaires(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.PrendreRDV',['isAdmin'=>$isAdmin]);
+        $secretaires = Secretaire::all();
+        return view('Medecin.ListeSecretaires',['isAdmin'=>$isAdmin,'secretaires'=>$secretaires]);
     }
-    public function etablireOrdonnance(Request $request){
+    public function MesRendezVous(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.EtablireOrdonnance',['isAdmin'=>$isAdmin]);
+        return view('Medecin.MesRendezVous',['isAdmin'=>$isAdmin]);
     }
-    public function visualisationPatient(Request $request){
+    public function MesOrdonnances(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.VisualisationPatient',['isAdmin'=>$isAdmin]);
+        return view('Medecin.MesOrdonnances',['isAdmin'=>$isAdmin]);
     }
-    public function visualisationPrescription(Request $request){
-        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.VisualisationPrescription',['isAdmin'=>$isAdmin]);
-    }
+
     public function ajouterMedecinForm(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
         return view('Medecin.AjouterMedecin',['isAdmin'=>$isAdmin]);
     }
-    public function modifierMedecinForm(Request $request){
-        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        $listeMedecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
-        return view('Medecin.ModifierMedecin',['isAdmin'=>$isAdmin,'medecins'=>$listeMedecins]);
-    }
-    public function supprimerMedecinForm(Request $request){
-        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        $listeMedecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
-        return view('Medecin.SupprimerMedecin',['isAdmin'=>$isAdmin,'medecins'=>$listeMedecins]);
-    }
+
     public function ajouterSecretaireForm(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
         return view('Medecin.AjouterSecretaire',['isAdmin'=>$isAdmin]);
     }
-    public function modifierSecretaireForm(Request $request){
-        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        $listeSecretaires = Secretaire::all();
-        return view('Medecin.ModifierSecretaire',['isAdmin'=>$isAdmin,'secretaires'=>$listeSecretaires]);
-    }
-    public function supprimerSecretaireForm(Request $request){
-        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        $listeSecretaires = Secretaire::all();
-        return view('Medecin.SupprimerSecretaire',['isAdmin'=>$isAdmin,'secretaires'=>$listeSecretaires]);
-    }
+
     public function ajouterMedecin(Request $request){
         $validator = Validator::make($request->all(),[
             'nom' => 'required|min:3|max:255',
@@ -143,8 +126,12 @@ class MedecinController extends Controller
             return Redirect::back()->withErrors($validator)->withInput();
         }else{
             $medecin = Medecin::find($request->input('id_med'));
-            $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-            return view('Medecin.MettreAjourMedecin',['isAdmin'=>$isAdmin,'medecin'=>$medecin]);
+            if(is_null($medecin)){
+                return Redirect::back()->withErrors(['Medecin Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                 return view('Medecin.MettreAjourMedecin',['isAdmin'=>$isAdmin,'medecin'=>$medecin]);
+            }
         }
     }
     public function mettreAjourMedecin(Request $request){
@@ -230,8 +217,12 @@ class MedecinController extends Controller
             return Redirect::back()->withErrors($validator)->withInput();
         }else{
             $secretaire = Secretaire::find($request->input('id_sec'));
-            $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-            return view('Medecin.MettreAjourSecretaire',['isAdmin'=>$isAdmin,'secretaire'=>$secretaire]);
+            if(is_null($secretaire)){
+                return Redirect::back()->withErrors(['Secretaire Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                return view('Medecin.MettreAjourSecretaire',['isAdmin'=>$isAdmin,'secretaire'=>$secretaire]);
+            }
         }
     }
     public function mettreAjourSecretaire(Request $request){
