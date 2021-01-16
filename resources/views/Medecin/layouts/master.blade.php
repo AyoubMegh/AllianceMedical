@@ -68,13 +68,9 @@
                     <i class="fas fa-users"></i>
                     <span>Liste Patients</span>
                 </a>
-                <a class="nav-link collapsed" href="{{route('medecin.etablireDossierPatient')}}">
-                    <i class="fas fa-file-medical-alt"></i>
-                    <span>Etablire Dossier Patient</span>
-                </a>
-                <a class="nav-link collapsed" href="{{route('medecin.prendreRDV')}}">
+                <a class="nav-link collapsed" href="{{route('medecin.mesRendezVous')}}">
                     <i class="far fa-calendar-check"></i>
-                    <span>Prendre Rendez-vous</span>
+                    <span>Mes Rendez-vous</span>
                 </a>
                
             </li>
@@ -84,42 +80,28 @@
             </div>
              <!-- Nav Item - Pages Collapse Menu -->
              <li class="nav-item">
-                <a class="nav-link collapsed" href="{{route('medecin.etablireOrdonnance')}}">
+                <a class="nav-link collapsed" href="{{route('medecin.mesOrdonnances')}}">
                     <i class="far fa-file-alt"></i>
-                    <span>Etablire Ordonnace</span>
+                    <span>Mes Ordonnaces</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLettre"
                     aria-expanded="true" aria-controls="collapseLettre">
                     <i class="far fa-envelope-open"></i>
-                    <span>Lettres et Autres</span>
+                    <span>Mes Lettres</span>
                 </a>
                 <div id="collapseLettre" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="#">C. De Bonne santé</a>
+                        <a class="collapse-item" href="#">C. De Pneumo Phtisiologie</a>
+                        <a class="collapse-item" href="#">C. De Reprise</a>
+                        <a class="collapse-item" href="#">C. D'Arret de Travail</a>
+                        <a class="collapse-item" href="#">Demande De Billan</a>
                         <a class="collapse-item" href="#">Lettre d'orientation</a>
-                        <a class="collapse-item" href="#">Certificat de Bonne santé</a>
-                        <a class="collapse-item" href="#">Certificat de p.phtisiologie</a>
-                        <a class="collapse-item" href="#">Rapport médical</a>
-                        <a class="collapse-item" href="#">Arret de travail</a>
-                        <a class="collapse-item" href="#">Billan médical</a>
                     </div>
                 </div>
-            </li>
-            <hr class="sidebar-divider d-none d-md-block">
-            <div class="sidebar-heading">
-                Divers détails
-            </div>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{{route('medecin.visualisationPatient')}}">
-                    <i class="far fa-eye"></i>
-                    <span>Visualisation Patient</span>
-                </a>
-                <a class="nav-link collapsed" href="{{route('medecin.visualisationPrescription')}}">
-                    <i class="fas fa-align-justify"></i>
-                    <span>Prescriptions</span>
-                </a>
-            </li>
+            </li> 
             @if($isAdmin)
                 <hr class="sidebar-divider d-none d-md-block">
             <div class="sidebar-heading">
@@ -135,9 +117,8 @@
                 </a>
                 <div id="collapseMedecin" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{route('medecin.ajouterMedecinForm')}}">Ajouter</a>
-                        <a class="collapse-item" href="{{route('medecin.modifierMedecinForm')}}">Modifier</a>
-                        <a class="collapse-item" href="{{route('medecin.supprimerMedecinForm')}}">Supprimer</a>
+                        <a class="collapse-item" href="{{route('medecin.ajouterMedecinForm')}}">Ajouter Medecin</a>
+                        <a class="collapse-item" href="{{route('medecin.listeMedecins')}}">Liste Medecins</a>
                     </div>
                 </div>
             </li>
@@ -149,9 +130,8 @@
                 </a>
                 <div id="collapseSecretaire" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{route('medecin.ajouterSecretaireForm')}}">Ajouter</a>
-                        <a class="collapse-item" href="{{route('medecin.modifierSecretaireForm')}}">Modifier</a>
-                        <a class="collapse-item" href="{{route('medecin.supprimerSecretaireForm')}}">Supprimer</a>
+                        <a class="collapse-item" href="{{route('medecin.ajouterSecretaireForm')}}">Ajouter Secretaire</a>
+                        <a class="collapse-item" href="{{route('medecin.listeSecretaires')}}">Liste Secretaires</a>
                     </div>
                 </div>
             </li>

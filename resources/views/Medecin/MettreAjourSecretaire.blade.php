@@ -1,7 +1,7 @@
 @extends('Medecin.layouts.master')
 @section('content')
 <div class="container center-div">
-    <center><h1>Mettre a Jour Medecin</h1></center>
+    <center><h1>Mettre a Jour Secretaire</h1></center>
     <form action="{{route('medecin.mettreAjourSecretaire')}}" method="post">
     {{ csrf_field() }}
     {{ method_field('PUT') }}

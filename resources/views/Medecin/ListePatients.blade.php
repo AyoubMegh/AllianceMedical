@@ -6,25 +6,16 @@
         <div class="card-header py-3">
             <div class="row">
                 <div class="col-sm-12 col-md-6" id="dataTable_length">
-                            <label>
-                                Show 
-                                <select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>
-                            </label>
-                    
+                
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <div id="dataTable_filter" class="dataTables_filter">
+                        <label style="width: 100%;">
+                            Recherche Patient :
+                            <input type="search" class="form-control form-control-sm" placeholder="Nom du Patient" aria-controls="dataTable">
+                        </label>
                     </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div id="dataTable_filter" class="dataTables_filter">
-                            <label style="width: 100%;">
-                                Recherche Patient :
-                                <input type="search" class="form-control form-control-sm" placeholder="Nom du Patient" aria-controls="dataTable">
-                            </label>
-                        </div>
-                    </div>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -33,69 +24,82 @@
                     <thead>
                         <tr>
                             <th>Nom et Prenom</th>
-                            <th>Date Naissance</th>
+                            <th>N° Sécurité Sociale</th>
                             <th>Détails</th>
                             <th>Ordonnances</th>
                             <th>Dossier Medicale</th>
                             <th>Lettres et Autres</th>
-                            <th>Prendre RDV</th>
+                            <th>Divers RDV</th>
+                            <th>Imageries</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Flen BenFlen</td>
-                            <td>16-04-1999</td>
-                            <td>
-                                <center>
-                                    <form  method="GET" action="DetailsPatient.html">
-                                        <input type="hidden" name="id" value="1">
-                                        <button type="submit" class="btn">
-                                            <i class="far fa-eye"></i>
-                                        </button>
-                                    </form>
-                                 </center>
-                            </td>
-                            <td>
-                                <center>
-                                    <form  method="GET" action="Ordonnances.html">
-                                        <input type="hidden" name="id" value="1">
-                                        <button type="submit" class="btn">
-                                            <i class="far fa-file-alt"></i>
-                                        </button>
-                                    </form>
+                        @foreach($patients as $patient)
+                            <tr>
+                                <td>{{$patient->nom}} {{$patient->prenom}}</td>
+                                <td>{{$patient->num_ss}}</td>
+                                <td>
+                                    <center>
+                                        <form  method="GET" action="#">
+                                            <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                            <button type="submit" class="btn">
+                                                <i class="far fa-eye"></i>
+                                            </button>
+                                        </form>
+                                    </center>
+                                </td>
+                                <td>
+                                    <center>
+                                        <form  method="GET" action="#">
+                                            <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                            <button type="submit" class="btn">
+                                                <i class="far fa-file-alt"></i>
+                                            </button>
+                                        </form>
+                                    </center>
+                                </td>
+                                <td>
+                                    <center>
+                                        <form  method="GET" action="#">
+                                            <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                            <button type="submit" class="btn">
+                                                <i class="fas fa-file-medical-alt"></i>
+                                            </button>
+                                        </form>
+                                    </center>   
+                                </td>
+                                <td>
+                                    <center>
+                                        <form  method="GET" action="#">
+                                            <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                            <button type="submit" class="btn">
+                                                <i class="far fa-envelope-open"></i>
+                                            </button>
+                                        </form>
                                 </center>
-                            </td>
-                            <td>
-                                <center>
-                                    <form  method="GET" action="DossierMedicale.html">
-                                        <input type="hidden" name="id" value="1">
-                                        <button type="submit" class="btn">
-                                            <i class="fas fa-file-medical-alt"></i>
-                                        </button>
-                                    </form>
-                                </center>                                              
-                            </td>
-                            <td>
-                                <center>
-                                    <form  method="GET" action="#">
-                                        <input type="hidden" name="id" value="1">
-                                        <button type="submit" class="btn">
-                                            <i class="far fa-envelope-open"></i>
-                                        </button>
-                                    </form>
-                               </center>
-                            </td>
-                            <td>
-                               <center>
-                                    <form  method="GET" action="RDV.html">
-                                        <input type="hidden" name="id" value="1">
-                                        <button type="submit" class="btn">
-                                            <i class="far fa-calendar-check"></i>
-                                        </button>
-                                    </form>
-                               </center>
-                            </td>    
-                        </tr>
+                                </td>
+                                <td>
+                                    <center>
+                                        <form  method="GET" action="#">
+                                            <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                            <button type="submit" class="btn">
+                                                <i class="far fa-calendar-check"></i>
+                                            </button>
+                                        </form>
+                                </center>
+                                </td>
+                                <td>
+                                    <center>
+                                        <form  method="GET" action="#">
+                                            <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                            <button type="submit" class="btn">
+                                                <i class="fas fa-x-ray"></i>
+                                            </button>
+                                        </form>
+                                </center>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
