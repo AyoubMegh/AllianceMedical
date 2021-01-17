@@ -38,11 +38,18 @@ Route::prefix('medecin')->group(function(){
     Route::get('/MesOrdonnances','MedecinController@MesOrdonnances')->name('medecin.mesOrdonnances');
     Route::get('/VisualisationPatient','MedecinController@visualisationPatient')->name('medecin.visualisationPatient');
     Route::get('/VisualisationPrescription','MedecinController@visualisationPatient')->name('medecin.visualisationPrescription');
+    
+    Route::get('/Imageries','MedecinController@imageries')->name('medecin.imageries');
+    Route::get('/Ordonnances','MedecinController@ordonnances')->name('medecin.ordonnances');
+    Route::get('/Lettres','MedecinController@lettres')->name('medecin.lettres');
+    Route::get('/ReprendreRDV','MedecinController@reprendreRDV')->name('medecin.reprendreRDV');
     /*CRUD MEDECIN*/
     Route::get('/AjouterMedecin','MedecinController@ajouterMedecinForm')->name('medecin.ajouterMedecinForm');
     Route::get('/MettreAjourMedecin','MedecinController@MettreAjourMedecinForm')->name('medecin.mettreAjourMedecinForm');
     Route::get('/MettreAjourMDPS','MedecinController@mettreAjourMDPSForm')->name('medecin.mettreAjourMDPSForm');
     Route::get('/MettreAjourProfil','MedecinController@mettreAjourProfil')->name('medecin.mettreAjourProfil');
+    Route::get('/DossierMedical','MedecinController@dossierMedicalForm')->name('medecin.dossierMedicalForm');
+    Route::get('/DetailsPatient','MedecinController@detailsPatientForm')->name('medecin.detailsPatientForm');
     /*CRUD SECRETAIRE*/
     Route::get('/AjouterSecretaire','MedecinController@ajouterSecretaireForm')->name('medecin.ajouterSecretaireForm');
     Route::get('/MettreAjourSecretaire','MedecinController@MettreAjourSecretaireForm')->name('medecin.mettreAjourSecretaireForm');
@@ -57,6 +64,8 @@ Route::prefix('medecin')->group(function(){
     Route::put('/MettreAjourSecretaire','MedecinController@mettreAjourSecretaire')->name('medecin.mettreAjourSecretaire');
     Route::put('/MettreAjourMDPS','MedecinController@mettreAjourMDPS')->name('medecin.mettreAjourMDPS');
     Route::put('/MettreAjourProfil','MedecinController@update')->name('medecin.update');
+    Route::put('/DossierMedical','MedecinController@dossierMedical')->name('medecin.dossierMedical');
+    Route::put('/DetailsPatient','MedecinController@detailsPatient')->name('medecin.detailsPatient');
 
 });
 

@@ -300,4 +300,104 @@ class MedecinController extends Controller
         $user->save();
         return redirect()->back()->with('success', 'Mot de passe modifié avec success');
     }
+
+    public function detailsPatient(Request $request){
+        $id_pat=$request->input('id_pat');
+        //dd($id_pat);
+        $validator = Validator::make($request->all(),[
+            'id_pat'=>'required',
+            'nom' => 'required|min:3|max:255',
+            'prenom' => 'required|min:3|max:255',
+            'num_ss' => 'required',
+            'date_naissance' => 'required',
+            'email' => 'required|max:255|unique:patients,email,'.$id_pat.','.(New Patient)->getKeyName(),
+            'tel' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            $patient->nom = $request->input('nom');
+            $patient->prenom = $request->input('prenom');
+            $patient->num_ss = $request->input('num_ss');
+            $patient->date_naissance = $request->input('date_naissance');
+            $patient->email = $request->input('email');
+            $patient->num_tel = $request->input('tel');
+            $patient->save();
+            return redirect()->back()->with('success', 'Patient Mis a jour !');
+        }
+    }
+
+    public function detailsPatientForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                return view('Medecin.DetailsPatient',['isAdmin'=>$isAdmin,'patient'=>$patient]);
+            }
+        }
+    }
+
+    public function dossierMedical(Request $request){
+        $id_pat=$request->input('id_pat');
+        $validator = Validator::make($request->all(),[
+            'id_pat'=>'required',
+            'maladies' => 'min:3',
+            'allergies' => 'min:3',
+            'antecedents' => 'min:3' ,
+            'commentaires' => 'min:3' ,
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            $patient->maladies = $request->input('maladies');
+            $patient->allergies = $request->input('allergies');
+            $patient->antecedents = $request->input('antecedents');
+            $patient->commentaires = $request->input('commentaires');
+            $patient->save();
+            return redirect()->back()->with('success', 'Dossier du Patient Mis à jour !');
+        }
+    }
+
+    public function dossierMedicalForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                return view('Medecin.DossierMedical',['isAdmin'=>$isAdmin,'patient'=>$patient]);
+            }
+        }
+    }
+
+    public function imageries(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        return view('Medecin.Imageries',['isAdmin'=>$isAdmin]);
+    }
+    public function ordonnances(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        return view('Medecin.Ordonnances',['isAdmin'=>$isAdmin]);
+    }
+    public function lettres(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        return view('Medecin.Lettres',['isAdmin'=>$isAdmin]);
+    }
+    public function reprendreRDV(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        return view('Medecin.ReprendreRDV',['isAdmin'=>$isAdmin]);
+    }
 }

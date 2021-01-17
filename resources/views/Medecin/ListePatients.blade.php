@@ -40,7 +40,7 @@
                                 <td>{{$patient->num_ss}}</td>
                                 <td>
                                     <center>
-                                        <form  method="GET" action="#">
+                                        <form  method="GET" action="{{route('medecin.detailsPatientForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                                             <button type="submit" class="btn">
                                                 <i class="far fa-eye"></i>
@@ -60,7 +60,7 @@
                                 </td>
                                 <td>
                                     <center>
-                                        <form  method="GET" action="#">
+                                        <form  method="GET" action="{{route('medecin.dossierMedicalForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                                             <button type="submit" class="btn">
                                                 <i class="fas fa-file-medical-alt"></i>
