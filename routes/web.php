@@ -39,10 +39,10 @@ Route::prefix('medecin')->group(function(){
     Route::get('/VisualisationPatient','MedecinController@visualisationPatient')->name('medecin.visualisationPatient');
     Route::get('/VisualisationPrescription','MedecinController@visualisationPatient')->name('medecin.visualisationPrescription');
     
-    Route::get('/Imageries','MedecinController@imageries')->name('medecin.imageries');
-    Route::get('/Ordonnances','MedecinController@ordonnances')->name('medecin.ordonnances');
-    Route::get('/Lettres','MedecinController@lettres')->name('medecin.lettres');
-    Route::get('/ReprendreRDV','MedecinController@reprendreRDV')->name('medecin.reprendreRDV');
+    Route::get('/Imageries','MedecinController@imageriesForm')->name('medecin.imageriesForm');
+    Route::get('/Ordonnances','MedecinController@ordonnancesForm')->name('medecin.ordonnancesForm');
+    Route::get('/Lettres','MedecinController@lettresForm')->name('medecin.lettresForm');
+    Route::get('/ReprendreRDV','MedecinController@reprendreRDVForm')->name('medecin.reprendreRDVForm');
     /*CRUD MEDECIN*/
     Route::get('/AjouterMedecin','MedecinController@ajouterMedecinForm')->name('medecin.ajouterMedecinForm');
     Route::get('/MettreAjourMedecin','MedecinController@MettreAjourMedecinForm')->name('medecin.mettreAjourMedecinForm');

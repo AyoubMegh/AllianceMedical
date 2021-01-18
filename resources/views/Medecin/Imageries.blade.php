@@ -28,11 +28,10 @@ class="active"
                                         <div class="desc">Details de l'image ICI</div>
                                     </div>
                                 </div>
-                            </div>
-                            
-         </div>
-                
+                            </div>       
+           </div>
                     <div class="row">
+                      <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                       <div class="col-sm-1 mt-5">
                          <button type="submit" class="btn btn-success">Ajouter</button>
                       </div>
