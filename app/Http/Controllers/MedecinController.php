@@ -384,20 +384,68 @@ class MedecinController extends Controller
         }
     }
 
-    public function imageries(Request $request){
-        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.Imageries',['isAdmin'=>$isAdmin]);
+    public function imageriesForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                return view('Medecin.Imageries',['isAdmin'=>$isAdmin,'patient'=>$patient]);
+            }
+        }
     }
-    public function ordonnances(Request $request){
-        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.Ordonnances',['isAdmin'=>$isAdmin]);
+    public function ordonnancesForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                return view('Medecin.Ordonnances',['isAdmin'=>$isAdmin,'patient'=>$patient]);
+            }
+        }
     }
-    public function lettres(Request $request){
-        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.Lettres',['isAdmin'=>$isAdmin]);
+    public function lettresForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                return view('Medecin.Lettres',['isAdmin'=>$isAdmin,'patient'=>$patient]);
+            }
+        }
     }
-    public function reprendreRDV(Request $request){
-        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.ReprendreRDV',['isAdmin'=>$isAdmin]);
+    public function reprendreRDVForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                return view('Medecin.ReprendreRDV',['isAdmin'=>$isAdmin,'patient'=>$patient]);
+            }
+        }
     }
 }

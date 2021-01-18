@@ -26,7 +26,7 @@ class="active"
                                 <label for="motif">Motif :</label>
                                 <input type="text" class="form-control" name="motif" value="{{ old('motif') }}" id="motif" placeholder="Ecrivez votre motif ici !" required>
                             </div>
-                            <input type="hidden" name="id_pat" value="#">
+                            <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                             @if($errors->any())
                                 <div class="alert alert-danger" id="warningSubmit" role="alert">
                                     <ul>

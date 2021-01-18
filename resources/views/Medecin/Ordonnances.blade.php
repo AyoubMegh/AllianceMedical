@@ -42,7 +42,7 @@ class="active"
                                     </div>
                                     <hr style="width:50%">
                                 </div>
-                                
+                                <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                                 <div class="form-group mt-1">
                                     <div class="row">
                                         <div class="col-sm-1 mt-1">
