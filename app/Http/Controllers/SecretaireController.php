@@ -46,7 +46,8 @@ class SecretaireController extends Controller
     }
     public function prendreRDV(Request $request){
         $medecins = Medecin::all();
-        return view('Secretaire.PrendreRDV',['medecins'=>$medecins]);
+        $id_med = (!is_null($request->input('id_med')))? $request->input('id_med') : -1 ;
+        return view('Secretaire.PrendreRDV',['medecins'=>$medecins,'id_med'=>$id_med]);
     }
 
 
@@ -69,7 +70,7 @@ class SecretaireController extends Controller
             $rdv  =  DB::table('rendezvouss')
                 ->join('medecins','rendezvouss.id_med','=','medecins.id_med')
                 ->join('patients','rendezvouss.id_pat','=','patients.id_pat')
-                ->select('rendezvouss.date_rdv','rendezvouss.heure_debut','patients.nom','patients.prenom','patients.date_naissance','patients.num_tel')
+                ->select('rendezvouss.date_rdv','rendezvouss.heure_debut','rendezvouss.heure_fin','patients.nom','patients.prenom','patients.date_naissance','patients.num_tel')
                 ->where('medecins.id_med',$med->id_med)
                 ->orderBy('rendezvouss.date_rdv', 'asc')
                 ->get();

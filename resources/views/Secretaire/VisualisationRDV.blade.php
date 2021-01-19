@@ -14,7 +14,7 @@
                                             <label style="width: 100%;">
                                                     Recherche Patient :
                                                     <input type="search" class="form-control form-control-sm" placeholder="Nom du Patient" aria-controls="dataTable">
-                                                </label>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -98,13 +98,24 @@
                                                               @foreach($meds as $med)
                                                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                                                     <thead>
-                                                                      <h5>DR. {{$med[1]['nom']}} {{$med[1]['prenom']}}</h5>
+                                                                      <div class="row mb-2">
+                                                                        <div class="col col-9 mt-2">
+                                                                          <h4>DR. {{$med[1]['nom']}} {{$med[1]['prenom']}}</h4>
+                                                                        </div>
+                                                                        <div class="col col-3 mb-1">
+                                                                          <form action="{{route('secretaire.prendreRDV')}}" method="get">
+                                                                              <input type="hidden" name="id_med" value="{{$med[1]['id_med']}}">
+                                                                              <button type="submit" class="btn btn-success">Ajouter un Rendez Vous</button>
+                                                                          </form>
+                                                                        </div>
+                                                                      </div>
                                                                       <tr>
                                                                         <th>Nom et Prenom</th>
                                                                         <th>Date Naissance</th>
                                                                         <th>N° Téléphone</th>
                                                                         <th>Jour de consultation</th>
                                                                         <th>Heure de consultation</th>
+                                                                        <th>fin de consultation</th>
                                                                       </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -115,6 +126,7 @@
                                                                                 <td>{{$m->num_tel}}</td>
                                                                                 <td>{{$m->date_rdv}}</td>
                                                                                 <td>{{$m->heure_debut}}</td>
+                                                                                <td>{{$m->heure_fin}}</td>
                                                                             </tr>
                                                                         @endforeach
                                                                     </tbody>

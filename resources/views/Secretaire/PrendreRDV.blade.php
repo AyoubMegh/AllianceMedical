@@ -90,14 +90,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="id_med">Nom d Medecin :</label>
-                                <select name="id_med" id="id_med"  class="form-control" required>
-                                    <option value="" disabled selected>Choisissez une Medecin</option>
-                                    @foreach($medecins as $medecin)
-                                        <option value="{{$medecin->id_med}}">DR.{{$medecin->nom}} {{$medecin->prenom}} ({{$medecin->specialite}})</option>
-                                    @endforeach
-                                </select>
-
+                                @if($id_med != -1)
+                                    <input type="hidden" name="id_med" id="id_med" value="{{$id_med}}">
+                                @else
+                                    <label for="id_med">Nom d Medecin :</label>
+                                    <select name="id_med" id="id_med"  class="form-control" required>
+                                        <option value="" disabled selected>Choisissez une Medecin</option>
+                                        @foreach($medecins as $medecin)
+                                            <option value="{{$medecin->id_med}}" {{($medecin->id_med==$id_med)? "selected" : "" }} >DR.{{$medecin->nom}} {{$medecin->prenom}} ({{$medecin->specialite}})</option>
+                                        @endforeach
+                                    </select>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="motif">Motif :</label>
