@@ -115,7 +115,7 @@
                                                                         <th>N° Téléphone</th>
                                                                         <th>Jour de consultation</th>
                                                                         <th>Heure de consultation</th>
-                                                                        <th>fin de consultation</th>
+                                                                        <th>Fin de consultation</th>
                                                                       </tr>
                                                                     </thead>
                                                                     <tbody>

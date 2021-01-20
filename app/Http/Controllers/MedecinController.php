@@ -6,12 +6,14 @@ use Validator;
 use Redirect;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-
+use App\Rendezvous;
 use App\Clinique;
 use App\Medecin;
 use App\Patient;
 use App\Secretaire;
+use App\Image;
 use Auth;
 use Mail;
 use Hash;
@@ -349,10 +351,6 @@ class MedecinController extends Controller
         $id_pat=$request->input('id_pat');
         $validator = Validator::make($request->all(),[
             'id_pat'=>'required',
-            'maladies' => 'min:3',
-            'allergies' => 'min:3',
-            'antecedents' => 'min:3' ,
-            'commentaires' => 'min:3' ,
         ]);
         if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
@@ -396,7 +394,8 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-                return view('Medecin.Imageries',['isAdmin'=>$isAdmin,'patient'=>$patient]);
+                $images = Image::all()->where('id_pat',$request->input('id_pat'))->sortByDesc('created_at');
+                return view('Medecin.Imageries',['isAdmin'=>$isAdmin,'patient'=>$patient,'images'=>$images]);
             }
         }
     }
@@ -444,7 +443,94 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-                return view('Medecin.ReprendreRDV',['isAdmin'=>$isAdmin,'patient'=>$patient]);
+                $rdv = Rendezvous::all()->where('id_pat',$request->input('id_pat'));
+                $medecins = Medecin::all();
+                $res1=[];
+                foreach($medecins as $med){
+                    $rdv  =  DB::table('rendezvouss')
+                        ->join('medecins','rendezvouss.id_med','=','medecins.id_med')
+                        ->join('patients','rendezvouss.id_pat','=','patients.id_pat')
+                        ->select('rendezvouss.date_rdv','rendezvouss.heure_debut','rendezvouss.heure_fin','rendezvouss.motif')
+                        ->where('medecins.id_med',$med->id_med)
+                        ->where('rendezvouss.id_pat',$request->input('id_pat'))
+                        ->orderBy('rendezvouss.date_rdv', 'asc')
+                        ->get();
+                    array_push($res1,[$rdv,$med['attributes']]);
+                } 
+               //dd($res1);
+                return view('Medecin.ReprendreRDV',['isAdmin'=>$isAdmin,'patient'=>$patient,'meds'=>$res1]);
+            }
+        }
+    }
+    public function reprendreRDV(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required',
+            'date_rdv' => 'required|date',
+            'heure_deb' => 'required',
+            'heure_fin' => 'required',
+            'motif' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            if(strtotime($request->input('date_rdv'))<strtotime(date("Y-m-d"))){
+                return Redirect::back()->withErrors(['Impossible d\'effectuer un Rendez-vous Dans le Passé !'])->withInput();
+            }
+            if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
+                return Redirect::back()->withErrors(['La fin du RDV neut peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
+            }
+            $RDV = Rendezvous::all()->where('id_med',Auth::user()->id_med);
+            $patient = Patient::find($request->input('id_pat'));
+            if(count($RDV)==0){//Aucun RDV pour le Medecin Specifié
+                $RDV = new Rendezvous();
+                $RDV->date_rdv =  $request->input('date_rdv');
+                $RDV->heure_debut =  $request->input('heure_deb');
+                $RDV->heure_fin =  $request->input('heure_fin');
+                $RDV->motif = $request->input('motif');
+                $RDV->id_med = Auth::user()->id_med;
+                $RDV->id_pat = $request->input('id_pat');
+                $RDV->save();
+                return redirect()->back()->with('success', 'Rendez-vous Bien Ajouté ');
+            }else{
+                $RDV = Rendezvous::all()->where('id_med',Auth::user()->id_med)->where('date_rdv',$request->input('date_rdv'))->values();
+                if(count($RDV)==0){//Aucun RDV pour Le Medecin Specifié dans la date Specifié
+                    $RDV = new Rendezvous();
+                    $RDV->date_rdv =  $request->input('date_rdv');
+                    $RDV->heure_debut =  $request->input('heure_deb');
+                    $RDV->heure_fin =  $request->input('heure_fin');
+                    $RDV->motif = $request->input('motif');
+                    $RDV->id_med = Auth::user()->id_med;
+                    $RDV->id_pat = $request->input('id_pat');
+                    $RDV->save();
+                    return redirect()->back()->with('success', 'Rendez-vous Bien Ajouté ');
+                }else{
+                    $pasDeChevauchement = true;
+                    $idRdvNonChevauchement = 0;
+                    for($i=0;$i<count($RDV);$i++){
+                        if(!(
+                            (strtotime($request->input('heure_deb'))<strtotime($RDV->get($i)->heure_debut) && strtotime($request->input('heure_fin'))<=strtotime($RDV->get($i)->heure_debut))
+                            ||
+                            (strtotime($request->input('heure_deb'))>=strtotime($RDV->get($i)->heure_fin) && (strtotime($request->input('heure_fin'))>strtotime($RDV->get($i)->heure_fin)))
+                        )){
+                            $pasDeChevauchement = false;
+                            $idRdvNonChevauchement = $i;
+                        }
+                    }
+                    if($pasDeChevauchement){
+                        $RDV = new Rendezvous();
+                        $RDV->date_rdv =  $request->input('date_rdv');
+                        $RDV->heure_debut =  $request->input('heure_deb');
+                        $RDV->heure_fin =  $request->input('heure_fin');
+                        $RDV->motif = $request->input('motif');
+                        $RDV->id_med = Auth::user()->id_med;
+                        $RDV->id_pat = $request->input('id_pat');
+                        $RDV->save();
+                        return redirect()->back()->with('success', 'Rendez-vous Bien Ajouté ');
+                    }else{
+                        $medecin_rdv = Medecin::find($request->input('id_med'));
+                        return Redirect::back()->withErrors(['Vous a deja un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' a '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
+                    }
+                }
             }
         }
     }

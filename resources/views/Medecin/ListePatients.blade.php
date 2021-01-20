@@ -27,7 +27,7 @@
                             <th>N° Sécurité Sociale</th>
                             <th>Détails</th>
                             <th>Ordonnances</th>
-                            <th>Dossier Medicale</th>
+                            <th>Info Medicale</th>
                             <th>Lettres et Autres</th>
                             <th>Divers RDV</th>
                             <th>Imageries</th>
@@ -50,7 +50,7 @@
                                 </td>
                                 <td>
                                     <center>
-                                        <form  method="GET" action="#">
+                                        <form  method="GET" action="{{route('medecin.ordonnancesForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                                             <button type="submit" class="btn">
                                                 <i class="far fa-file-alt"></i>
@@ -70,7 +70,7 @@
                                 </td>
                                 <td>
                                     <center>
-                                        <form  method="GET" action="#">
+                                        <form  method="GET" action="{{route('medecin.lettresForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                                             <button type="submit" class="btn">
                                                 <i class="far fa-envelope-open"></i>
@@ -80,7 +80,7 @@
                                 </td>
                                 <td>
                                     <center>
-                                        <form  method="GET" action="#">
+                                        <form  method="GET" action="{{route('medecin.reprendreRDVForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                                             <button type="submit" class="btn">
                                                 <i class="far fa-calendar-check"></i>
@@ -90,7 +90,7 @@
                                 </td>
                                 <td>
                                     <center>
-                                        <form  method="GET" action="#">
+                                        <form  method="GET" action="{{route('medecin.imageriesForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                                             <button type="submit" class="btn">
                                                 <i class="fas fa-x-ray"></i>

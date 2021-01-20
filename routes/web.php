@@ -66,7 +66,10 @@ Route::prefix('medecin')->group(function(){
     Route::put('/MettreAjourProfil','MedecinController@update')->name('medecin.update');
     Route::put('/DossierMedical','MedecinController@dossierMedical')->name('medecin.dossierMedical');
     Route::put('/DetailsPatient','MedecinController@detailsPatient')->name('medecin.detailsPatient');
-
+    /* Images */
+    Route::post('/Imageries','ImageController@AjouterImages')->name('image.medecin.ajouterImages');
+    /*RDV*/
+    Route::post('/ReprendreRDV','MedecinController@reprendreRDV')->name('medecin.reprendreRDV');
 });
 
 Route::prefix('secretaire')->group(function(){
