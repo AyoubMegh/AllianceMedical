@@ -3,7 +3,7 @@
 
 <div class="container center-div">
     <center><h1>Détails du Patient</h1></center>
-    <ul class="nav nav-tabs1 mt-5">
+    <ul class="nav nav-tabs1 mt-3">
                         <li @yield('activation') >
                             <form action="{{route('medecin.detailsPatient')}}" id="infoPers">
                                 <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">

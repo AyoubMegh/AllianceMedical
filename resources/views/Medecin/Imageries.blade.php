@@ -3,8 +3,7 @@
 class="active"
 @endsection
 @section('details_content')
-
-         <div class="container mt-1">
+         <div class="container">
                             <div class="row">
                                 <div class="col-lg-12"> <label for="Images"><u>Images :</u></label></div>
                                 <div class="col-lg-12" >
@@ -28,6 +27,10 @@ class="active"
                                                                 <a target="_blank" href="{{url('storage/images/imageries_patient/'.$patient->num_ss.'/'.$images->get($i)->nom.'.'.$images->get($i)->format)}}">
                                                                     <img src="{{url('storage/images/imageries_patient/'.$patient->num_ss.'/'.$images->get($i)->nom.'.'.$images->get($i)->format)}}" width="600" height="400">
                                                                 </a>
+                                                                <div class="carousel-caption d-none d-md-block">
+                                                                    <h5 style="color: black;">{{$images->get($i)->nom}}</h5>
+                                                                    <h5 style="color: black;">{{$images->get($i)->date_img}}</h5>
+                                                                </div>
                                                             </div>
                                                         @else
                                                             <div class="carousel-item" >

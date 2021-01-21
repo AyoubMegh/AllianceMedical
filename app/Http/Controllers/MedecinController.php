@@ -35,9 +35,17 @@ class MedecinController extends Controller
     }
     public function listePatients(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        $patients = Patient::all();
+        if(is_null($request->input('num_ss'))){
+            $patients = Patient::all();
+        }else{
+            $patients = Patient::all()->where('num_ss',$request->input('num_ss'));
+            if(count($patients)==0){
+                return redirect(route('medecin.listePatients'))->withErrors(['Patient Introuvable !']);
+            }
+        }
         return view('Medecin.ListePatients',['isAdmin'=>$isAdmin,'patients'=>$patients]);
     }
+
     public function listeMedecins(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
         $medecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);

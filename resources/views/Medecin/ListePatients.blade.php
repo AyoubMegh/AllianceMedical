@@ -12,10 +12,31 @@
                     <div id="dataTable_filter" class="dataTables_filter">
                         <label style="width: 100%;">
                             Recherche Patient :
-                            <input type="search" class="form-control form-control-sm" placeholder="Nom du Patient" aria-controls="dataTable">
+                            <form action="{{route('medecin.listePatients')}}" method="GET">
+                                <div class="row">
+                                    <div class="col-10 mt-1">
+                                        <input type="search" name="num_ss" class="form-control form-control-sm" placeholder="N° Sécurité Sociale" aria-controls="dataTable">
+                                    </div>
+                                    <div class="col-2">
+                                        <button type="submit" class="btn btn-submit" style="background-color: #2146b7"><i class="fa fa-search-plus" style="color: white"></i></button>
+                                    </div>
+                                </div>
+
+                            </form>
                         </label>
                     </div>
                 </div>
+            </div>
+            <div class="row" >
+                @if($errors->any())
+                    <div class="alert alert-danger col-12 mt-1 mb-0" style="width:100%" id="warningSubmit" role="alert">
+                        <center>
+                            @foreach($errors->all() as $error)
+                            {{$error}}
+                            @endforeach
+                        </center>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="card-body">
