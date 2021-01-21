@@ -210,7 +210,6 @@ class SecretaireController extends Controller
             'date_rdv' => 'required|date',
             'heure_deb' => 'required',
             'heure_fin' => 'required',
-            'id_med'=> 'required',
             'motif' => 'required'
         ]);
         if ($validator->fails()) {
