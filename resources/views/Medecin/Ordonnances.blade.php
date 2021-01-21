@@ -8,19 +8,7 @@ class="active"
                     <div class="container center-div">
                         <div class="conteiner mt-4">
                             <form action="" method="post">
-                                <div class="form-group">
-                                    <label for="date_pres">Date de Prescription :</label>
-                                    <div class="row">
-                                            <div class="col-md-6 mb-1">
-                                                <input type="date" name="date_pres" id="date_pres" class="form-control" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <button class="btn btn-secondary" id="today_date">date d'aujourd'hui</button>
-                                            </div>
-                                    </div>
-                                    <div class="valid-feedback"></div>
-                                    <div class="invalid-feedback"></div>
-                                </div>
+                                
                                 <div class="form-group" id="lignes_prescription">
                                     <label for="ligne_pres">Ligne Prescription: (<label for="nombre_ligne" id="nombre_ligne">1</label> Ligne)</label>
                                     <div class="row">
@@ -48,11 +36,11 @@ class="active"
                                         <div class="col-sm-1 mt-1">
                                             <button type="submit" class="btn btn-success">Ajouter</button>
                                         </div>
-                                        <div class="col-sm-1 mt-1">
+                                        <div class="col-sm-1 ml-3 mt-1">
                                             <button type="reset" class="btn btn-dark">Vider</button>
                                         </div>
                                         <div class="col-sm-1 mt-1"></div>
-                                        <div class="col-sm-9 mt-1">
+                                        <div class="col-sm-8 mt-1">
                                             <button class="btn btn-dark" id="btn_imprimer">Imprimer</button>
                                         </div>
                                     </div>
@@ -65,28 +53,58 @@ class="active"
                             </form>
                         </div>
                         
-                        <div id="imprimable" class="d-none">
-                            <table  width="100%">
+                        <div id="imprimable" class="row d-none" style="position:relative;" > <!--class="d-none"-->
+                            <div class="col-12">
+                            <table  width="100%" >
+                                <tr >
+                                    <td width="25%" colspan="2"><center>Clinique  {{App\Clinique::find(1)->nom}}<br> {{date('d-m-y')}}</center></td>
+                                    <td width="25%" colspan="2"><center>{{Auth::user()->nom}} {{Auth::user()->prenom}} <br> {{Auth::user()->specialite}} </center></td>
+                                </tr>
+                                <tr >
+                                    <td colspan="4" width="100%">
+                                        <hr style="border: 1px solid black;">
+                                    </td>
+                                </tr>
                                 <tr>
-                                    <td><center>ALLIANCE MEDICAL <br> <i class="fa fa-user-md"></i> </center></td>
-                                    <td><center>NOM PRENOM MEDECIN <br> Spécialite </center></td>
+                                    <td width="50%" colspan="2">
+                                        Nom et Prenom : {{App\Patient::find($patient->id_pat)->nom}} {{App\Patient::find($patient->id_pat)->prenom}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" colspan="2">
+                                        Age :   <?php 
+                                                    $date1 = strtotime(date('y-m-d'));
+                                                    $date = strtotime(App\Patient::find($patient->id_pat)->date_naissance);
+                                                    $age = floor(($date1-$date)/(365*60*60*24));
+                                                    echo $age;
+                                                ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" width="100%">
+                                        <hr style="border: 1px solid black;">
+                                    </td>
+                                </tr>
+                                <tr id="pour_lignes" width="100%">
+                                    <td colspan="4" width="100%" >
+                                        <center><h3 style="color: black;margin-top:50px;margin-bottom:50px"><b><u>ORDONNANCE</u></b></h3></center>
+                                    </td>
                                 </tr>
                             </table>
+                            </div>
+                            <div class="col-12" style="position:absolute; bottom:0;width:100%;">
+                                <center>
+                                    <hr style="width:100%;border: 1px solid black;">
+                                    {{App\Clinique::find(1)->adresse}} <br>
+                                    {{App\Clinique::find(1)->num_tel}} 
+                                </center>
+                            </div>
                         </div>
                     </div>
                    
                 </div>
                 <script>
                     window.onload=function(){
-                    document.getElementById('today_date').addEventListener('click',function(e){
-                        e.preventDefault();
-                        var today = new Date();
-                        var dd = String(today.getDate()).padStart(2, '0');
-                        var mm = String(today.getMonth() + 1).padStart(2, '0');
-                        var yyyy = today.getFullYear();
-                        today = yyyy + '-' + mm + '-' + dd;
-                        document.getElementById('date_pres').value=today;
-                    });
                     document.getElementById('ajouter_Ligne').addEventListener('click',function(e){
                         e.preventDefault();
                         var nombre_ligne = parseInt(document.getElementById('nombre_ligne').innerHTML);
@@ -169,10 +187,41 @@ class="active"
                     // impression
                     document.getElementById('btn_imprimer').addEventListener('click',function(e){
                         e.preventDefault();
+                        /*Logique d'affichage--------------------*/
+                        var nombre_ligne = parseInt(document.getElementById('nombre_ligne').innerHTML);
+                        console.log("Nombre Ligne : "+nombre_ligne);
+                        for(let i=nombre_ligne;i>=1;i--){
+                            var tr = document.createElement('tr');
+                            var td_1 = document.createElement('td');
+                            td_1.innerHTML = document.getElementById('medicament_'+i).value;
+                            td_1.setAttribute("width","15%");
+                            td_1.setAttribute("style","margin-bottom:25px;");
+                            var  td_2 = document.createElement('td');
+                            td_2.innerHTML = document.getElementById('dose_'+i).value;
+                            td_2.setAttribute("width","15%");
+                            td_2.setAttribute("style","margin-bottom:25px;");
+                            var td_3 = document.createElement('td');
+                            td_3.innerHTML = document.getElementById('moment_'+i).value;
+                            td_3.setAttribute("width","15%");
+                            td_3.setAttribute("style","margin-bottom:25px;");
+                            var td_4 = document.createElement('td');
+                            td_4.innerHTML = document.getElementById('duree_'+i).value;
+                            td_4.setAttribute("width","15%");
+                            td_4.setAttribute("style","margin-bottom:25px;");
+                            tr.appendChild(td_1);
+                            tr.appendChild(td_2);
+                            tr.appendChild(td_3);
+                            tr.appendChild(td_4);
+                            console.log(tr);
+                            var list = document.getElementById("pour_lignes");
+                            list.insertAdjacentElement("afterend",tr)
+                        }
+
+                        /*---------------------------------------*/
                         var frame = document.getElementById('imprimable');
                         var data = frame.innerHTML;
                         var win = window.open('', '', 'height=500,width=900');//body{writing-mode: tb-rl;}
-                        win.document.write('<style>@page{size: A5 }</style><html><head><title></title>');
+                        win.document.write('<style>@page{size: A4 }</style><html><head><title></title>');
                         win.document.write('</head><body >');
                         win.document.write(data);
                         win.document.write('</body></html>');
