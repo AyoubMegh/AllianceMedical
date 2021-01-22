@@ -14,6 +14,8 @@ use App\Medecin;
 use App\Patient;
 use App\Secretaire;
 use App\Image;
+use App\Ligneprescription;
+use App\Prescription;
 use Auth;
 use Mail;
 use Hash;
@@ -419,7 +421,10 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-                return view('Medecin.Ordonnances',['isAdmin'=>$isAdmin,'patient'=>$patient]);
+                $liste_pres_patient = Prescription::all()->where('id_pat',$request->input('id_pat'))->pluck('id_pres');
+                $liste_ligne_pres = Ligneprescription::all()->whereIn('id_pres',$liste_pres_patient);
+                $prescriptions =  Prescription::all()->where('id_pat',$request->input('id_pat'));
+                return view('Medecin.Ordonnances',['isAdmin'=>$isAdmin,'patient'=>$patient,'liste_pres'=>$liste_pres_patient,'ligne_pres'=>$liste_ligne_pres,'prescriptions'=>$prescriptions]);
             }
         }
     }
@@ -540,6 +545,43 @@ class MedecinController extends Controller
                     }
                 }
             }
+        }
+    }
+    public function ajouterOrdonnance(Request $request){
+        $validator = Validator::make($request->all(),[
+            'nbr_ligne' => 'required',
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+           $nombre_ligne = $request->input('nbr_ligne')+1;
+           $id_patient = $request->input('id_pat');
+           /*Ajouter une nouvelle prescription */
+           $pres = new Prescription();
+           $pres->date_pres = date('Y-m-d');
+           $pres->id_med = Auth::user()->id_med;
+           $pres->id_pat = $id_patient;
+           $pres->save();
+           /* Prendre Cette Dernier de cet patient */
+           $pres = Prescription::all()->where('date_pres',date('Y-m-d'))->where('id_pat',$id_patient)->last();
+
+           for($i=1;$i<=$nombre_ligne;$i++){
+                    if(!is_null($request->input('medicament_'.$i))&&
+                        !is_null($request->input('dose_'.$i))&&
+                        !is_null($request->input('moment_'.$i))&&
+                        !is_null($request->input('duree_'.$i))
+                    ){
+                        $ligne_pres = new Ligneprescription();
+                        $ligne_pres->medicament = $request->input('medicament_'.$i);
+                        $ligne_pres->dose = $request->input('dose_'.$i);
+                        $ligne_pres->moment = $request->input('moment_'.$i);
+                        $ligne_pres->duree = $request->input('duree_'.$i);
+                        $ligne_pres->id_pres = $pres->id_pres;
+                        $ligne_pres->save();
+                    }
+           }
+            return redirect()->back()->with('success', 'Ordonnance Bien Ajouté !');
         }
     }
 }
