@@ -70,6 +70,8 @@ Route::prefix('medecin')->group(function(){
     Route::post('/Imageries','ImageController@AjouterImages')->name('image.medecin.ajouterImages');
     /*RDV*/
     Route::post('/ReprendreRDV','MedecinController@reprendreRDV')->name('medecin.reprendreRDV');
+    /*Ordonnances*/
+    Route::post('/Ordonnances','MedecinController@ajouterOrdonnance')->name('medecin.ordonnances');
 
 });
 
