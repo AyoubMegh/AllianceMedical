@@ -16,6 +16,7 @@ use App\Secretaire;
 use App\Image;
 use App\Ligneprescription;
 use App\Prescription;
+use App\Lettre;
 use Auth;
 use Mail;
 use Hash;
@@ -584,4 +585,47 @@ class MedecinController extends Controller
             return redirect()->back()->with('success', 'Ordonnance Bien Ajouté !');
         }
     }
+    public function certificatBonneSanteForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                $lettres_bs = Lettre::all()->where('type_lettre','certificat de bonne sante');
+                return view('Medecin.CertificatBonneSante',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_bs]);
+            }
+        }
+    }
+    public function certificatBonneSante(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required',
+            'date_lettre'=>'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $nom_med =Auth::user()->nom;
+                $prenom_med =Auth::user()->prenom;
+                $lettre = new Lettre();
+                $lettre->date_lettre = $request->input('date_lettre');
+                $lettre->type_lettre = "certificat de bonne sante";
+                $lettre->contenu = "Je certifie docteur en Medecine  ".$nom_med." ".$prenom_med."avoir examiné le patient  ".$patient->nom." ".$patient->prenom." née ".$patient->date_naissance.".lequel ne presente aucune alteration de l'etat generale ni aucun symptome cliniquement decelable. il est actuellement en bon état de santé apparante.";
+                $lettre->id_med = Auth::user()->id_med;
+                $lettre->id_pat = $request->input('id_pat');
+                $lettre->save();
+                return redirect()->back()->with('success', 'Certificat de bonne santé Bien Ajouté !');
+            }
+        }
+    }
+
 }

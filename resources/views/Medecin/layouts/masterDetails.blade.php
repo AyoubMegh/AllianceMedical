@@ -32,7 +32,12 @@
                             <a class="dropdown-toggle" class="sansForm" data-toggle="dropdown" href="#">Lettres et autres
                             <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                            <li><a href="#">Certificat de Bonne santé</a></li>
+                            <li>
+                                <form action="{{route('medecin.certificatBonneSanteForm')}}" method="get" id='cbs'>
+                                    <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                    <a href="javascript:$('#cbs').submit()">Certificat de Bonne santé</a>
+                                </form>
+                            </li>
                             <li><a href="#">Certificat de Pneumo phtisiologie</a></li>
                             <li><a href="#">Certificat de Reprise</a></li>
                             <li><a href="#">Certificat d'Arret de travail'</a></li>
