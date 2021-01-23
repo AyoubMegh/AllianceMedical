@@ -12,7 +12,16 @@
                         <div id="dataTable_filter" class="dataTables_filter">
                             <label style="width: 100%;">
                                 Recherche Medecin :
-                                <input type="search" class="form-control form-control-sm" placeholder="Nom du Medecin" aria-controls="dataTable">
+                                <form action="{{route('medecin.listeMedecins')}}" method="GET">
+                                    <div class="row">
+                                        <div class="col-10 mt-1">
+                                            <input type="search" name="nom_med" class="form-control form-control-sm" placeholder="Nom du Medecin" aria-controls="dataTable">
+                                        </div>
+                                        <div class="col-2">
+                                            <button type="submit" class="btn btn-submit" style="background-color: #2146b7"><i class="fa fa-search-plus" style="color: white"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
                             </label>
                         </div>
                     </div>
