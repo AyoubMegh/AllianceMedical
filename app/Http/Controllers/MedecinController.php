@@ -51,21 +51,79 @@ class MedecinController extends Controller
 
     public function listeMedecins(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        $medecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
+        if(is_null($request->input('nom_med'))){
+            $medecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
+        }else{
+            $medecins = Medecin::all()->where('nom',$request->input('nom_med'));
+            if(count($medecins)==0){
+                return redirect(route('medecin.listeMedecins'))->withErrors(['Medecin Introuvable !']);
+            }
+        }
         return view('Medecin.ListeMedecins',['isAdmin'=>$isAdmin,'medecins'=>$medecins]);
     }
     public function listeSecretaires(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        $secretaires = Secretaire::all();
+        if(is_null($request->input('nom_sec'))){
+            $secretaires = Secretaire::all();
+        }else{
+            $secretaires = Secretaire::all()->where('nom',$request->input('nom_sec'));
+            if(count($secretaires)==0){
+                return redirect(route('medecin.listeSecretaires'))->withErrors(['Medecin Introuvable !']);
+            }
+        }
         return view('Medecin.ListeSecretaires',['isAdmin'=>$isAdmin,'secretaires'=>$secretaires]);
     }
     public function MesRendezVous(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.MesRendezVous',['isAdmin'=>$isAdmin]);
+        if(is_null($request->input('num_ss'))){
+            $rdvs  =  DB::table('rendezvouss')
+            ->join('medecins','rendezvouss.id_med','=','medecins.id_med')
+            ->join('patients','rendezvouss.id_pat','=','patients.id_pat')
+            ->select('rendezvouss.date_rdv','rendezvouss.heure_debut','rendezvouss.heure_fin','rendezvouss.motif','patients.nom','patients.prenom','patients.num_ss','patients.id_pat')
+            ->where('medecins.id_med',Auth::user()->id_med)
+            ->orderBy('rendezvouss.date_rdv', 'desc')
+            ->get();
+        }else{
+            $patients = Patient::all()->where('num_ss',$request->input('num_ss'));
+            $rdvs  =  DB::table('rendezvouss')
+            ->join('medecins','rendezvouss.id_med','=','medecins.id_med')
+            ->join('patients','rendezvouss.id_pat','=','patients.id_pat')
+            ->select('rendezvouss.date_rdv','rendezvouss.heure_debut','rendezvouss.heure_fin','rendezvouss.motif','patients.nom','patients.prenom','patients.num_ss','patients.id_pat')
+            ->where('medecins.id_med',Auth::user()->id_med)
+            ->where('patients.num_ss',$request->input('num_ss'))
+            ->orderBy('rendezvouss.date_rdv', 'desc')
+            ->get();
+            if(count($patients)==0){
+                return redirect(route('medecin.mesRendezVous'))->withErrors(['Patient Introuvable !']);
+            }
+        }
+        return view('Medecin.MesRendezVous',['isAdmin'=>$isAdmin,'rdvs'=>$rdvs]);
     }
     public function MesOrdonnances(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.MesOrdonnances',['isAdmin'=>$isAdmin]);
+        if(is_null($request->input('num_ss'))){
+            $ordonnances = DB::table('prescriptions')
+            ->join('medecins','prescriptions.id_med','=','medecins.id_med')
+            ->join('patients','prescriptions.id_pat','=','patients.id_pat')
+            ->select('patients.nom','patients.prenom','patients.num_ss','patients.id_pat','prescriptions.created_at','prescriptions.date_pres')
+            ->where('prescriptions.id_med',Auth::user()->id_med)
+            ->orderBy('prescriptions.date_pres', 'desc')
+            ->get();
+        }else{
+            $patients = Patient::all()->where('num_ss',$request->input('num_ss'));
+            $ordonnances = DB::table('prescriptions')
+            ->join('medecins','prescriptions.id_med','=','medecins.id_med')
+            ->join('patients','prescriptions.id_pat','=','patients.id_pat')
+            ->select('patients.nom','patients.prenom','patients.num_ss','patients.id_pat','prescriptions.created_at','prescriptions.date_pres')
+            ->where('prescriptions.id_med',Auth::user()->id_med)
+            ->where('patients.num_ss',$request->input('num_ss'))
+            ->orderBy('prescriptions.date_pres', 'desc')
+            ->get();
+            if(count($patients)==0){
+                return redirect(route('medecin.mesOrdonnances'))->withErrors(['Patient Introuvable !']);
+            }
+        }
+        return view('Medecin.MesOrdonnances',['isAdmin'=>$isAdmin,'ords'=>$ordonnances]);
     }
 
     public function ajouterMedecinForm(Request $request){
