@@ -16,6 +16,7 @@ class CreateLettreTable extends Migration
         Schema::create('lettres', function (Blueprint $table) {
             $table->increments('id_lettre');
             $table->date('date_lettre');
+            $table->string('type_lettre');
             $table->text('contenu');
             $table->timestamps();
             $table->integer('id_med')->unsigned();

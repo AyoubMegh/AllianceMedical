@@ -72,7 +72,9 @@ Route::prefix('medecin')->group(function(){
     Route::post('/ReprendreRDV','MedecinController@reprendreRDV')->name('medecin.reprendreRDV');
     /*Ordonnances*/
     Route::post('/Ordonnances','MedecinController@ajouterOrdonnance')->name('medecin.ordonnances');
-
+    /*Get Lettre et autres */
+    Route::get('/CertificatBonneSanté','MedecinController@certificatBonneSanteForm')->name('medecin.certificatBonneSanteForm');
+    Route::post('/CertificatBonneSanté','MedecinController@certificatBonneSante')->name('medecin.certificatBonneSante');
 });
 
 Route::prefix('secretaire')->group(function(){
