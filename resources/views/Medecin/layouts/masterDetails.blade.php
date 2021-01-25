@@ -13,7 +13,7 @@
                         <li @yield('activation1')>
                             <form action="{{route('medecin.dossierMedicalForm')}}" id="dosMed">
                                 <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
-                                 <a href="javascript:$('#dosMed').submit()" >Dossier Medical</a>
+                                 <a href="javascript:$('#dosMed').submit()" >Information Medical</a>
                             </form>     
                         </li>
                         <li @yield('activation2')>
@@ -38,8 +38,18 @@
                                     <a href="javascript:$('#cbs').submit()">Certificat de Bonne santé</a>
                                 </form>
                             </li>
-                            <li><a href="#">Certificat de Pneumo phtisiologie</a></li>
-                            <li><a href="#">Certificat de Reprise</a></li>
+                            <li>
+                                <form action="{{route('medecin.certificatPneumoPhtisiologieForm')}}" method="get" id="cpp">
+                                    <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                    <a href="javascript:$('#cpp').submit()">Certificat de Pneumo phtisiologie</a>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{route('medecin.certificatRepriseTravailForm')}}" method="get" id="crt">
+                                    <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                    <a href="javascript:$('#crt').submit()">Certificat de Reprise</a>
+                                </form>
+                            </li>
                             <li>
                                 <form action="{{route('medecin.certificatArretTravailForm')}}" method="get" id="cat">
                                     <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">

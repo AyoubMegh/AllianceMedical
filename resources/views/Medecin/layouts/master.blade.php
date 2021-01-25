@@ -86,23 +86,7 @@
                     <span>Mes Ordonnaces</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLettre"
-                    aria-expanded="true" aria-controls="collapseLettre">
-                    <i class="far fa-envelope-open"></i>
-                    <span>Mes Lettres</span>
-                </a>
-                <div id="collapseLettre" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="#">C. De Bonne santé</a>
-                        <a class="collapse-item" href="#">C. De Pneumo Phtisiologie</a>
-                        <a class="collapse-item" href="#">C. De Reprise</a>
-                        <a class="collapse-item" href="#">C. D'Arret de Travail</a>
-                        <a class="collapse-item" href="#">Demande De Billan</a>
-                        <a class="collapse-item" href="#">Lettre d'orientation</a>
-                    </div>
-                </div>
-            </li> 
+           
             @if($isAdmin)
                 <hr class="sidebar-divider d-none d-md-block">
             <div class="sidebar-heading">
