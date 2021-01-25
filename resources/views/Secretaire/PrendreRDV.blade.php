@@ -93,7 +93,7 @@
                                 @if($id_med != -1)
                                     <input type="hidden" name="id_med" id="id_med" value="{{$id_med}}">
                                 @else
-                                    <label for="id_med">Nom d Medecin :</label>
+                                    <label for="id_med">Nom du Medecin :</label>
                                     <select name="id_med" id="id_med"  class="form-control" required>
                                         <option value="" disabled selected>Choisissez une Medecin</option>
                                         @foreach($medecins as $medecin)

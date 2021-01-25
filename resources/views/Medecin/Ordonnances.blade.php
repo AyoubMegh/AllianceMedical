@@ -102,7 +102,9 @@ class="active"
                                     </tr>
                                     <tr id="pour_lignes" width="100%">
                                         <td colspan="4" width="100%" >
-                                            <center><h3 style="color: black;margin-top:50px;margin-bottom:50px"><b><u>ORDONNANCE</u></b></h3></center>
+                                            <div style="margin-bottom: 30% ">
+                                                <center><h3 style="color: black;margin-top:50px;margin-bottom:50px"><b><u>ORDONNANCE</u></b></h3></center>
+                                            </div>
                                         </td>
                                     </tr>
                                 </table>
@@ -173,7 +175,9 @@ class="active"
                                                                 </tr>
                                                                 <tr id="pour_lignes" width="100%">
                                                                     <td colspan="4" width="100%" >
-                                                                        <center><h3 style="color: black;margin-top:50px;margin-bottom:50px"><b><u>ORDONNANCE</u></b></h3></center>
+                                                                        <div style="margin-bottom: 30% ">
+                                                                            <center><h3 style="color: black;margin-top:50px;margin-bottom:50px"><b><u>ORDONNANCE</u></b></h3></center>
+                                                                        </div>
                                                                     </td>
                                                                 </tr>
                                                                 @foreach(App\Ligneprescription::all()->where('id_pres',$pres->id_pres) as $prs)

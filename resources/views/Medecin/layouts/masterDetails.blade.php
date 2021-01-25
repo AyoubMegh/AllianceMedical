@@ -40,9 +40,18 @@
                             </li>
                             <li><a href="#">Certificat de Pneumo phtisiologie</a></li>
                             <li><a href="#">Certificat de Reprise</a></li>
-                            <li><a href="#">Certificat d'Arret de travail'</a></li>
-                            <li><a href="#">Demande de Billan</a></li>
-                            <li><a href="#">Lettre d'Orientation</a></li>
+                            <li>
+                                <form action="{{route('medecin.certificatArretTravailForm')}}" method="get" id="cat">
+                                    <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                    <a href="javascript:$('#cat').submit()">Certificat d'Arret de travail</a>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{route('medecin.lettreOrientationForm')}}" method="get" id='lo'>
+                                    <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                                    <a href="javascript:$('#lo').submit()">Lettre d'Orientation</a>
+                                </form>
+                            </li>
                             </ul>
                         </li>
                         <li @yield('activation5')>
