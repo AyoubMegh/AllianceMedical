@@ -81,6 +81,13 @@ Route::prefix('medecin')->group(function(){
 
     Route::get('/CertificatArretTravail', 'MedecinController@certificatArretTravailForm')->name('medecin.certificatArretTravailForm');
     Route::post('/CertificatArretTravail', 'MedecinController@certificatArretTravail')->name('medecin.certificatArretTravail');
+
+    Route::get('/CertificatPneumoPhtisiologie', 'MedecinController@certificatPneumoPhtisiologieForm')->name('medecin.certificatPneumoPhtisiologieForm');
+    Route::post('/CertificatPneumoPhtisiologie', 'MedecinController@certificatPneumoPhtisiologie')->name('medecin.certificatPneumoPhtisiologie');
+
+    Route::get('/CertificatRepriseTravail', 'MedecinController@certificatRepriseTravailForm')->name('medecin.certificatRepriseTravailForm');
+    Route::post('/CertificatRepriseTravail', 'MedecinController@certificatRepriseTravail')->name('medecin.certificatRepriseTravail');
+
 });
 
 Route::prefix('secretaire')->group(function(){

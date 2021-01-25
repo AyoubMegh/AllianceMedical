@@ -776,5 +776,94 @@ class MedecinController extends Controller
             }
         }
     }
+    public function certificatPneumoPhtisiologieForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                $lettres_or = Lettre::all()->where('type_lettre','certificat pneumo phtisiologie');
+                return view('Medecin.CertificatPneumoPhtisiologie',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_or]);
+            }
+        }
+
+    }
+    public function certificatPneumoPhtisiologie(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required',
+            'date_lettre'=>'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $nom_med =Auth::user()->nom;
+                $prenom_med =Auth::user()->prenom;
+                $lettre = new Lettre();
+                $lettre->date_lettre = $request->input('date_lettre');
+                $lettre->type_lettre = "certificat pneumo phtisiologie";
+                $lettre->contenu = "Je certifie docteur en Medecine  ".$nom_med." ".$prenom_med." avoir examiné le patient  ".$patient->nom." ".$patient->prenom." née ".$patient->date_naissance.". lequel ne presente aucun signe de tuberculose pulmonaire et radiologique evolutive.";
+                $lettre->id_med = Auth::user()->id_med;
+                $lettre->id_pat = $request->input('id_pat');
+                $lettre->save();
+                return redirect()->back()->with('success', 'Certificat de Pneumo Phtisiologie Bien Ajouté !');
+            }
+        }
+    }
+
+    public function certificatRepriseTravailForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                $lettres_or = Lettre::all()->where('type_lettre','certificat reprise travail');
+                return view('Medecin.CertificatRepriseTravail',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_or]);
+            }
+        }
+
+    }
+    public function certificatRepriseTravail(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required',
+            'date_lettre'=>'required',
+            'date_rep'=>'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $nom_med =Auth::user()->nom;
+                $prenom_med =Auth::user()->prenom;
+                $lettre = new Lettre();
+                $lettre->date_lettre = $request->input('date_lettre');
+                $lettre->type_lettre = "certificat reprise travail";
+                $lettre->contenu = "Je certifie docteur en Medecine  ".$nom_med." ".$prenom_med." avoir examiné le patient  ".$patient->nom." ".$patient->prenom." née ".$patient->date_naissance.". lui permet de reprendre son travail a compter du ".$request->input('date_rep')." Fait le ".$request->input('date_lettre');
+                $lettre->id_med = Auth::user()->id_med;
+                $lettre->id_pat = $request->input('id_pat');
+                $lettre->save();
+                return redirect()->back()->with('success', 'Certificat de reprise Bien Ajouté !');
+
+            }
+        }
+    }
     
 }
