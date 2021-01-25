@@ -66,13 +66,15 @@ class="active"
                         </td>
                     </tr>
                     <tr width="100%">
-                        <td colspan="4" width="100%">
+                        <td colspan="4" width="100%" >
                             <center class="mt-5">
-                                <h4>Je certifie <b>{{App\Patient::find($patient->id_pat)->nom}} {{App\Patient::find($patient->id_pat)->prenom}}</b> docteur en Medecine
-                                avoir examiné le patient <b>{{App\Patient::find($patient->id_pat)->nom}} {{App\Patient::find($patient->id_pat)->prenom}}</b> née
-                                {{App\Patient::find($patient->id_pat)->date_naissance}}.<br>
-                                lequel ne presente aucune alteration de l'etat generale ni aucun symptome cliniquement decelable.
-                                il est actuellement en bon état de santé apparante.</h4>
+                                <div style="margin-top: 30%">
+                                    <h4>Je certifie <b>{{App\Medecin::find(Auth::user()->id_med)->nom}} {{App\Medecin::find(Auth::user()->id_med)->prenom}}</b> docteur en Medecine
+                                    avoir examiné le patient <b>{{App\Patient::find($patient->id_pat)->nom}} {{App\Patient::find($patient->id_pat)->prenom}}</b> née
+                                    {{App\Patient::find($patient->id_pat)->date_naissance}}.<br>
+                                    lequel ne presente aucune alteration de l'etat generale ni aucun symptome cliniquement decelable.
+                                    il est actuellement en bon état de santé apparante.</h4>
+                                </div>
                             </center>
                         </td>
                     </tr>
@@ -128,11 +130,13 @@ class="active"
                                                     <tr width="100%">
                                                         <td colspan="4" width="100%">
                                                             <center class="mt-5">
-                                                                <h4>Je certifie <b>{{App\Patient::find($patient->id_pat)->nom}} {{App\Patient::find($patient->id_pat)->prenom}}</b> docteur en Medecine
-                                                                avoir examiné le patient <b>{{App\Patient::find($patient->id_pat)->nom}} {{App\Patient::find($patient->id_pat)->prenom}}</b> née
-                                                                {{App\Patient::find($patient->id_pat)->date_naissance}}.<br>
-                                                                lequel ne presente aucune alteration de l'etat generale ni aucun symptome cliniquement decelable.
-                                                                il est actuellement en bon état de santé apparante.</h4>
+                                                                <div style="margin-top: 30%">
+                                                                    <h4>Je certifie <b>{{App\Medecin::find(Auth::user()->id_med)->nom}} {{App\Medecin::find(Auth::user()->id_med)->prenom}}</b> docteur en Medecine
+                                                                    avoir examiné le patient <b>{{App\Patient::find($patient->id_pat)->nom}} {{App\Patient::find($patient->id_pat)->prenom}}</b> née
+                                                                    {{App\Patient::find($patient->id_pat)->date_naissance}}.<br>
+                                                                    lequel ne presente aucune alteration de l'etat generale ni aucun symptome cliniquement decelable.
+                                                                    il est actuellement en bon état de santé apparante.</h4>
+                                                                </div>
                                                             </center>
                                                         </td>
                                                     </tr>
@@ -169,32 +173,36 @@ class="active"
         });
         document.getElementById('btn_imprimer').addEventListener('click',function(e){
             e.preventDefault();
-            var frame = document.getElementById('imprimable');
-            var data = frame.innerHTML;
-            var win = window.open('', '', 'height=500,width=900');
-            win.document.write('<style>@page{size: A4 }</style><html><head><title></title>');
-            win.document.write('</head><body >');
-            win.document.write(data);
-            win.document.write('</body></html>');
-            win.print();
-            win.close();
+            if(document.getElementById('date_lettre').value == ""){
+                return false;
+            }else{
+                var frame = document.getElementById('imprimable');
+                var data = frame.innerHTML;
+                var win = window.open('', '', 'height=500,width=900');
+                win.document.write('<style>@page{size: A4 }</style><html><head><title></title>');
+                win.document.write('</head><body >');
+                win.document.write(data);
+                win.document.write('</body></html>');
+                win.print();
+                win.close();
+            }
         });
         var btn_imp = document.getElementsByClassName('btn_imp');
-                    for(var i=0;i<btn_imp.length;i++){
-                        (function(index) {
-                            btn_imp[index].addEventListener("click", function() {
-                                var frame = document.getElementById('imprimable_divers_'+btn_imp[index].getAttribute('id'));
-                                var data = frame.innerHTML;
-                                var win = window.open('', '', 'height=500,width=900');
-                                win.document.write('<style>@page{size: A4 }</style><html><head><title></title>');
-                                win.document.write('</head><body >');
-                                win.document.write(data);
-                                win.document.write('</body></html>');
-                                win.print();
-                                win.close();
-                            })
-                        })(i);
-                    }
+        for(var i=0;i<btn_imp.length;i++){
+            (function(index) {
+                btn_imp[index].addEventListener("click", function() {
+                    var frame = document.getElementById('imprimable_divers_'+btn_imp[index].getAttribute('id'));
+                    var data = frame.innerHTML;
+                    var win = window.open('', '', 'height=500,width=900');
+                    win.document.write('<style>@page{size: A4 }</style><html><head><title></title>');
+                    win.document.write('</head><body >');
+                    win.document.write(data);
+                    win.document.write('</body></html>');
+                    win.print();
+                    win.close();
+                })
+            })(i);
+        }
     }
 </script>
 @endsection

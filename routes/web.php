@@ -75,6 +75,12 @@ Route::prefix('medecin')->group(function(){
     /*Get Lettre et autres */
     Route::get('/CertificatBonneSanté','MedecinController@certificatBonneSanteForm')->name('medecin.certificatBonneSanteForm');
     Route::post('/CertificatBonneSanté','MedecinController@certificatBonneSante')->name('medecin.certificatBonneSante');
+
+    Route::get('/LettreOrientation', 'MedecinController@lettreOrientationForm')->name('medecin.lettreOrientationForm');
+    Route::post('/LettreOrientation', 'MedecinController@lettreOrientation')->name('medecin.lettreOrientation');
+
+    Route::get('/CertificatArretTravail', 'MedecinController@certificatArretTravailForm')->name('medecin.certificatArretTravailForm');
+    Route::post('/CertificatArretTravail', 'MedecinController@certificatArretTravail')->name('medecin.certificatArretTravail');
 });
 
 Route::prefix('secretaire')->group(function(){

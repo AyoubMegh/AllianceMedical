@@ -677,7 +677,7 @@ class MedecinController extends Controller
                 $lettre = new Lettre();
                 $lettre->date_lettre = $request->input('date_lettre');
                 $lettre->type_lettre = "certificat de bonne sante";
-                $lettre->contenu = "Je certifie docteur en Medecine  ".$nom_med." ".$prenom_med."avoir examiné le patient  ".$patient->nom." ".$patient->prenom." née ".$patient->date_naissance.".lequel ne presente aucune alteration de l'etat generale ni aucun symptome cliniquement decelable. il est actuellement en bon état de santé apparante.";
+                $lettre->contenu = "Je certifie docteur en Medecine  ".$nom_med." ".$prenom_med." avoir examiné le patient  ".$patient->nom." ".$patient->prenom." née ".$patient->date_naissance.".lequel ne presente aucune alteration de l'etat generale ni aucun symptome cliniquement decelable. il est actuellement en bon état de santé apparante.";
                 $lettre->id_med = Auth::user()->id_med;
                 $lettre->id_pat = $request->input('id_pat');
                 $lettre->save();
@@ -686,4 +686,95 @@ class MedecinController extends Controller
         }
     }
 
+    public function lettreOrientationForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                $lettres_or = Lettre::all()->where('type_lettre','lettre orientation');
+                $medecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
+                return view('Medecin.LettreOrientation',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_or,'medecins'=>$medecins]);
+            }
+        }
+    }
+    public function lettreOrientation(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required',
+            'id_med' => 'required',
+            'lettre' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $lettre = new Lettre();
+                $lettre->date_lettre = date('Y-m-d');
+                $lettre->type_lettre = "lettre orientation";
+                $lettre->contenu = $request->input('lettre');
+                $lettre->id_med = Auth::user()->id_med;
+                $lettre->id_pat = $request->input('id_pat');
+                $lettre->save();
+                return redirect()->back()->with('success', 'Lettre d\'orientation Bien Ajouté !');
+            }
+        }
+    }
+    public function certificatArretTravailForm(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Intouvable']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                $lettres_or = Lettre::all()->where('type_lettre','certificat arret travail');
+                $medecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
+                return view('Medecin.CertificatArretTravail',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_or,'medecins'=>$medecins]);
+            }
+        }
+    }
+    public function certificatArretTravail(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required',
+            'date_debut' => 'required',
+            'date_fin' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            if(strtotime($request->input('date_debut'))>strtotime($request->input('date_fin'))){
+                return Redirect::back()->withErrors(['Incohérence dans les dates !']);
+            }else{
+                $patient = Patient::find($request->input('id_pat'));
+                if(is_null($patient)){
+                    return Redirect::back()->withErrors(['Patient Intouvable']);
+                }else{
+                    $nom_med =Auth::user()->nom;
+                    $prenom_med =Auth::user()->prenom;
+                    $lettre = new Lettre();
+                    $lettre->date_lettre = date('Y-m-d');
+                    $lettre->type_lettre = "certificat arret travail";
+                    $lettre->contenu = "Je certifie docteur en Medecine  ".$nom_med." ".$prenom_med." avoir examiné le patient  ".$patient->nom." ".$patient->prenom." née ".$patient->date_naissance.", qui présente un(e) et qui nécessite un repos de sauf complication du ".$request->input('date_debut')." au ".$request->input('date_fin');
+                    $lettre->id_med = Auth::user()->id_med;
+                    $lettre->id_pat = $request->input('id_pat');
+                    $lettre->save();
+                    return redirect()->back()->with('success', 'Certificat d\'arret de travail Bien Ajouté !');
+                }
+            }
+        }
+    }
+    
 }
