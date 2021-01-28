@@ -17,6 +17,7 @@ use App\Image;
 use App\Ligneprescription;
 use App\Prescription;
 use App\Lettre;
+use App\Notification;
 use Auth;
 use Mail;
 use Hash;
@@ -35,6 +36,27 @@ class MedecinController extends Controller
     public function statistiques(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
         return view('Medecin.Statistiques',['isAdmin'=>$isAdmin]);
+    }
+    public function listeNotifications(){
+        $mes_notifs = Notification::where('id_med',Auth::user()->id_med)->orderBy('created_at','DESC')->get();
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        return view('Medecin.Notifications',['isAdmin'=>$isAdmin,'notifs'=>$mes_notifs]);
+    }
+    public function suppimerNotification(Request $request){
+        $validator = Validator::make($request->all(),[
+           'id_notif' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $notif = Notification::find($request->input('id_notif'));
+            if($notif->delete()){
+                return redirect()->back()->with('success', 'Notification Supprimé !');
+            }else{
+                return redirect(route('medecin.notifications'))->withErrors(['Impossible de Supprimer La notification !']);
+            }
+        }
+        
     }
     public function listePatients(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
@@ -724,6 +746,13 @@ class MedecinController extends Controller
                 $lettre->id_med = Auth::user()->id_med;
                 $lettre->id_pat = $request->input('id_pat');
                 $lettre->save();
+                 /*-Notification--------------------- */
+                 $notif = new Notification();
+                 $notif->titre = "Nouvelle  Lettre !" ;
+                 $notif->contenu = "Votre Camarade Dr.".Auth::user()->nom." ".Auth::user()->prenom." Vous a Envoyé une Lettre d'orientation<br>Concernant le patient : ".Patient::find($request->input('id_pat'))->nom." ".Patient::find($request->input('id_pat'))->prenom."<br>Qui a comme N° Sécurité Sociale : ".Patient::find($request->input('id_pat'))->num_ss;
+                 $notif->id_med = $request->input('id_med');
+                 $notif->save();
+                 /*---------------------------------- */
                 return redirect()->back()->with('success', 'Lettre d\'orientation Bien Ajouté !');
             }
         }
@@ -864,6 +893,12 @@ class MedecinController extends Controller
 
             }
         }
+    }
+    public function nombreDeNotification(){
+        $nbr_notif = count(Notification::all()->where('id_med',Auth::user()->id_med));
+        $notifs = Notification::where('id_med',Auth::user()->id_med)->orderBy('created_at','DESC')->limit(3)->get();
+        $result = array($nbr_notif,$notifs);
+        return $result;
     }
     
 }
