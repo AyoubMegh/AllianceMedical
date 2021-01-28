@@ -6,7 +6,9 @@
         <div class="card-header py-3">
             <div class="row">
                 <div class="col-sm-12 col-md-6" id="dataTable_length">
-                
+                <div class="text-left py-4">
+                                                <a class= "btn btn-outline-primary" href="{{route('medecin.listePatients')}}" > << </a>
+                                                </div>
                 </div>
                 <div class="col-sm-12 col-md-6">
                     <div id="dataTable_filter" class="dataTables_filter">

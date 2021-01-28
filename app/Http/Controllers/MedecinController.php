@@ -90,7 +90,7 @@ class MedecinController extends Controller
         }else{
             $secretaires = Secretaire::all()->where('nom',$request->input('nom_sec'));
             if(count($secretaires)==0){
-                return redirect(route('medecin.listeSecretaires'))->withErrors(['Medecin Introuvable !']);
+                return redirect(route('medecin.listeSecretaires'))->withErrors(['Secretaire Introuvable !']);
             }
         }
         return view('Medecin.ListeSecretaires',['isAdmin'=>$isAdmin,'secretaires'=>$secretaires]);

@@ -25,8 +25,15 @@ class SecretaireController extends Controller
         return view('Secretaire.dash');
     }
     public function listePatients(Request $request){
-        $patients = Patient::all();
-        return view('Secretaire.ListePatients',['patients'=>$patients]);
+        if(is_null($request->input('num_ss'))){
+            $patients = Patient::all();
+        }else{
+            $patients = Patient::all()->where('num_ss',$request->input('num_ss'));
+            if(count($patients)==0){
+                return redirect(route('secretaire.listePatients'))->withErrors(['Patient Introuvable !']);
+            }
+        }
+        return view('secretaire.listePatients',['patients'=>$patients]);
     }
     public function listeRendezVous(Request $request){
         $validator = Validator::make($request->all(),[
