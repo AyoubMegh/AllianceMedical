@@ -15,10 +15,11 @@ class CreateNotificationTable extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->increments('id_notif');
+            $table->string('titre');
             $table->text('contenu');
             $table->timestamps();
             $table->integer('id_med')->unsigned();
-            $table->foreign('id_med')->references('id_med')->on('medecins');
+            $table->foreign('id_med')->references('id_med')->on('medecins')->onDelete('cascade');
         });
     }
 

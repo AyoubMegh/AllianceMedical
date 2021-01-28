@@ -88,6 +88,13 @@ Route::prefix('medecin')->group(function(){
     Route::get('/CertificatRepriseTravail', 'MedecinController@certificatRepriseTravailForm')->name('medecin.certificatRepriseTravailForm');
     Route::post('/CertificatRepriseTravail', 'MedecinController@certificatRepriseTravail')->name('medecin.certificatRepriseTravail');
 
+    /* Notifications */
+    Route::get('/Notifications','MedecinController@listeNotifications')->name('medecin.notifications');
+    Route::delete('/Notifications','MedecinController@suppimerNotification')->name('medecin.suppNotification');
+
+    /*AutoReload */
+    Route::get('/NombreNotif','MedecinController@nombreDeNotification');
+
 });
 
 Route::prefix('secretaire')->group(function(){

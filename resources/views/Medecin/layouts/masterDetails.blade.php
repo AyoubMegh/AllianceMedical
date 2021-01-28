@@ -13,7 +13,7 @@
                         <li @yield('activation1')>
                             <form action="{{route('medecin.dossierMedicalForm')}}" id="dosMed">
                                 <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
-                                 <a href="javascript:$('#dosMed').submit()" >Information Medical</a>
+                                 <a href="javascript:$('#dosMed').submit()" >Information Medicale</a>
                             </form>     
                         </li>
                         <li @yield('activation2')>
