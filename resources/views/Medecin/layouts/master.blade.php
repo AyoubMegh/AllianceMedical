@@ -20,6 +20,7 @@
     <!-- Custom styles for this template-->
     <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
+    <link href="{{asset('fullcalendar/lib/main.css')}}" rel="stylesheet">
 
 </head>
 
@@ -280,6 +281,8 @@
    <!-- Core plugin JavaScript-->
    <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
+    
+
    <!-- Custom scripts for all pages-->
    <script src="{{asset('js/sb-admin-2.js')}}"></script>
    <script src="{{asset('js/scriptForm.js')}}"></script>
@@ -292,6 +295,11 @@
     <!--<script src="{{asset('js/demo/chart-area-demo.js')}}"></script>-->
     <!--<script src="{{asset('js/demo/chart-pie-demo.js')}}"></script>-->
 
+    <!--Calendrier-->
+    <script src="{{asset('fullcalendar/lib/main.js')}}"></script>
+    <script src="{{asset('fullcalendar/lib/locales-all.js')}}"></script>
+   <!--Script Ajouté-->
+    @yield('scripts')
 </body>
 
 </html>

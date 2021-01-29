@@ -92,8 +92,38 @@ Route::prefix('medecin')->group(function(){
     Route::get('/Notifications','MedecinController@listeNotifications')->name('medecin.notifications');
     Route::delete('/Notifications','MedecinController@suppimerNotification')->name('medecin.suppNotification');
 
+    /*Details Medecin*/
+    Route::get('/DetailsMedecin','MedecinController@detailsMedecin')->name('medecin.detailsMedecin');
+
     /*AutoReload */
     Route::get('/NombreNotif','MedecinController@nombreDeNotification');
+
+    /*Calander */
+    Route::get('/EventsMed/{id_med}',function($id_med){
+        $events = App\Rendezvous::all()->where('id_med',$id_med);
+        $data = collect($events)->map(function($event){
+            return [
+                "id" => $event->id_rdv."",
+                "title" => "Rendez-vous Avec le patient : ".App\Patient::find($event->id_pat)->nom." ".App\Patient::find($event->id_pat)->prenom,
+                "start"=> $event->date_rdv.' '.$event->heure_debut,
+                "end" => $event->date_rdv.' '.$event->heure_fin,
+                "allDay" => false,
+                "date_rdv"=>$event->date_rdv,
+                "heure_deb"=>$event->heure_debut,
+                "heure_fin"=>$event->heure_fin,
+                "motif"=>$event->motif
+            ];
+        });
+        $result = [];
+        for($i=1;$i<=$data->count();$i++){
+            array_push($result,$data[$i]);
+        }
+       return $result;
+    })->name('medecin.eventsMed');
+
+    Route::put('/MettreAjourRDVForm','MedecinController@MAJRDV')->name('medecin.MAJRDV');
+    Route::delete('/AnnulerUnRDV','MedecinController@supprimerRDV')->name('medecin.supprimerRDV');
+    Route::Post('/PrendreRDV','MedecinController@AjouterRDV')->name('medecin.ajouterRDV');
 
 });
 
