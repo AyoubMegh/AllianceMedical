@@ -123,6 +123,8 @@ Route::prefix('medecin')->group(function(){
 
     Route::put('/MettreAjourRDVForm','MedecinController@MAJRDV')->name('medecin.MAJRDV');
     Route::delete('/AnnulerUnRDV','MedecinController@supprimerRDV')->name('medecin.supprimerRDV');
+    Route::Post('/PrendreRDV','MedecinController@AjouterRDV')->name('medecin.ajouterRDV');
+
 });
 
 Route::prefix('secretaire')->group(function(){
