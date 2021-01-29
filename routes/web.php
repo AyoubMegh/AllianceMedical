@@ -95,31 +95,32 @@ Route::prefix('medecin')->group(function(){
     /*Details Medecin*/
     Route::get('/DetailsMedecin','MedecinController@detailsMedecin')->name('medecin.detailsMedecin');
 
-    /*AutoReload */
-    Route::get('/NombreNotif','MedecinController@nombreDeNotification');
-
     /*Calander */
     Route::get('/EventsMed/{id_med}',function($id_med){
-        $events = App\Rendezvous::all()->where('id_med',$id_med);
-        $data = collect($events)->map(function($event){
-            return [
-                "id" => $event->id_rdv."",
-                "title" => "Rendez-vous Avec le patient : ".App\Patient::find($event->id_pat)->nom." ".App\Patient::find($event->id_pat)->prenom,
-                "start"=> $event->date_rdv.' '.$event->heure_debut,
-                "end" => $event->date_rdv.' '.$event->heure_fin,
-                "allDay" => false,
-                "date_rdv"=>$event->date_rdv,
-                "heure_deb"=>$event->heure_debut,
-                "heure_fin"=>$event->heure_fin,
-                "motif"=>$event->motif
-            ];
-        });
-        $result = [];
-        for($i=1;$i<=$data->count();$i++){
-            array_push($result,$data[$i]);
-        }
-       return $result;
-    })->name('medecin.eventsMed');
+    $events = App\Rendezvous::all()->where('id_med',$id_med)->values();
+    $data = collect($events)->map(function($event){
+        return [
+            "id" => $event->id_rdv."",
+            "title" => "Rendez-vous Avec le patient : ".App\Patient::find($event->id_pat)->nom." ".App\Patient::find($event->id_pat)->prenom,
+            "start"=> $event->date_rdv.' '.$event->heure_debut,
+            "end" => $event->date_rdv.' '.$event->heure_fin,
+            "allDay" => false,
+            "date_rdv"=>$event->date_rdv,
+            "heure_deb"=>$event->heure_debut,
+            "heure_fin"=>$event->heure_fin,
+            "motif"=>$event->motif
+        ];
+    });
+    
+    $result = [];
+    for($i=0;$i<$data->count();$i++){
+        array_push($result,$data[$i]);
+    }
+    return $result;
+})->name('medecin.eventsMed');
+
+    /*AutoReload */
+    Route::get('/NombreNotif','MedecinController@nombreDeNotification');
 
     Route::put('/MettreAjourRDVForm','MedecinController@MAJRDV')->name('medecin.MAJRDV');
     Route::delete('/AnnulerUnRDV','MedecinController@supprimerRDV')->name('medecin.supprimerRDV');
@@ -141,6 +142,7 @@ Route::prefix('secretaire')->group(function(){
     Route::get('/MettreAjourRDVForm','SecretaireController@MAJRDVForm')->name('secretaire.MAJRDV');
     Route::get('/MettreAjourMDPS','SecretaireController@mettreAjourMDPSForm')->name('secretaire.mettreAjourMDPSForm');
     Route::get('/MettreAjourProfil','SecretaireController@mettreAjourProfil')->name('secretaire.mettreAjourProfil');
+    Route::get('/ListeMedecins','SecretaireController@listeMedecins')->name('secretaire.listeMedecins');
     /*Post*/
     Route::Post('/PrendreRDV','SecretaireController@AjouterRDV')->name('secretaire.ajouterRDV');
     Route::Post('/RePrendreRDV','SecretaireController@ajouterAutreRDV')->name('secretaire.ajouterAutreRDV');
@@ -151,8 +153,35 @@ Route::prefix('secretaire')->group(function(){
     /*Delete*/
     Route::delete('/AnnulerUnRDV','SecretaireController@supprimerRDV')->name('secretaire.supprimerRDV');
 
+    /*Calander */
+    Route::get('/EventsMed/{id_med}',function($id_med){
+    $events = App\Rendezvous::all()->where('id_med',$id_med)->values();
+    $data = collect($events)->map(function($event){
+        return [
+            "id" => $event->id_rdv."",
+            "title" => "Rendez-vous Avec le patient : ".App\Patient::find($event->id_pat)->nom." ".App\Patient::find($event->id_pat)->prenom,
+            "start"=> $event->date_rdv.' '.$event->heure_debut,
+            "end" => $event->date_rdv.' '.$event->heure_fin,
+            "allDay" => false,
+            "date_rdv"=>$event->date_rdv,
+            "heure_deb"=>$event->heure_debut,
+            "heure_fin"=>$event->heure_fin,
+            "motif"=>$event->motif
+        ];
+    });
+    $result = [];
+    for($i=0;$i<$data->count();$i++){
+        array_push($result,$data[$i]);
+    }
+    return $result;
+    })->name('medecin.eventsMed');
+
+    /*Details Medecin*/
+    Route::get('/DetailsMedecin','SecretaireController@detailsMedecin')->name('secretaire.detailsMedecin');
     
 });
+
+
 
 
 

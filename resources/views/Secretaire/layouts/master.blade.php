@@ -19,6 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
+    <link href="{{asset('fullcalendar/lib/main.css')}}" rel="stylesheet">
 
 </head>
 
@@ -72,10 +73,12 @@
                     <i class="far fa-calendar-check"></i>
                     <span>Prendre Rendez-vous</span>
                 </a>
-                <a class="nav-link collapsed" href="{{route('secretaire.visualisationRDV')}}">
-                    <i class="far fa-eye"></i>
-                    <span> Visualisation Rendez-vous</span>
-                </a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('secretaire.listeMedecins')}}">
+                        <i class="fas fa-stethoscope"></i>
+                        <span>Rendez-vous Medecins</span>
+                    </a>
+                </li>
             </li>
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -208,6 +211,12 @@
     <!-- Page level custom scripts -->
     <!--<script src="{{asset('js/demo/chart-area-demo.js')}}"></script>-->
     <!--<script src="{{asset('js/demo/chart-pie-demo.js')}}"></script>-->
+
+    <!--Calendrier-->
+    <script src="{{asset('fullcalendar/lib/main.js')}}"></script>
+    <script src="{{asset('fullcalendar/lib/locales-all.js')}}"></script>
+    <!--Script Ajouté-->
+    @yield('scripts')
 
 </body>
 

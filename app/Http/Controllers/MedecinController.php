@@ -1060,7 +1060,7 @@ class MedecinController extends Controller
         }else{
             $medecin = Medecin::find($request->input('id_med'));
             if(is_null($medecin)){
-                return Redirect::back()->withErrors(['Medecin Intouvable']);
+                return redirect(route('medecin.listeMedecins'))->withErrors(['Medecin Introuvable !']);
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
                 $rdvs = Rendezvous::all()->where('id_med',$request->input('id_med'));
