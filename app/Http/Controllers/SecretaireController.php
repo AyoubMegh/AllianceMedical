@@ -12,6 +12,7 @@ use App\Rendezvous;
 use App\Patient;
 use App\Secretaire;
 use App\Notification;
+use App\Clinique;
 use Auth;
 use Hash;
 
@@ -545,6 +546,35 @@ class SecretaireController extends Controller
         $user->password= bcrypt($request->get('npassword'));
         $user->save();
             return redirect()->back()->with('success', 'Mot de passe modifié avec success');
+    }
+    public function listeMedecins(Request $request){
+        if(is_null($request->input('nom'))){
+            $medecins = Medecin::all();
+        }else{
+            $medecins = Medecin::all()->where('nom',$request->input('nom'));
+            if(count($medecins)==0){
+                return redirect(route('secretaire.listeMedecins'))->withErrors(['Medecin Introuvable !']);
+            }
+        }
+        return view('Secretaire.ListeMedecins',['medecins'=>$medecins]);
+    }
+    public function detailsMedecin(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_med' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $medecin = Medecin::find($request->input('id_med'));
+            if(is_null($medecin)){
+                return redirect(route('secretaire.listeMedecins'))->withErrors(['Medecin Introuvable !']);
+            }else{
+                $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+                $rdvs = Rendezvous::all()->where('id_med',$request->input('id_med'));
+                $medecins = Medecin::all();
+                return view('Secretaire.DetailsMedecin',['isAdmin'=>$isAdmin,'medecin'=>$medecin,'rdvs'=>$rdvs,'medecins'=>$medecins]);
+            }
+        }
     }
 
 }
