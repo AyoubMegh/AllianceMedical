@@ -54,8 +54,7 @@
                         <tr>
                             <th>Nom et Prenom</th>
                             <th>Téléphone</th>
-                            <th>Email</th>
-                            <th>Specialité</th>
+                            <th>Details</th>
                             <th>Mettre a Jour</th>
                             <th>Supprimer</th>
                         </tr>
@@ -65,8 +64,16 @@
                         <tr>
                             <td>DR. {{$medecin->nom}} {{$medecin->prenom}}</td>
                             <td>{{$medecin->num_tel}}</td>
-                            <td>{{$medecin->email}}</td>
-                            <td>{{$medecin->specialite}}</td>
+                            <td>
+                                <center>
+                                    <form  method="GET" action="{{route('medecin.detailsMedecin')}}" method="GET">
+                                        <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
+                                        <button type="submit" class="btn">
+                                            <i class="far fa-eye"></i>
+                                        </button>
+                                    </form>
+                                </center>
+                            </td>
                             <td>
                                 <center>
                                     <form action="{{route('medecin.mettreAjourMedecinForm')}}" method="get">
