@@ -154,7 +154,8 @@
     
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1" >
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                            <audio id="play_notif" controls class="d-none"><source src="{{asset('audio/notif.mp3')}}" type="audio/mpeg"></audio>
+                                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->

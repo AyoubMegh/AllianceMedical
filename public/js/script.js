@@ -1,12 +1,18 @@
 
 $(document).ready(
     function(){
+
         setInterval(function(){
+          var nombre_notif = document.getElementById('main_notif').innerText;
           $.ajax({   
             url: '/medecin/NombreNotif' ,
             type:'GET',
              success:function(data){
                 $("#main_notif").html(data[0]);
+                if(data[0]!=nombre_notif){
+                    var audio = document.getElementById('play_notif');
+                    audio.play();
+                }
                 var  result = [];
                 for(var i in data[1]) result.push([data[1][i]]);
                 var h6_tag = "<h6 class='dropdown-header'>Notifications </h6>"
@@ -90,6 +96,6 @@ $(document).ready(
                 $("#show_notif").html(h6_tag+""+a_tags)
              }
           });
-        },5000);
+        },2000);
     }
 );
