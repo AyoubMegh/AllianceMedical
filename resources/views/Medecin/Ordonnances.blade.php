@@ -7,7 +7,7 @@ class="active"
                     <!--Contenu principale de la page-->
                     <div class="container center-div">
                         <div class="conteiner mt-4">
-                            <form action="{{route('medecin.ordonnances')}}" method="post">
+                            <form action="{{route('medecin.ordonnances')}}" method="post" id="form_ord">
                                 {{ csrf_field() }}
                                 <div class="form-group" id="lignes_prescription">
                                     <label for="ligne_pres">Ligne Prescription: (<label for="nombre_ligne" id="nombre_ligne">1</label> Ligne)</label>
@@ -48,16 +48,16 @@ class="active"
                                 <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
                                 <div class="form-group mt-1">
                                     <div class="row">
-                                        <div class="col-sm-1 mt-1">
+                                        <div class="col-sm-2 mt-1">
                                             <button type="submit" id="btn_submit" class="btn btn-success">Ajouter</button>
                                         </div>
-                                        <div class="col-sm-1 ml-3 mt-1">
+                                        <div class="col-sm-4 ml-3 mt-1">
                                             <button type="reset" class="btn btn-dark">Vider</button>
                                         </div>
-                                        <div class="col-sm-1 mt-1"></div>
+                                        <!--<div class="col-sm-1 mt-1"></div>
                                         <div class="col-sm-8 mt-1">
                                             <button class="btn btn-dark" id="btn_imprimer">Imprimer</button>
-                                        </div>
+                                        </div>-->
                                     </div>
                                     
                                 </div>
@@ -290,9 +290,8 @@ class="active"
                     
                     });
                     // impression
-                    document.getElementById('btn_imprimer').addEventListener('click',function(e){
+                   /* document.getElementById('btn_imprimer').addEventListener('click',function(e){
                         e.preventDefault();
-                        /*Logique d'affichage--------------------*/
                         var nombre_ligne = parseInt(document.getElementById('nombre_ligne').innerHTML);
                         console.log("Nombre Ligne : "+nombre_ligne);
                         for(let i=nombre_ligne;i>=1;i--){
@@ -322,7 +321,6 @@ class="active"
                             list.insertAdjacentElement("afterend",tr)
                         }
 
-                        /*---------------------------------------*/
                         var frame = document.getElementById('imprimable');
                         var data = frame.innerHTML;
                         var win = window.open('', '', 'height=500,width=900');
@@ -333,7 +331,7 @@ class="active"
                         win.print();
                         win.close();
                         return true;
-                    });
+                    });*/
                     var btn_imp = document.getElementsByClassName('btn_imp');
                     for(var i=0;i<btn_imp.length;i++){
                         (function(index) {
@@ -397,8 +395,6 @@ class="active"
                                     win.close();
                                     
                                     return true;
-                                }else{
-                                    return false
                                 }
                         }else{
                             return false;

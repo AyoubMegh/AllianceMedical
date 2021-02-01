@@ -119,6 +119,32 @@ Route::prefix('medecin')->group(function(){
     return $result;
 })->name('medecin.eventsMed');
 
+Route::get('/DashMed/{id_med}',function($id_med){
+    $events = App\Rendezvous::all()->where('id_med',$id_med)->values();
+    $data = collect($events)->map(function($event){
+        return [
+            "id" => $event->id_rdv."",
+            "title" => "Rendez-vous Avec le patient : ".App\Patient::find($event->id_pat)->nom." ".App\Patient::find($event->id_pat)->prenom,
+            "start"=> $event->date_rdv.' '.$event->heure_debut,
+            "end" => $event->date_rdv.' '.$event->heure_fin,
+            "allDay" => false,
+            "date_rdv"=>$event->date_rdv,
+            "heure_deb"=>$event->heure_debut,
+            "heure_fin"=>$event->heure_fin,
+            "motif"=>$event->motif,
+            "nom" => App\Patient::find($event->id_pat)->nom,
+            "prenom" => App\Patient::find($event->id_pat)->prenom,
+            "num_ss" => App\Patient::find($event->id_pat)->num_ss
+        ];
+    });
+    $result = [];
+    for($i=0;$i<$data->count();$i++){
+        array_push($result,$data[$i]);
+    }
+    return $result;
+    })->name('medecin.DashMed');
+
+
     /*AutoReload */
     Route::get('/NombreNotif','MedecinController@nombreDeNotification');
 
@@ -175,6 +201,8 @@ Route::prefix('secretaire')->group(function(){
     }
     return $result;
     })->name('medecin.eventsMed');
+
+    
 
     /*Details Medecin*/
     Route::get('/DetailsMedecin','SecretaireController@detailsMedecin')->name('secretaire.detailsMedecin');

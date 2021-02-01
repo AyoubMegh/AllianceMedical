@@ -96,6 +96,6 @@ $(document).ready(
                 $("#show_notif").html(h6_tag+""+a_tags)
              }
           });
-        },2000);
+        },5000);
     }
 );
