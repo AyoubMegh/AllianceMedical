@@ -746,13 +746,15 @@ class MedecinController extends Controller
                 $lettre->id_med = Auth::user()->id_med;
                 $lettre->id_pat = $request->input('id_pat');
                 $lettre->save();
-                 /*-Notification--------------------- */
-                 $notif = new Notification();
-                 $notif->titre = "Nouvelle  Lettre !" ;
-                 $notif->contenu = "Votre Camarade Dr.".Auth::user()->nom." ".Auth::user()->prenom." Vous a Envoyé une Lettre d'orientation<br>Concernant le patient : ".Patient::find($request->input('id_pat'))->nom." ".Patient::find($request->input('id_pat'))->prenom."<br>Qui a comme N° Sécurité Sociale : ".Patient::find($request->input('id_pat'))->num_ss;
-                 $notif->id_med = $request->input('id_med');
-                 $notif->save();
-                 /*---------------------------------- */
+                if(is_numeric($request->input('id_med'))){
+                    /*-Notification--------------------- */
+                    $notif = new Notification();
+                    $notif->titre = "Nouvelle  Lettre !" ;
+                    $notif->contenu = "Votre Camarade Dr.".Auth::user()->nom." ".Auth::user()->prenom." Vous a Envoyé une Lettre d'orientation<br>Concernant le patient : ".Patient::find($request->input('id_pat'))->nom." ".Patient::find($request->input('id_pat'))->prenom."<br>Qui a comme N° Sécurité Sociale : ".Patient::find($request->input('id_pat'))->num_ss;
+                    $notif->id_med = $request->input('id_med');
+                    $notif->save();
+                    /*---------------------------------- */
+                }
                 return redirect()->back()->with('success', 'Lettre d\'orientation Bien Ajouté !');
             }
         }

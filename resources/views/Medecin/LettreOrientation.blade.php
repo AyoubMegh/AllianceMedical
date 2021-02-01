@@ -13,7 +13,8 @@ class="active"
             <div class="form-group">
                 <label for="id_med">Nom du Medecin :</label>
                 <select name="id_med" id="id_med"  class="form-control" required>
-                    <option value="" disabled selected>Choisissez une Medecin</option>
+                    <option value="" disabled selected>Choisissez Un Medecin</option>
+                        <option value="HorsClinique">Medecin Hors Clinique ?</option>
                     @foreach($medecins as $medecin)
                         <option value="{{$medecin->id_med}}" >DR.{{$medecin->nom}} {{$medecin->prenom}} ({{$medecin->specialite}})</option>
                     @endforeach
@@ -43,10 +44,10 @@ class="active"
                     <div class="col-sm-1 mt-1">
                         <button type="submit" id="btn_submit" class="btn btn-success">Ajouter</button>
                     </div>
-                    <div class="col-sm-1 mt-1"></div>
+                    <!--<div class="col-sm-1 mt-1"></div>
                     <div class="col-sm-8 mt-1">
                         <button class="btn btn-dark" id="btn_imprimer">Imprimer</button>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </form>
@@ -174,7 +175,7 @@ class="active"
 </div>
 <script>
     window.onload=function(){
-        document.getElementById('btn_imprimer').onclick = function(e){
+       /* document.getElementById('btn_imprimer').onclick = function(e){
             e.preventDefault();
             document.getElementById('content_lettre_imp').innerText = document.getElementById('lettre').value;
             if(document.getElementById('lettre').value==""){
@@ -190,7 +191,72 @@ class="active"
                 win.print();
                 win.close();
             }
-        }
+        }*/
+        document.getElementById('id_med').addEventListener('change',function(){
+            if(document.getElementById('id_med').value=="HorsClinique"){
+                var input = document.createElement("input");
+                input.setAttribute("class","form-control");
+                input.setAttribute("name","id_med");
+                input.setAttribute("id","id_med");
+                input.setAttribute("placeholder","Nom et Prenom Du Medecin");
+                input.required = true;
+                var button_options = document.createElement("button");
+                button_options.setAttribute("class","btn btn-primary mt-2");
+                button_options.setAttribute("id","btn_opt");
+                button_options.innerText="Un Medecin Locale ?";
+                document.getElementById('id_med').replaceWith(input);
+                document.getElementById('id_med').insertAdjacentElement('afterend',button_options);
+            }
+        });
+        document.addEventListener('click',function(e){
+            if(e.target && e.target.id == 'btn_opt'){
+                    e.preventDefault();
+                    $('#id_med').replaceWith("<select class=\"form-control\" name=\"id_med\" id=\"id_med\" required>"
+                                                                    +"<option value=\"\" disabled selected >Choisissez un Medecin</option>"
+                                                                    +"<option value=\"HorsClinique\">Medecin Hors Clinique ?</option>"
+                                                                    +"@foreach($medecins as $medecin)"
+                                                                    +"<option value=\"{{$medecin->id_med}}\">Dr. {{$medecin->nom}} {{$medecin->nom}}</option>"
+                                                                    +"@endforeach"
+                                                                    +"</select>");
+                    $('#id_med').on('change',function(){
+                        if(document.getElementById('id_med').value=="HorsClinique"){
+                        var input = document.createElement("input");
+                        input.setAttribute("class","form-control");
+                        input.setAttribute("name","id_med");
+                        input.setAttribute("id","id_med");
+                        input.setAttribute("placeholder","Nom et Prenom Du Medecin");
+                        input.required = true;
+                        var button_options = document.createElement("button");
+                        button_options.setAttribute("class","btn btn-primary mt-2");
+                        button_options.setAttribute("id","btn_opt");
+                        button_options.innerText="Un Medecin Locale ?";
+                        document.getElementById('id_med').replaceWith(input);
+                        document.getElementById('id_med').insertAdjacentElement('afterend',button_options);
+                    }
+                });
+                document.getElementById('btn_opt').remove();
+            }
+        });
+        document.getElementById('btn_submit').addEventListener('click',function(e){
+            if(!document.getElementById('lettre').value == ""){
+                if(confirm("Voulez-vous d'abord Imprimer la lettre ?")){
+                    document.getElementById('content_lettre_imp').innerText = document.getElementById('lettre').value;
+                    var frame = document.getElementById('imprimable');
+                    var data = frame.innerHTML;
+                    var win = window.open('', '', 'height=500,width=900');
+                    win.document.write('<style>@page{size: A4 }</style><html><head><title></title>');
+                    win.document.write('</head><body >');
+                    win.document.write(data);
+                    win.document.write('</body></html>');
+                    win.print();
+                    win.close();
+                    
+                    return true;
+                }
+            }else{
+                return false
+            }
+        });
         var btn_imp = document.getElementsByClassName('btn_imp');
         for(var i=0;i<btn_imp.length;i++){
             (function(index) {

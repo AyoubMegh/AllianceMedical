@@ -36,10 +36,10 @@ class="active"
                     <div class="col-sm-1 mt-1">
                         <button type="submit" id="btn_submit" class="btn btn-success">Ajouter</button>
                     </div>
-                    <div class="col-sm-1 mt-1"></div>
+                    <!--<div class="col-sm-1 mt-1"></div>
                     <div class="col-sm-8 mt-1">
                         <button class="btn btn-dark" id="btn_imprimer">Imprimer</button>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </form>
@@ -153,7 +153,7 @@ class="active"
 </div>
 <script>
     window.onload=function(){
-        document.getElementById('btn_imprimer').addEventListener('click',function(e){
+        /*document.getElementById('btn_imprimer').addEventListener('click',function(e){
             e.preventDefault();
             if(document.getElementById('date_debut').value=="" || document.getElementById('date_fin').value==""){
                 return false;
@@ -168,6 +168,25 @@ class="active"
                 win.document.write('</body></html>');
                 win.print();
                 win.close();
+            }
+        });*/
+        document.getElementById('btn_submit').addEventListener('click',function(e){
+            if(!document.getElementById('date_debut').value == "" && !document.getElementById('date_fin').value==""){
+                if(confirm("Voulez-vous d'abord Imprimer le certificat ?")){
+                    var frame = document.getElementById('imprimable');
+                    var data = frame.innerHTML;
+                    var win = window.open('', '', 'height=500,width=900');
+                    win.document.write('<style>@page{size: A4 }</style><html><head><title></title>');
+                    win.document.write('</head><body >');
+                    win.document.write(data);
+                    win.document.write('</body></html>');
+                    win.print();
+                    win.close();
+                    
+                    return true;
+                }
+            }else{
+                return false
             }
         });
         var btn_imp = document.getElementsByClassName('btn_imp');
