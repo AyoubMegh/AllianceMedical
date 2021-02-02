@@ -35,7 +35,35 @@ class MedecinController extends Controller
     }
     public function statistiques(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        return view('Medecin.Statistiques',['isAdmin'=>$isAdmin]);
+        /*------------------------------- */
+        $query_rdv_year = 'SELECT COUNT(*) as NOMBRE ,MONTH(date_rdv) as MOIS FROM rendezvouss WHERE YEAR(date_rdv)=YEAR(NOW()) GROUP BY MONTH(date_rdv) ORDER BY MONTH(date_rdv) ';
+        $rdvs_year = DB::select($query_rdv_year);
+        $res_rdv_year= array_fill(0,12,0);
+        for($i=0;$i<12;$i++){
+            if($i<count($rdvs_year)){
+                $res_rdv_year[$rdvs_year[$i]->MOIS-1]=$rdvs_year[$i]->NOMBRE;
+            }
+        }
+        /*------------------------------- */
+        $query_pres_year = 'SELECT COUNT(*) as NOMBRE ,MONTH(date_pres) as MOIS FROM prescriptions WHERE YEAR(date_pres)=YEAR(NOW()) GROUP BY MONTH(date_pres) ORDER BY MONTH(date_pres) ';
+        $pres_year = DB::select($query_pres_year);
+        $pres_rdv_year= array_fill(0,12,0);
+        for($i=0;$i<12;$i++){
+            if($i<count($pres_year)){
+                $pres_rdv_year[$pres_year[$i]->MOIS-1]=$pres_year[$i]->NOMBRE;
+            }
+        }
+        /*------------------------------- */
+        $query_med_rdv_mois ="SELECT M.nom as NOM , M.prenom as PRENOM , count(*) as NOMBRE FROM rendezvouss R,medecins M WHERE R.id_med=M.id_med AND R.created_at >= DATE_FORMAT(CURRENT_DATE - INTERVAL 1 MONTH,'%Y-%m-01') AND R.created_at < DATE_FORMAT(CURRENT_DATE,'%Y-%m-01')    GROUP BY NOM,PRENOM"; 
+        $med_rdv_mois = DB::select($query_med_rdv_mois);
+        $nom_meds_rdv_mois = array();
+        $nombre_meds_rdv_mois = array();
+        for($i=0;$i<count($med_rdv_mois);$i++){
+            array_push($nom_meds_rdv_mois,$med_rdv_mois[$i]->NOM." ".$med_rdv_mois[$i]->PRENOM);
+            array_push($nombre_meds_rdv_mois,$med_rdv_mois[$i]->NOMBRE);
+        }
+        //dd($nom_meds_rdv_mois);
+        return view('Medecin.Statistiques',['isAdmin'=>$isAdmin,'stats_rdv'=>$res_rdv_year,'stats_pres'=>$pres_rdv_year,'nom_meds'=>$nom_meds_rdv_mois,'nombre_meds'=>$nombre_meds_rdv_mois]);
     }
     public function listeNotifications(){
         $mes_notifs = Notification::where('id_med',Auth::user()->id_med)->orderBy('created_at','DESC')->get();
