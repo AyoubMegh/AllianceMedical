@@ -24,9 +24,10 @@ Route::get('/forgot-password',function(){
 Route::post('/forgot-password','ForgotPasswordController@resetPassword')->name('resetPassword');
 
 Route::prefix('medecin')->group(function(){
+    
     /*Auth*/
     Route::get('/login','Auth\MedecinLoginContoller@showLoginForm')->name('medecin.login');
-    Route::post('/login','Auth\MedecinLoginContoller@login')->name('medecin.login.submit');
+    Route::post('/login','Auth\MedecinLoginContoller@login')->name('medecin.login.submit')->middleware('isEnService');
     Route::get('/logout','Auth\MedecinLoginContoller@logout')->name('medecin.logout');
     /*Get*/
     Route::get('/Dashboard','MedecinController@index')->name('medecin.dashboard');
@@ -57,7 +58,7 @@ Route::prefix('medecin')->group(function(){
     Route::post('/AjouterMedecin','MedecinController@ajouterMedecin')->name('medecin.ajouterMedecin');
     Route::post('/AjouterSecretaire','MedecinController@ajouterSecretaire')->name('medecin.ajouterSecretaire');
     /*Delete*/
-    Route::delete('/SupprimerMedecin','MedecinController@supprimerMedecin')->name('medecin.supprimerMedecin');
+    Route::put('/SupprimerMedecin','MedecinController@supprimerMedecin')->name('medecin.supprimerMedecin');
     Route::delete('/SupprimerSecretaire','MedecinController@supprimerSecretaire')->name('medecin.supprimerSecretaire');
     /*PUT*/
     Route::put('/MettreAjourMedecin','MedecinController@mettreAjourMedecin')->name('medecin.mettreAjourMedecin');

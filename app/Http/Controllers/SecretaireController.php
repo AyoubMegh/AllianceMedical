@@ -23,7 +23,7 @@ class SecretaireController extends Controller
         $this->middleware('auth:secretaire');
     }
     public function index(){
-        $liste_med = Medecin::all();
+        $liste_med = Medecin::all()->where('enService',1);
         //$rdv_today = Rendezvous::all()->where('date_rdv',date('Y')."-".date('m')."-".date('d'))->values();
         $rdv_today  =  DB::table('rendezvouss')
                 ->join('patients','rendezvouss.id_pat','=','patients.id_pat')
@@ -62,7 +62,7 @@ class SecretaireController extends Controller
 
     }
     public function prendreRDV(Request $request){
-        $medecins = Medecin::all();
+        $medecins = Medecin::all()->where('enService',1);
         $id_med = (!is_null($request->input('id_med')))? $request->input('id_med') : -1 ;
         return view('Secretaire.PrendreRDV',['medecins'=>$medecins,'id_med'=>$id_med]);
     }
@@ -82,7 +82,7 @@ class SecretaireController extends Controller
                     ->get();
             array_push($res,[$rdv,$pat['attributes']]);
         }
-        $medecins = Medecin::all();
+        $medecins = Medecin::all()->where('enService',1);
         foreach($medecins as $med){
             $rdv  =  DB::table('rendezvouss')
                 ->join('medecins','rendezvouss.id_med','=','medecins.id_med')
@@ -123,7 +123,7 @@ class SecretaireController extends Controller
             if(is_null($patient)){
                return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
-                $medecins = Medecin::all();
+                $medecins = Medecin::all()->where('enService',1);
                 return view('Secretaire.RePrendreRDV',['patient'=>$patient,'medecins'=>$medecins]);
             }
         }
@@ -351,7 +351,7 @@ class SecretaireController extends Controller
             if(is_null($RDV)){
                return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
-                $medecins = Medecin::all();
+                $medecins = Medecin::all()->where('enService',1);
                 return view('Secretaire.MettreAjourRDVForm',['rdv'=>$RDV,'medecins'=> $medecins]);
             }
         }
@@ -557,9 +557,9 @@ class SecretaireController extends Controller
     }
     public function listeMedecins(Request $request){
         if(is_null($request->input('nom'))){
-            $medecins = Medecin::all();
+            $medecins = Medecin::all()->where('enService',1);
         }else{
-            $medecins = Medecin::all()->where('nom',$request->input('nom'));
+            $medecins = Medecin::all()->where('nom',$request->input('nom'))->where('enService',1);
             if(count($medecins)==0){
                 return redirect(route('secretaire.listeMedecins'))->withErrors(['Medecin Introuvable !']);
             }

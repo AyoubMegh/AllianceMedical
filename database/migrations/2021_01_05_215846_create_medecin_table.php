@@ -22,6 +22,7 @@ class CreateMedecinTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('specialite');
+            $table->integer('enService');
             $table->rememberToken();
             $table->timestamps();
             $table->integer('id_clq')->unsigned();

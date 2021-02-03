@@ -19,9 +19,9 @@ class CreateLettreTable extends Migration
             $table->string('type_lettre');
             $table->text('contenu');
             $table->timestamps();
-            $table->integer('id_med')->nullable()->unsigned();
+            $table->integer('id_med')->unsigned();
             $table->integer('id_pat')->unsigned();
-            $table->foreign('id_med')->references('id_med')->on('medecins')->onDelete('set null');;
+            $table->foreign('id_med')->references('id_med')->on('medecins');
             $table->foreign('id_pat')->references('id_pat')->on('patients');
         });
     }

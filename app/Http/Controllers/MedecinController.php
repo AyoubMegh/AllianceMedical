@@ -102,9 +102,9 @@ class MedecinController extends Controller
     public function listeMedecins(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
         if(is_null($request->input('nom_med'))){
-            $medecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
+            $medecins = Medecin::all()->where('enService',1)->whereNotIn('id_med',Auth::user()->id_med);
         }else{
-            $medecins = Medecin::all()->where('nom',$request->input('nom_med'));
+            $medecins = Medecin::all()->where('enService',1)->where('nom',$request->input('nom_med'));
             if(count($medecins)==0){
                 return redirect(route('medecin.listeMedecins'))->withErrors(['Medecin Introuvable !']);
             }
@@ -207,6 +207,7 @@ class MedecinController extends Controller
             $medecin->email = $request->input('email');
             $medecin->num_tel = $request->input('tel');
             $medecin->specialite = $request->input('specialite');
+            $medecin->enService = 1;
             $medecin->password = bcrypt($request->input('password'));
             $medecin->id_clq = Auth::user()->id_clq;
             $medecin->save();
@@ -235,7 +236,8 @@ class MedecinController extends Controller
             return Redirect::back()->withErrors($validator)->withInput();
         }else{
             $medecin = Medecin::find($request->input('id_med'));
-            $medecin->delete();
+            $medecin->enService = 0;
+            $medecin->save();
             return redirect()->back()->with('success', 'Medecin Bien Supprimé !');
         }
     }
@@ -749,7 +751,7 @@ class MedecinController extends Controller
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
                 $lettres_or = Lettre::all()->where('type_lettre','lettre orientation');
-                $medecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
+                $medecins = Medecin::all()->where('enService',1)->whereNotIn('id_med',Auth::user()->id_med);
                 return view('Medecin.LettreOrientation',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_or,'medecins'=>$medecins]);
             }
         }
