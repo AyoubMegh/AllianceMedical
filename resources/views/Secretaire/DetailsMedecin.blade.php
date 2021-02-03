@@ -102,10 +102,10 @@
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Mettre A Jour Le Rendez-Vous</button>
         </form>
-          <form action="{{route('secretaire.supprimerRDV')}}" method="post">
+          <form action="{{route('secretaire.supprimerRDV')}}" id="delete_form"  method="post">
             {{ csrf_field() }}
             {{ method_field('DELETE') }}
-            <button type="submit" class="btn btn-danger" >Annuler Le Rendez-Vous</button>
+            <button type="submit" class="btn btn-danger" id="annuler">Annuler Le Rendez-Vous</button>
             <input type="hidden" name="id_rdv" id="id_rdv_supp" value="">
           </form>
         </div>
@@ -258,6 +258,13 @@
         });
         calendrier.render();
     });
-   
+    $('#annuler').click(function(e){
+        e.preventDefault();
+        if(confirm('Voulez Vous Vraiment Effectuer Cette Action ?')){
+            $('#delete_form').submit();
+        }else{
+            return false;
+        }
+    });
 </script>
 @endsection

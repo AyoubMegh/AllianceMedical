@@ -23,7 +23,15 @@ class SecretaireController extends Controller
         $this->middleware('auth:secretaire');
     }
     public function index(){
-        return view('Secretaire.dash');
+        $liste_med = Medecin::all();
+        //$rdv_today = Rendezvous::all()->where('date_rdv',date('Y')."-".date('m')."-".date('d'))->values();
+        $rdv_today  =  DB::table('rendezvouss')
+                ->join('patients','rendezvouss.id_pat','=','patients.id_pat')
+                ->select('rendezvouss.date_rdv','rendezvouss.heure_debut','rendezvouss.id_med','rendezvouss.heure_fin','patients.nom','patients.prenom','patients.num_ss')
+                ->where('rendezvouss.date_rdv',date('Y')."-".date('m')."-".date('d'))
+                ->orderBy('rendezvouss.date_rdv', 'asc')
+                ->get();
+        return view('Secretaire.dash',["meds"=>$liste_med,"rdvs"=>$rdv_today]);
     }
     public function listePatients(Request $request){
         if(is_null($request->input('num_ss'))){
