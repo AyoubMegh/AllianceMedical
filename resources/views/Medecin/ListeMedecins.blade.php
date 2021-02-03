@@ -89,7 +89,7 @@
                                     <form action="{{route('medecin.supprimerMedecin')}}" id="delete_form" method="post">
                                         <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
                                         {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}
+                                        {{ method_field('PUT') }}
                                         <button type="submit" id="annuler" class="btn">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>

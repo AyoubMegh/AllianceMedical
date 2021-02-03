@@ -23,9 +23,9 @@ class CreateRendezvousTable extends Migration
             $table->integer('id_med')->unsigned();
             $table->integer('id_sec')->nullable()->unsigned();
             $table->integer('id_pat')->unsigned();
-            $table->foreign('id_med')->references('id_med')->on('medecins')->onDelete('cascade');
+            $table->foreign('id_med')->references('id_med')->on('medecins');
             $table->foreign('id_sec')->references('id_sec')->on('secretaires')->onDelete('set null');
-            $table->foreign('id_pat')->references('id_pat')->on('patients')->onDelete('cascade');
+            $table->foreign('id_pat')->references('id_pat')->on('patients');
         });
     }
 

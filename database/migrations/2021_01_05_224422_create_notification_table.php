@@ -19,7 +19,7 @@ class CreateNotificationTable extends Migration
             $table->text('contenu');
             $table->timestamps();
             $table->integer('id_med')->unsigned();
-            $table->foreign('id_med')->references('id_med')->on('medecins')->onDelete('cascade');
+            $table->foreign('id_med')->references('id_med')->on('medecins');
         });
     }
 

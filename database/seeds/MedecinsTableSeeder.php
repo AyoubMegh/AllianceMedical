@@ -21,6 +21,7 @@ class MedecinsTableSeeder extends Seeder
         $medecin->email = 'flen.benflen@alliancemedical.test';
         $medecin->password = bcrypt('Root@root');
         $medecin->specialite = 'cardiologie';
+        $medecin->enService = 1;
         $medecin->id_clq = 1;
         $medecin->save();
         $clinique = Clinique::all()->where('id_clq',1)->first();
