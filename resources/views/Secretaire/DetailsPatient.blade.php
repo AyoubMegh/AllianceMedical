@@ -103,13 +103,13 @@
                                         </td>
                                         <td>
                                             <center>
-                                                <form action="{{route('secretaire.supprimerRDV')}}" method="post">
+                                                <form action="{{route('secretaire.supprimerRDV')}}" id="delete_form" method="post">
                                                     {{ csrf_field() }}
                                                     {{ method_field('DELETE') }}
                                                     <input type="hidden" name="id_rdv" value="{{$rdv->id_rdv}}">
-                                                    <button type="submit" class="btn">
+                                                    <button type="submit" class="btn" id="annuler">
                                                             <i class="fas fa-trash-alt"></i>
-                                                        </button>
+                                                    </button>
                                                 </form>
                                             </center>
                                         </td>
@@ -122,4 +122,17 @@
             </div>
         </div>
     </div>   
+@endsection
+@section('scripts')
+<script>
+    $('#annuler').click(function(e){
+        e.preventDefault();
+        if(confirm('Voulez Vous Vraiment Effectuer Cette Action ?')){
+            $('#delete_form').submit();
+        }else{
+            return false;
+        }
+    });
+</script>
+
 @endsection

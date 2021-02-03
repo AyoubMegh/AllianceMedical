@@ -86,11 +86,11 @@
                             </td>
                             <td>
                                 <center>
-                                    <form action="{{route('medecin.supprimerMedecin')}}" method="post">
+                                    <form action="{{route('medecin.supprimerMedecin')}}" id="delete_form" method="post">
                                         <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}
-                                        <button type="submit" class="btn">
+                                        <button type="submit" id="annuler" class="btn">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
@@ -104,4 +104,16 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+<script>
+     $('#annuler').click(function(e){
+        e.preventDefault();
+        if(confirm('Voulez Vous Vraiment Effectuer Cette Action ?')){
+            $('#delete_form').submit();
+        }else{
+            return false;
+        }
+    });
+</script>
 @endsection
