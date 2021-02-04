@@ -54,5 +54,15 @@
                                 <button type="reset" class="btn btn-dark">Vider</button>
                             </div>
                         </form>
-                    </div>
+                        <hr>
+    <div class="row mt-5 mb-2">
+        <div class="col-md-9"></div>
+        <div class="col-md-3">
+            <form action="{{route('secretaire.detailsPatient')}}" method="GET">
+                <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
+                <button type="submit" class="btn btn-primary">Retour Vers Fiche Du Patient ?</button>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

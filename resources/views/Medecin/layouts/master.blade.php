@@ -163,6 +163,9 @@
                                     <span class="badge badge-danger badge-counter" id="main_notif">
                                         {{count(App\Notification::all()->where('id_med',Auth::user()->id_med))}}
                                     </span>
+                                @else
+                                    <span class="badge badge-danger badge-counter d-none" id="main_notif">
+                                    </span>
                                 @endif
                             </a>
                             <!-- Dropdown - Alerts -->

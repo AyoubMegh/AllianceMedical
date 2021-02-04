@@ -54,7 +54,7 @@ class MedecinController extends Controller
             }
         }
         /*------------------------------- */
-        $query_med_rdv_mois ="SELECT M.nom as NOM , M.prenom as PRENOM , count(*) as NOMBRE FROM rendezvouss R,medecins M WHERE R.id_med=M.id_med AND R.created_at >= DATE_FORMAT(CURRENT_DATE - INTERVAL 1 MONTH,'%Y-%m-01') AND R.created_at < DATE_FORMAT(CURRENT_DATE,'%Y-%m-01')    GROUP BY NOM,PRENOM"; 
+        $query_med_rdv_mois ="SELECT M.nom as NOM , M.prenom as PRENOM , count(*) as NOMBRE FROM rendezvouss R,medecins M WHERE R.id_med=M.id_med AND R.date_rdv >= DATE_FORMAT(CURRENT_DATE - INTERVAL 1 MONTH,'%Y-%m-01') AND R.date_rdv < DATE_FORMAT(CURRENT_DATE,'%Y-%m-01')    GROUP BY NOM,PRENOM"; 
         $med_rdv_mois = DB::select($query_med_rdv_mois);
         $nom_meds_rdv_mois = array();
         $nombre_meds_rdv_mois = array();
@@ -582,7 +582,7 @@ class MedecinController extends Controller
                     array_push($res1,[$rdv,$med['attributes']]);
                 } 
                //dd($res1);
-                return view('Medecin.ReprendreRDV',['isAdmin'=>$isAdmin,'patient'=>$patient,'meds'=>$res1]);
+                return view('Medecin.ReprendreRDV',['isAdmin'=>$isAdmin,'patient'=>$patient,'meds'=>$res1,'medecins'=>$medecins]);
             }
         }
     }
@@ -1210,5 +1210,77 @@ class MedecinController extends Controller
             }
         }
     }
-    
+    public function MAJLignePres(Request $request){
+        $validator = Validator::make($request->all(),[
+           'id_ligne_pres'=>'required',
+           'medicament'=>'required',
+           'dose'=>'required',
+           'moment'=>'required',
+           'duree'=>'required'
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $ligne_pres =  Ligneprescription::find($request->input('id_ligne_pres'));
+            if(Prescription::find($ligne_pres->id_pres)->id_med != Auth::user()->id_med){
+                return Redirect::back()->withErrors(['Vous n\'etes pas autorisé a effectuer cette action !']);
+            }else{
+                $ligne_pres->medicament = $request->input('medicament');
+                $ligne_pres->dose = $request->input('dose');
+                $ligne_pres->moment =$request->input('moment');
+                $ligne_pres->duree = $request->input('duree');
+                $ligne_pres->save();
+                return Redirect::back()->with('success', 'Ligne Prescription Bien Modifier!');
+            }
+        }
+    }
+    public function SuppLignePres(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_ligne_pres'=>'required',
+         ]);
+         if ($validator->fails()) {
+             return Redirect::back()->withErrors($validator);
+         }else{
+            $ligne_pres =  Ligneprescription::find($request->input('id_ligne_pres'));
+            if(Prescription::find($ligne_pres->id_pres)->id_med != Auth::user()->id_med){
+                return Redirect::back()->withErrors(['Vous n\'etes pas autorisé a effectuer cette action !']);
+            }else{
+                if($ligne_pres->delete()){
+                    return Redirect::back()->with('success', 'Ligne Prescription Bien Supprimer!');
+                }else{
+                    return Redirect::back()->withErrors(['Impossible de Supprimer La ligne']);
+                }
+            }
+         }
+    }
+    public function AjouterLignePres(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pres'=>'required',
+            'medicament'=>'required',
+            'dose'=>'required',
+            'moment'=>'required',
+            'duree'=>'required'
+         ]);
+         if ($validator->fails()) {
+             return Redirect::back()->withErrors($validator);
+         }else{
+             $pres = Prescription::find($request->input('id_pres'));
+             if(is_null($pres)){
+                return Redirect::back()->withErrors(['Prescription Intouvable']);
+             }else{
+                if($pres->id_med != Auth::user()->id_med){
+                    return Redirect::back()->withErrors(['Vous n\'etes pas autorisé a effectuer cette action !']);
+                }else{
+                    $ligne = new Ligneprescription();
+                    $ligne->medicament = $request->input('medicament');
+                    $ligne->dose = $request->input('dose');
+                    $ligne->moment = $request->input('moment');
+                    $ligne->duree = $request->input('duree');
+                    $ligne->id_pres = $request->input('id_pres');
+                    $ligne->save();
+                    return Redirect::back()->with('success', 'Ligne Prescription Bien Ajouter!');
+                }
+             }
+         }
+    }
 }

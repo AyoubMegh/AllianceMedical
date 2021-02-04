@@ -131,6 +131,7 @@ class="active"
                                             <tr>
                                                 <th>Nom et Prenom Medecin</th>
                                                 <th>Date et Heure Ordonnance</th>
+                                                <th>Details Prescription</th>
                                                 <th>Imprimer</th>
                                             </tr>
                                         </thead>
@@ -139,6 +140,96 @@ class="active"
                                             <tr>
                                                 <td>DR. {{App\Medecin::find($pres->id_med)->nom}} {{App\Medecin::find($pres->id_med)->prenom}}</td>
                                                 <td> {{$pres->created_at}} </td>
+                                                <td>
+                                                    <center><button class="btn btn_pres_details" id="{{$pres->id_pres}}" data-toggle="modal" data-target="#modal_pres_{{$pres->id_pres}}"><i class="far fa-file-alt"></i></button></center>
+                                                    <div class="modal fade" id="modal_pres_{{$pres->id_pres}}" tabindex="-1" role="dialog" aria-labelledby="modal_pres_{{$pres->id_pres}}" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg" role="document">
+                                                            <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Lignes Prescriptions</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                @foreach($ligne_pres->where('id_pres',$pres->id_pres) as $ligne)
+                                                                    <form action="{{route('medecin.MAJLignePres')}}" method="post">
+                                                                    <div class="row">
+                                                                            {{ csrf_field() }}
+                                                                            {{method_field('PUT')}}
+                                                                            <div class="col-md-3 mb-1">
+                                                                                <input class="form-control" value="{{$ligne->medicament}}" placeholder="Nom Medicamant" type="text" name="medicament" id="medicament" required>
+                                                                            </div>
+                                                                            <div class="col-md-2 mb-1">
+                                                                                <input class="form-control" value="{{$ligne->dose}}" placeholder="Dose" type="text" name="dose" id="dose" required>
+                                                                            </div>
+                                                                            <div class="col-md-2 mb-1">
+                                                                                <input class="form-control" value="{{$ligne->moment}}" placeholder="Moment" type="text" name="moment" id="moment" required>
+                                                                            </div>
+                                                                            <div class="col-md-3 mb-1">
+                                                                                <input class="form-control" value="{{$ligne->duree}}" placeholder="Durée traitment" type="text" name="duree" id="duree" required>
+                                                                            </div>
+                                                                            <input type="hidden" name="id_ligne_pres" id="id_ligne_pres" value="{{$ligne->id_ligne_pres }}">
+                                                                            <div class="col-md-1 mb-1" id="button_div">
+                                                                                <button type="submit" class="btn btn-secondary" id="modifer_Ligne"><i class="fas fa-edit"></i></button>
+                                                                            </div>
+                                                                        </form>
+                                                                        <form action="{{route('medecin.SuppLignePres')}}" method="post">
+                                                                            {{ csrf_field() }}
+                                                                            {{method_field('DELETE')}}
+                                                                            <div class="col-md-1 mb-1" id="button_div">
+                                                                            
+                                                                                    <input type="hidden" name="id_ligne_pres" id="id_ligne_pres" value="{{$ligne->id_ligne_pres }}">
+                                                                                    <button class="btn btn-secondary" id="supprimer_Ligne"><i class="fas fa-trash-alt"></i></button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-primary add"  data-toggle="modal" id="{{$pres->id_pres}}" data-target="AjouterLigne_{{$pres->id_pres}}">Ajouter Ligne ?</button>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                            </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal fade" id="AjouterLigne_{{$pres->id_pres}}" tabindex="-1" role="dialog" aria-labelledby="AjouterLigne_{{$pres->id_pres}}" aria-hidden="true">
+                                                        <div class="modal-dialog  modal-lg" role="document">
+                                                          <div class="modal-content">
+                                                            <div class="modal-header">
+                                                              <h5 class="modal-title" id="exampleModalLabel">Ajouter Une Ligne</h5>
+                                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                              </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="{{route('medecin.ajouterLignePres')}}" method="post">
+                                                                    {{csrf_field()}}
+                                                                <div class="row">
+                                                                    <div class="col-md-3 mb-1">
+                                                                        <input class="form-control" placeholder="Nom Medicamant" type="text" name="medicament" id="medicament" required>
+                                                                    </div>
+                                                                    <div class="col-md-3 mb-1">
+                                                                        <input class="form-control"  placeholder="Dose" type="text" name="dose" id="dose" required>
+                                                                    </div>
+                                                                    <div class="col-md-3 mb-1">
+                                                                        <input class="form-control"  placeholder="Moment" type="text" name="moment" id="moment" required>
+                                                                    </div>
+                                                                    <div class="col-md-3 mb-1">
+                                                                        <input class="form-control"  placeholder="Durée traitment" type="text" name="duree" id="duree" required>
+                                                                    </div>
+                                                                    <input type="hidden" name="id_pres" id="id_pres" value="{{$pres->id_pres}}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="submit" class="btn btn-primary">Ajouter</button>
+                                                            </form>
+                                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                </td>
                                                 <td><center><button class="btn btn_imp" id="{{$pres->id_pres}}"><i class="fas fa-print"></i></button></center>
 
                                                     <div id="imprimable_divers_{{$pres->id_pres}}" class="row d-none" style="position:relative;" > <!--class="d-none"-->      
@@ -400,6 +491,18 @@ class="active"
                             return false;
                         }
                     });
+                }   
+                var userSelection = document.getElementsByClassName('add');
+                for(var i = 0; i < userSelection.length; i++) {
+                (function(index) {
+                    userSelection[index].addEventListener("click", function(event) {
+                        var id = event.target.id;
+                        $('#modal_pres_'+id).modal('hide').on('hidden.bs.modal', function (e) {
+                                    $('#AjouterLigne_'+id).modal('show');
+                                    $(this).off('hidden.bs.modal'); // Remove the 'on' event binding
+                         });
+                    })
+                })(i);
                 }
                 </script>
 @endsection

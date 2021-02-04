@@ -49,54 +49,142 @@ class="active"
     <hr>
     <div class="container center-div">
         <center><h5><u>Liste de ces Rendez-vous</u></h5></center>
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <div class="row">
-                    <div class="col-sm-12 col-md-6" id="dataTable_length">
-                    
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <div id="dataTable_filter" class="dataTables_filter">
-                            <label style="width: 100%;">
-                                Recherche Medecin :
-                                <input type="search" class="form-control form-control-sm" placeholder="Nom du Medecin" aria-controls="dataTable">
-                            </label>
-                        </div>
-                    </div>
-                </div>
+        <div class="card-body">
+            <div id="calendrier"></div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="details">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Details du Rendez-Vous</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                @foreach($meds as $med)
-                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                      <thead>
-                        <div class="row mb-2">
-                          <div class="col col-9 mt-2">
-                            <h4>DR. {{$med[1]['nom']}} {{$med[1]['prenom']}}</h4>
-                          </div>
+            <div class="modal-body">
+                    <div class="form-group mt-4">
+                        <label for="date_rdv">Date du Rendez-vous :</label>
+                        <input class="form-control" type="date" name="date_rdv" value="" id="date_rdv_show" disabled required>
+                    </div>
+                    <div class="form-group">
+                        <label for="heure_Deb_Fin">Heure Debut et Fin :</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="time" class="form-control" name="heure_deb" value="" id="heure_deb_show" disabled required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="time" class="form-control" name="heure_fin" value="" id="heure_fin_show" disabled required>
+                            </div>
                         </div>
-                        <tr>
-                          <th>Jour de consultation</th>
-                          <th>Heure de consultation</th>
-                          <th>Fin de consultation</th>
-                          <th>Motif</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                          @foreach ($med[0] as $m)
-                              <tr>
-                                <td>{{$m->date_rdv}}</td>
-                                <td>{{$m->heure_debut}}</td>
-                                <td>{{$m->heure_fin}}</td>
-                                <td>{{$m->motif}}</td>
-                              </tr>
-                          @endforeach
-                      </tbody>
-                  </table>  
-                @endforeach
-               
-               </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_med">Nom du Medecin :</label>
+                        <select name="id_med" id="id_med"  class="form-control" disabled required>
+                            <option value="" disabled selected>Choisissez une Medecin</option>
+                            @foreach($medecins as $medecin)
+                                <option value="{{$medecin->id_med}}">DR.{{$medecin->nom}} {{$medecin->prenom}} ({{$medecin->specialite}})</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="motif">Motif :</label>
+                        <input type="text" class="form-control" name="motif_show" value="" id="motif_show" placeholder="Ecrivez votre motif ici !" disabled required>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
           </div>
-  </div>   
-</div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" role="dialog" id="ajouter_rdv_modal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Prendre Rendez-Vous</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{{route('medecin.reprendreRDV')}}" method="post">
+            <div class="modal-body">
+                    {{ csrf_field() }}
+                    <div class="form-group mt-4">
+                        <label for="date_rdv">Date du Rendez-vous :</label>
+                        <input class="form-control" type="date" name="date_rdv" value="" id="date_rdv_add" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="heure_Deb_Fin">Heure Debut et Fin :</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="time" class="form-control" name="heure_deb" value="" id="heure_deb_add" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="time" class="form-control" name="heure_fin" value="" id="heure_fin_add" required>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id_med" id="id_med" value="{{Auth::user()->id_med}}">
+                    <input type="hidden" name="id_pat" id="id_pat" value="{{$patient->id_pat}}">
+                    <div class="form-group">
+                        <label for="motif">Motif :</label>
+                        <input type="text" class="form-control" name="motif" id="motif_add" value="" placeholder="Ecrivez votre motif ici !" required>
+                    </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Ajouter</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+@endsection
+@section('scripts')
+<script>
+    $('#annuler').click(function(e){
+        e.preventDefault();
+        if(confirm('Voulez Vous Vraiment Effectuer Cette Action ?')){
+            $('#delete_form').submit();
+        }else{
+            return false;
+        }
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendrierDiv = document.getElementById('calendrier');
+        var calendrier = new FullCalendar.Calendar(calendrierDiv,{
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+            initialView : 'dayGridMonth',
+            locale:'fr',
+            selectable:true,
+            events:"/secretaire/EventsPatient/"+{{$patient->id_pat}}, 
+            eventColor:'#200540',
+            eventClick:function(info){
+                console.log(info.event.extendedProps);
+                $('#date_rdv_show').attr('value',info.event.extendedProps.date_rdv);
+                $('#heure_deb_show').attr('value',info.event.extendedProps.heure_deb);
+                $('#heure_fin_show').attr('value',info.event.extendedProps.heure_fin);
+                $('#motif_show').attr('value',info.event.extendedProps.motif);
+                $('#id_med').val(info.event.extendedProps.id_med).change();
+                $('#details').modal("show");
+            },
+            select:function(selectionInfo){
+                var date_rdv = new Date(selectionInfo.start);
+                var date_rdv_fin = new Date(selectionInfo.end);
+                $('#date_rdv_add').attr('value',date_rdv.getFullYear()+"-"+( ((date_rdv.getMonth()+1).toString().length == 1)? "0"+(date_rdv.getMonth()+1) : (date_rdv.getMonth()+1) )+"-"+( ((date_rdv.getDate()).toString().length == 1)? "0"+(date_rdv.getDate()) : (date_rdv.getDate()) ));
+                $('#heure_deb_add').attr('value',(((date_rdv.getHours()).toString().length == 1)? "0"+date_rdv.getHours() : date_rdv.getHours() )+":"+(((date_rdv.getMinutes()).toString().length == 1)? "0"+date_rdv.getMinutes() : date_rdv.getMinutes() ));
+                $('#heure_fin_add').attr('value',(((date_rdv_fin.getHours()).toString().length == 1)? "0"+date_rdv_fin.getHours() : date_rdv_fin.getHours() )+":"+(((date_rdv_fin.getMinutes()).toString().length == 1)? "0"+date_rdv_fin.getMinutes() : date_rdv_fin.getMinutes() ));
+                $('#motif_add').attr('value',"");
+                $('#ajouter_rdv_modal').modal("show");
+            }
+
+        });
+        calendrier.render();
+    });
+</script>
 @endsection

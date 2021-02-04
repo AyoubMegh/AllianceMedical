@@ -30,6 +30,7 @@ class SecretaireController extends Controller
                 ->select('rendezvouss.date_rdv','rendezvouss.heure_debut','rendezvouss.id_med','rendezvouss.heure_fin','patients.nom','patients.prenom','patients.num_ss')
                 ->where('rendezvouss.date_rdv',date('Y')."-".date('m')."-".date('d'))
                 ->orderBy('rendezvouss.date_rdv', 'asc')
+                ->orderBy('rendezvouss.heure_debut','asc')
                 ->get();
         return view('Secretaire.dash',["meds"=>$liste_med,"rdvs"=>$rdv_today]);
     }
@@ -108,7 +109,8 @@ class SecretaireController extends Controller
                return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
                 $rdv = Rendezvous::all()->where('id_pat',$request->input('id_pat'));
-                return view('Secretaire.DetailsPatient',['patient'=>$patient,'rdvs'=>$rdv]);
+                $medecins = Medecin::all()->where('enService',1);
+                return view('Secretaire.DetailsPatient',['patient'=>$patient,'rdvs'=>$rdv,'medecins'=>$medecins]);
             }
         }
     }
@@ -581,6 +583,35 @@ class SecretaireController extends Controller
                 $rdvs = Rendezvous::all()->where('id_med',$request->input('id_med'));
                 $medecins = Medecin::all();
                 return view('Secretaire.DetailsMedecin',['isAdmin'=>$isAdmin,'medecin'=>$medecin,'rdvs'=>$rdvs,'medecins'=>$medecins]);
+            }
+        }
+    }
+    public function mettreAjourPatient(Request $request){
+        $id_pat = $request->input('id_pat');
+        $validator = Validator::make($request->all(),[
+            'id_pat' => 'required',
+            'nom'=>'required',
+            'prenom'=>'required',
+            'date_naissance' => 'required',
+            'num_tel'=>'required',
+            'num_ss'=>'required|unique:patients,num_ss,'.$id_pat.','.(New Patient)->getKeyName(),
+            'email'=>'required|unique:patients,email,'.$id_pat.','.(New Patient)->getKeyName()
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }else{
+            $patient = Patient::find($request->input('id_pat'));
+            if(is_null($patient)){
+                return Redirect::back()->withErrors(['Patient Introuvable !']);
+            }else{
+                $patient->nom = $request->input('nom');
+                $patient->prenom = $request->input('prenom');
+                $patient->date_naissance = $request->input('date_naissance');
+                $patient->num_ss = $request->input('num_ss');
+                $patient->num_tel = $request->input('num_tel');
+                $patient->email = $request->input('email');
+                $patient->save();
+                return Redirect::back()->with('success','Patient Bien Mis A Jour !');
             }
         }
     }
