@@ -109,7 +109,9 @@ Route::prefix('medecin')->group(function(){
             "date_rdv"=>$event->date_rdv,
             "heure_deb"=>$event->heure_debut,
             "heure_fin"=>$event->heure_fin,
-            "motif"=>$event->motif
+            "motif"=>$event->motif,
+            "num_ss"=>App\Patient::find($event->id_pat)->num_ss,
+            "nom_prenom"=>App\Patient::find($event->id_pat)->nom." ".App\Patient::find($event->id_pat)->prenom
         ];
     });
     
@@ -153,6 +155,35 @@ Route::get('/DashMed/{id_med}',function($id_med){
     Route::delete('/AnnulerUnRDV','MedecinController@supprimerRDV')->name('medecin.supprimerRDV');
     Route::Post('/PrendreRDV','MedecinController@AjouterRDV')->name('medecin.ajouterRDV');
 
+    /*Ligne Prescription*/
+    Route::put('/MettreAjourLignePres','MedecinController@MAJLignePres')->name('medecin.MAJLignePres');
+    Route::delete('/SupprimerLignePres','MedecinController@SuppLignePres')->name('medecin.SuppLignePres');
+    Route::post('/AjouterLignePres','MedecinController@AjouterLignePres') ->name('medecin.ajouterLignePres');
+
+     /*Calendrier Patient */
+     Route::get('/EventsPatient/{id_pat}',function($id_pat){
+        $events = App\Rendezvous::all()->where('id_pat',$id_pat)->values();
+        $data = collect($events)->map(function($event){
+            return [
+                "id" => $event->id_rdv."",
+                "title" => "Rendez-vous Avec le Medecin : ".App\Medecin::find($event->id_med)->nom." ".App\Medecin::find($event->id_med)->prenom,
+                "start"=> $event->date_rdv.' '.$event->heure_debut,
+                "end" => $event->date_rdv.' '.$event->heure_fin,
+                "allDay" => false,
+                "date_rdv"=>$event->date_rdv,
+                "heure_deb"=>$event->heure_debut,
+                "heure_fin"=>$event->heure_fin,
+                "id_med" => $event->id_med,
+                "motif"=>$event->motif
+            ];
+        });
+        $result = [];
+        for($i=0;$i<$data->count();$i++){
+            array_push($result,$data[$i]);
+        }
+        return $result;
+    })->name('medecin.eventsPatient');
+
 });
 
 Route::prefix('secretaire')->group(function(){
@@ -180,7 +211,7 @@ Route::prefix('secretaire')->group(function(){
     /*Delete*/
     Route::delete('/AnnulerUnRDV','SecretaireController@supprimerRDV')->name('secretaire.supprimerRDV');
 
-    /*Calander */
+    /*Calendrier Medeicn */
     Route::get('/EventsMed/{id_med}',function($id_med){
     $events = App\Rendezvous::all()->where('id_med',$id_med)->values();
     $data = collect($events)->map(function($event){
@@ -203,11 +234,35 @@ Route::prefix('secretaire')->group(function(){
     return $result;
     })->name('medecin.eventsMed');
 
-    
+    /*Calendrier Patient */
+    Route::get('/EventsPatient/{id_pat}',function($id_pat){
+        $events = App\Rendezvous::all()->where('id_pat',$id_pat)->values();
+        $data = collect($events)->map(function($event){
+            return [
+                "id" => $event->id_rdv."",
+                "title" => "Rendez-vous Avec le Medecin : ".App\Medecin::find($event->id_med)->nom." ".App\Medecin::find($event->id_med)->prenom,
+                "start"=> $event->date_rdv.' '.$event->heure_debut,
+                "end" => $event->date_rdv.' '.$event->heure_fin,
+                "allDay" => false,
+                "date_rdv"=>$event->date_rdv,
+                "heure_deb"=>$event->heure_debut,
+                "heure_fin"=>$event->heure_fin,
+                "id_med" => $event->id_med,
+                "motif"=>$event->motif
+            ];
+        });
+        $result = [];
+        for($i=0;$i<$data->count();$i++){
+            array_push($result,$data[$i]);
+        }
+        return $result;
+    })->name('medecin.eventsPatient');
 
     /*Details Medecin*/
     Route::get('/DetailsMedecin','SecretaireController@detailsMedecin')->name('secretaire.detailsMedecin');
-    
+
+    /*MAJ Patient */
+    Route::put('/MettreAJourPatient','SecretaireController@mettreAjourPatient')->name('secretaire.majPatient');
 });
 
 
