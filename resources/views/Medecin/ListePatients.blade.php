@@ -49,11 +49,11 @@
                             <th>Nom et Prenom</th>
                             <th>N° Sécurité Sociale</th>
                             <th>Détails</th>
-                            <th>Ordonnances</th>
-                            <th>Info Medicale</th>
-                            <th>Lettres et Autres</th>
-                            <th>Divers RDV</th>
-                            <th>Imageries</th>
+                            <th class="d-none d-sm-table-cell">Ordonnances</th>
+                            <th class="d-none d-sm-table-cell">Info Medicale</th>
+                            <th class="d-none d-sm-table-cell">Lettres et Autres</th>
+                            <th class="d-none d-sm-table-cell">Divers RDV</th>
+                            <th class="d-none d-sm-table-cell">Imageries</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,7 +71,7 @@
                                         </form>
                                     </center>
                                 </td>
-                                <td>
+                                <td class="d-none d-sm-table-cell">
                                     <center>
                                         <form  method="GET" action="{{route('medecin.ordonnancesForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
@@ -81,7 +81,7 @@
                                         </form>
                                     </center>
                                 </td>
-                                <td>
+                                <td class="d-none d-sm-table-cell">
                                     <center>
                                         <form  method="GET" action="{{route('medecin.dossierMedicalForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
@@ -91,7 +91,7 @@
                                         </form>
                                     </center>   
                                 </td>
-                                <td>
+                                <td class="d-none d-sm-table-cell">
                                     <center>
                                         <form  method="GET" action="{{route('medecin.lettresForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
@@ -101,7 +101,7 @@
                                         </form>
                                 </center>
                                 </td>
-                                <td>
+                                <td class="d-none d-sm-table-cell">
                                     <center>
                                         <form  method="GET" action="{{route('medecin.reprendreRDVForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">
@@ -111,7 +111,7 @@
                                         </form>
                                 </center>
                                 </td>
-                                <td>
+                                <td class="d-none d-sm-table-cell">
                                     <center>
                                         <form  method="GET" action="{{route('medecin.imageriesForm')}}">
                                             <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">

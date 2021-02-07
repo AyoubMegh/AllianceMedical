@@ -48,7 +48,7 @@ class="active"
         <div class="col-12">
             <table  width="100%" >
                 <tr >
-                    <td width="25%" colspan="2"><center>Clinique  {{App\Clinique::find(1)->nom}}<br> {{date('d-m-Y')}}</center></td>
+                    <td width="25%" colspan="2"><center>Clinique  {{App\Clinique::find(1)->nom}}<br> <span id="date_lettre_affichage"></span></center></td>
                     <td width="25%" colspan="2"><center>{{Auth::user()->nom}} {{Auth::user()->prenom}} <br> {{Auth::user()->specialite}} </center></td>
                 </tr>
                 <tr >
@@ -110,7 +110,7 @@ class="active"
                                     <div class="col-12">
                                         <table  width="100%" >
                                             <tr >
-                                                <td width="25%" colspan="2"><center>Clinique  {{App\Clinique::find(1)->nom}}<br> {{$lettre->created_at}}</center></td>
+                                                <td width="25%" colspan="2"><center>Clinique  {{App\Clinique::find(1)->nom}}<br> {{$lettre->date_lettre}}</center></td>
                                                 <td width="25%" colspan="2"><center>{{Auth::user()->nom}} {{Auth::user()->prenom}} <br> {{Auth::user()->specialite}} </center></td>
                                             </tr>
                                             <tr >
@@ -172,22 +172,35 @@ class="active"
         });*/
         document.getElementById('btn_submit').addEventListener('click',function(e){
             if(!document.getElementById('date_debut').value == "" && !document.getElementById('date_fin').value==""){
-                if(confirm("Voulez-vous d'abord Imprimer le certificat ?")){
-                    var frame = document.getElementById('imprimable');
-                    var data = frame.innerHTML;
-                    var win = window.open('', '', 'height=500,width=900');
-                    win.document.write('<style>@page{size: A4 }</style><html><head><title></title>');
-                    win.document.write('</head><body >');
-                    win.document.write(data);
-                    win.document.write('</body></html>');
-                    win.print();
-                    win.close();
-                    
-                    return true;
-                }
-            }else{
-                return false
-            }
+                var date_deb = document.getElementById('date_debut').value;
+                    var date_fin = document.getElementById('date_fin').value;
+                    if(new Date(date_deb)>new Date(date_fin)){
+                        alert("Incohérence dans les dates !");
+                        document.getElementById('date_fin').value="";
+                        return false;
+                    }else{
+                    if(confirm("Voulez-vous d'abord Imprimer le certificat ?")){
+                        var today = new Date();
+                        var dd = String(today.getDate()).padStart(2, '0');
+                        var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+                        var yyyy = today.getFullYear();
+                        document.getElementById('date_lettre_affichage').innerHTML = yyyy+"-"+mm+"-"+dd;
+                        document.getElementById('range_date').innerText = document.getElementById('date_debut').value+" au "+document.getElementById('date_fin').value;
+                        var frame = document.getElementById('imprimable');
+                        var data = frame.innerHTML;
+                        var win = window.open('', '', 'height=500,width=900');
+                        win.document.write('<style>@page{size: A4 }</style><html><head><title></title>');
+                        win.document.write('</head><body >');
+                        win.document.write(data);
+                        win.document.write('</body></html>');
+                        win.print();
+                        win.close();
+                        
+                        return true;
+                    }else{
+                        return false
+                    }
+            }}
         });
         var btn_imp = document.getElementsByClassName('btn_imp');
         for(var i=0;i<btn_imp.length;i++){

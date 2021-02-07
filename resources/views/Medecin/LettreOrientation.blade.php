@@ -238,7 +238,7 @@ class="active"
             }
         });
         document.getElementById('btn_submit').addEventListener('click',function(e){
-            if(!document.getElementById('lettre').value == ""){
+            if(!document.getElementById('lettre').value == "" && !!document.getElementById('id_med').value){
                 if(confirm("Voulez-vous d'abord Imprimer la lettre ?")){
                     document.getElementById('content_lettre_imp').innerText = document.getElementById('lettre').value;
                     var frame = document.getElementById('imprimable');

@@ -534,7 +534,7 @@ class MedecinController extends Controller
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
                 $liste_pres_patient = Prescription::all()->where('id_pat',$request->input('id_pat'))->pluck('id_pres');
                 $liste_ligne_pres = Ligneprescription::all()->whereIn('id_pres',$liste_pres_patient);
-                $prescriptions =  Prescription::all()->where('id_pat',$request->input('id_pat'));
+                $prescriptions =  Prescription::orderBy('created_at','DESC')->where('id_pat',$request->input('id_pat'))->get();
                 return view('Medecin.Ordonnances',['isAdmin'=>$isAdmin,'patient'=>$patient,'liste_pres'=>$liste_pres_patient,'ligne_pres'=>$liste_ligne_pres,'prescriptions'=>$prescriptions]);
             }
         }
@@ -707,7 +707,7 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-                $lettres_bs = Lettre::all()->where('type_lettre','certificat de bonne sante');
+                $lettres_bs = Lettre::orderBy('created_at','DESC')->where('type_lettre','certificat de bonne sante')->get();
                 return view('Medecin.CertificatBonneSante',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_bs]);
             }
         }
@@ -750,7 +750,7 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-                $lettres_or = Lettre::all()->where('type_lettre','lettre orientation');
+                $lettres_or = Lettre::orderBy('created_at','DESC')->where('type_lettre','lettre orientation')->get();
                 $medecins = Medecin::all()->where('enService',1)->whereNotIn('id_med',Auth::user()->id_med);
                 return view('Medecin.LettreOrientation',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_or,'medecins'=>$medecins]);
             }
@@ -801,7 +801,7 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-                $lettres_or = Lettre::all()->where('type_lettre','certificat arret travail');
+                $lettres_or = Lettre::orderBy('created_at','DESC')->where('type_lettre','certificat arret travail')->get();
                 $medecins = Medecin::all()->whereNotIn('id_med',Auth::user()->id_med);
                 return view('Medecin.CertificatArretTravail',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_or,'medecins'=>$medecins]);
             }
@@ -849,7 +849,7 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-                $lettres_or = Lettre::all()->where('type_lettre','certificat pneumo phtisiologie');
+                $lettres_or = Lettre::orderBy('created_at','DESC')->where('type_lettre','certificat pneumo phtisiologie')->get();
                 return view('Medecin.CertificatPneumoPhtisiologie',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_or]);
             }
         }
@@ -893,7 +893,7 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-                $lettres_or = Lettre::all()->where('type_lettre','certificat reprise travail');
+                $lettres_or = Lettre::orderBy('created_at','DESC')->where('type_lettre','certificat reprise travail')->get();
                 return view('Medecin.CertificatRepriseTravail',['isAdmin'=>$isAdmin,'patient'=>$patient,'lettres'=>$lettres_or]);
             }
         }

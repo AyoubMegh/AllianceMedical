@@ -77,7 +77,7 @@ class="active"
                                         <div class="col-12">
                                             <table  width="100%" >
                                                 <tr >
-                                                    <td width="25%" colspan="2"><center>Clinique  {{App\Clinique::find(1)->nom}}<br> {{$lettre->created_at}}</center></td>
+                                                    <td width="25%" colspan="2"><center>Clinique  {{App\Clinique::find(1)->nom}}<br> {{$lettre->date_lettre}}</center></td>
                                                     <td width="25%" colspan="2"><center>{{Auth::user()->nom}} {{Auth::user()->prenom}} <br> {{Auth::user()->specialite}} </center></td>
                                                 </tr>
                                                 <tr >
@@ -125,7 +125,7 @@ class="active"
     <div class="col-12">
         <table  width="100%" >
             <tr >
-                <td width="25%" colspan="2"><center>Clinique  {{App\Clinique::find(1)->nom}}<br> {{date('d-m-Y')}}</center></td>
+                <td width="25%" colspan="2"><center>Clinique  {{App\Clinique::find(1)->nom}}<br> <span id="date_lettre_affichage"></span></center></td>
                 <td width="25%" colspan="2"><center>{{Auth::user()->nom}} {{Auth::user()->prenom}} <br> {{Auth::user()->specialite}} </center></td>
             </tr>
             <tr >
@@ -178,6 +178,8 @@ class="active"
         document.getElementById('btn_submit').addEventListener('click',function(e){
             if(!document.getElementById('date_lettre').value == "" && ! document.getElementById('date_rep').value == ""){
                 if(confirm("Voulez-vous d'abord Imprimer le certificat ?")){
+                    document.getElementById('date_lettre_affichage').innerHTML = document.getElementById('date_lettre').value;
+                    document.getElementById('content_lettre').innerText = " "+document.getElementById('date_rep').value+" Fait le "+document.getElementById('date_lettre').value
                     var frame = document.getElementById('imprimable');
                     var data = frame.innerHTML;
                     var win = window.open('', '', 'height=500,width=900');
