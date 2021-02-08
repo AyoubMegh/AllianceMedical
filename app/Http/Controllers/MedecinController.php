@@ -368,7 +368,7 @@ class MedecinController extends Controller
             $secretaire->email = $request->input('email');
             $secretaire->num_tel = $request->input('tel');
             $secretaire->save();
-            return redirect()->back()->with('success', 'Secretaire Mis a jour !');
+            return redirect()->back()->with('success', 'Secretaire Mis à jour !');
         }
     }
     public function mettreAjourProfil(){
@@ -447,7 +447,7 @@ class MedecinController extends Controller
             $patient->email = $request->input('email');
             $patient->num_tel = $request->input('tel');
             $patient->save();
-            return redirect()->back()->with('success', 'Patient Mis a jour !');
+            return redirect()->back()->with('success', 'Patient Mis à jour !');
         }
     }
 
@@ -601,7 +601,7 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Impossible d\'effectuer un Rendez-vous Dans le Passé !'])->withInput();
             }
             if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
-                return Redirect::back()->withErrors(['La fin du RDV neut peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
+                return Redirect::back()->withErrors(['La fin du RDV ne peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
             }
             $RDV = Rendezvous::all()->where('id_med',Auth::user()->id_med);
             $patient = Patient::find($request->input('id_pat'));
@@ -652,7 +652,7 @@ class MedecinController extends Controller
                         return redirect()->back()->with('success', 'Rendez-vous Bien Ajouté ');
                     }else{
                         $medecin_rdv = Medecin::find($request->input('id_med'));
-                        return Redirect::back()->withErrors(['Vous a deja un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' a '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
+                        return Redirect::back()->withErrors(['Vous avez deja un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' a '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
                     }
                 }
             }
@@ -969,7 +969,7 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Impossible d\'effectuer un Rendez-vous Dans le Passé !'])->withInput();
             }
             if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
-                return Redirect::back()->withErrors(['La fin du RDV neut peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
+                return Redirect::back()->withErrors(['La fin du RDV ne peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
             }
             $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'));
             $RDV_sauvegarde = Rendezvous::find($request->input('id_rdv'));
@@ -1000,7 +1000,7 @@ class MedecinController extends Controller
                  $notif->id_med = $RDV_sauvegarde->id_med;
                  $notif->save();
                  /*---------------------------------- */
-                return redirect()->back()->with('success', 'Rendez-Vous Mis a Jour');
+                return redirect()->back()->with('success', 'Rendez-Vous Mis à Jour');
             }else{
                 $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'))->where('date_rdv',$request->input('date_rdv'))->values();
                 if(count($RDV)==0){//Aucun RDV pour Le Medecin Specifié dans la date Specifié
@@ -1030,7 +1030,7 @@ class MedecinController extends Controller
                     $notif->id_med = $RDV_sauvegarde->id_med;
                     $notif->save();
                     /*---------------------------------- */
-                    return redirect()->back()->with('success', 'Rendez-Vous Mis a Jour');
+                    return redirect()->back()->with('success', 'Rendez-Vous Mis à Jour');
                 }else{
                     $pasDeChevauchement = true;
                     $idRdvNonChevauchement = 0;
@@ -1073,7 +1073,7 @@ class MedecinController extends Controller
                         $notif->id_med = $RDV_sauvegarde->id_med;
                         $notif->save();
                         /*---------------------------------- */
-                        return redirect()->back()->with('success', 'Rendez-Vous Mis a Jour');
+                        return redirect()->back()->with('success', 'Rendez-Vous Mis à Jour');
                     }else{
                         $medecin_rdv = Medecin::find($request->input('id_med'));
                         return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a deja un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' a '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
@@ -1122,7 +1122,7 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Impossible d\'effectuer un Rendez-vous Dans le Passé !'])->withInput();
             }
             if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
-                return Redirect::back()->withErrors(['La fin du RDV neut peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
+                return Redirect::back()->withErrors(['La fin du RDV ne peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
             }
             /*Phase Ajouter Patient */
             $patient = new Patient();

@@ -49,12 +49,13 @@
                             </div>
                         </div>
                         <div class="row mt-5">
-                            <div class="col-md-4">
-                                <input type="submit" class="btn btn-primary" value="Mettre A Jour">
+                            <div class="col-md-2">
+                                <input type="submit" class="btn btn-success" value="Mettre à Jour">
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                                 <input type="hidden" name="id_pat" id="id_pat" value="{{$patient->id_pat}}">
                             </div>
+                            
                         </div>
                     </form>
                     <hr>
@@ -65,11 +66,11 @@
                 <div class="row">
                 @if($errors->any())
                     <div class="alert alert-danger col-12 mt-1 mb-0" id="warningSubmit" role="alert">
-                        <ul>
+                    <center> <ul>
                             @foreach($errors->all() as $error)
                             <li>{{$error}}</li>
                             @endforeach
-                        <ul>
+                        <ul></center>
                     </div>
                 @endif
                 @if(session()->has('success'))

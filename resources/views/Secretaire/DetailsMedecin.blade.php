@@ -40,11 +40,11 @@
                 <div class="row">
                 @if($errors->any())
                     <div class="alert alert-danger col-12 mt-1 mb-0" id="warningSubmit" role="alert">
-                        <ul>
+                    <center> <ul>
                             @foreach($errors->all() as $error)
                             <li>{{$error}}</li>
                             @endforeach
-                        <ul>
+                        <ul></center>
                     </div>
                 @endif
                 @if(session()->has('success'))

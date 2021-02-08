@@ -32,7 +32,50 @@
                             <h5>{{$medecin->email}}</h5>
                         </div>
                     </div>
+
+                    <div class="row mt-5">
+                            <div class="col-md-10">
+
+                            <div class="row">
+                                <div class="col">
+                                    <form action="{{route('medecin.listeMedecins')}}" method="get">
+                                        <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
+                                        <input class="btn btn-primary" type="submit" value="Revoire La Liste des Medecins">
+                                     </form>
+                                 </div>
+                            </div>
+                            <div class="col">
+                                <input type="hidden" name="id_med" id="id_med" value="{{$medecin->id_med}}">
+                            </div>
+                            </div>
+                            <div class="col-md-2">
+                                    <div class="row"> 
+                                      <div class="col-md-4">
+                                        <form action="{{route('medecin.mettreAjourMedecinForm')}}" method="get">
+                                        <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                         </form>
+                                      </div>
+                                        <div class="col">
+                                        <form action="{{route('medecin.supprimerMedecin')}}" id="delete_form" method="post">
+                                        <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
+                                        {{ csrf_field() }}
+                                        {{ method_field('PUT') }}
+                                        <button type="submit" id="annuler" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                        </div>
+                                    </div>
+                                
+                                    
+                            </div>
+
+                        </div>
                     <hr>
+
                     <div class="row mt-3">
                         <div class="col-md-12"><center><h3><u>Liste des Rendez-vous du Medecin :</u></h3></center></div>
                     </div>
@@ -40,11 +83,11 @@
                 <div class="row">
                 @if($errors->any())
                     <div class="alert alert-danger col-12 mt-1 mb-0" id="warningSubmit" role="alert">
-                        <ul>
+                       <center> <ul>
                             @foreach($errors->all() as $error)
                             <li>{{$error}}</li>
                             @endforeach
-                        <ul>
+                        <ul> </center>
                     </div>
                 @endif
                 @if(session()->has('success'))

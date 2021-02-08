@@ -26,16 +26,16 @@ class="active"
                 </div>
                 @if($errors->any())
                     <div class="alert alert-danger" id="warningSubmit" role="alert">
-                        <ul>
+                    <center><ul>
                         @foreach($errors->all() as $error)
                         <li>{{$error}}</li>
                         @endforeach
-                        <ul>
+                        <ul></center>
                     </div>
                 @endif
                 @if(session()->has('success'))
                     <div class="alert alert-success">
-                        {{ session()->get('success') }}
+                    <center> {{ session()->get('success') }}</center>
                     </div>
                 @endif
                 <input type="hidden" name="id_pat" value="{{$patient->id_pat}}">

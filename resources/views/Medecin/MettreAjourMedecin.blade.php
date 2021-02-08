@@ -2,7 +2,7 @@
 @section('content')
 <div class="container center-div">
 <!-- action="{{route('medecin.ajouterMedecin')}}" -->
-    <center><h1>Mettre a Jour Medecin</h1></center>
+    <center><h1>Mettre à Jour Medecin</h1></center>
     <form action="{{route('medecin.mettreAjourMedecin')}}" method="post">
     {{ csrf_field() }}
     {{ method_field('PUT') }}
@@ -32,22 +32,32 @@
         <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
         @if($errors->any())
             <div class="alert alert-danger" id="warningSubmit" role="alert">
-                <ul>
+               <center> <ul>
                 @foreach($errors->all() as $error)
                 <li>{{$error}}</li>
                 @endforeach
-                <ul>
+                <ul> </center>
             </div>
          @endif
          @if(session()->has('success'))
             <div class="alert alert-success">
-                {{ session()->get('success') }}
+                <center>{{ session()->get('success') }} </center>
             </div>
         @endif
-        <div class="form-group mt-5">
+         <div class="form-group mt-5">
             <button type="submit" class="btn btn-success">Mettre à Jour</button>
             <button type="reset" class="btn btn-dark">Vider</button>
         </div>
     </form>
+    <div class="row mt-5">
+    <div class="col-md-10">
+    </div>
+        <div class="col-md-2">
+            <form action="{{route('medecin.detailsMedecin')}}" method="get">
+                 <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
+                 <input class="btn btn-primary" type="submit" value="Revoire Le détail du Medecin ?">
+             </form>
+        </div>
+    </div>
 </div>
 @endsection

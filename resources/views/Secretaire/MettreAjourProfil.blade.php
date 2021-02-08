@@ -30,21 +30,21 @@
         <input type="hidden" name="id_sec" value="{{$secretaire->id_sec}}">
         @if($errors->any())
             <div class="alert alert-danger" id="warningSubmit" role="alert">
-                <ul>
+            <center><ul>
                 @foreach($errors->all() as $error)
                 <li>{{$error}}</li>
                 @endforeach
-                <ul>
+                <ul></center>
             </div>
          @endif
          @if(session()->has('success'))
             <div class="alert alert-success">
-                {{ session()->get('success') }}
+            <center> {{ session()->get('success') }} </center>
             </div>
         @endif
         <div class="form-group mt-5">
             <button type="submit" class="btn btn-success">Modifier</button>
         </div>
     </form>
-    
+</div>
 @endsection

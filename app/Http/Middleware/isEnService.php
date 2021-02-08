@@ -21,7 +21,7 @@ class isEnService
             if(count($medecin)==1){
                 return $next($request);
             }else{
-                return redirect(route('medecin.login'))->withErrors(['Vous ne plus partie de l\'organisation!']);
+                return redirect(route('medecin.login'))->withErrors(['Vous ne faites plus partie de l\'organisation!']);
             }
         }else{
             return redirect(route('medecin.login'))->withErrors(['Champ Login Obligatoire']);
