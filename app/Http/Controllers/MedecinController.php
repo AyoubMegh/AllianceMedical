@@ -35,6 +35,9 @@ class MedecinController extends Controller
     }
     public function statistiques(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         /*------------------------------- */
         $query_rdv_year = 'SELECT COUNT(*) as NOMBRE ,MONTH(date_rdv) as MOIS FROM rendezvouss WHERE YEAR(date_rdv)=YEAR(NOW()) GROUP BY MONTH(date_rdv) ORDER BY MONTH(date_rdv) ';
         $rdvs_year = DB::select($query_rdv_year);
@@ -101,6 +104,9 @@ class MedecinController extends Controller
 
     public function listeMedecins(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         if(is_null($request->input('nom_med'))){
             $medecins = Medecin::all()->where('enService',1)->whereNotIn('id_med',Auth::user()->id_med);
         }else{
@@ -113,6 +119,9 @@ class MedecinController extends Controller
     }
     public function listeSecretaires(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         if(is_null($request->input('nom_sec'))){
             $secretaires = Secretaire::all();
         }else{
@@ -178,15 +187,25 @@ class MedecinController extends Controller
 
     public function ajouterMedecinForm(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         return view('Medecin.AjouterMedecin',['isAdmin'=>$isAdmin]);
     }
 
     public function ajouterSecretaireForm(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         return view('Medecin.AjouterSecretaire',['isAdmin'=>$isAdmin]);
     }
 
     public function ajouterMedecin(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         $validator = Validator::make($request->all(),[
             'nom' => 'required|min:3|max:255',
             'prenom' => 'required|min:3|max:255',
@@ -229,6 +248,10 @@ class MedecinController extends Controller
         }
     }
     public function supprimerMedecin(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         $validator = Validator::make($request->all(),[
             'id_med' => 'required'
         ]);
@@ -242,6 +265,10 @@ class MedecinController extends Controller
         }
     }
     public function MettreAjourMedecinForm(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         $validator = Validator::make($request->all(),[
             'id_med' => 'required'
         ]);
@@ -258,6 +285,10 @@ class MedecinController extends Controller
         }
     }
     public function mettreAjourMedecin(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         $id_med=$request->input('id_med');
         $validator = Validator::make($request->all(),[
             'id_med'=>'required',
@@ -282,6 +313,10 @@ class MedecinController extends Controller
     }
 
     public function ajouterSecretaire(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         $validator = Validator::make($request->all(),[
             'nom' => 'required|min:3|max:255',
             'prenom' => 'required|min:3|max:255',
@@ -321,6 +356,10 @@ class MedecinController extends Controller
         }
     }
     public function supprimerSecretaire(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         $validator = Validator::make($request->all(),[
             'id_sec' => 'required'
         ]);
@@ -333,6 +372,10 @@ class MedecinController extends Controller
         }
     }
     public function MettreAjourSecretaireForm(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         $validator = Validator::make($request->all(),[
             'id_sec' => 'required'
         ]);
@@ -349,6 +392,10 @@ class MedecinController extends Controller
         }
     }
     public function mettreAjourSecretaire(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         $id_sec=$request->input('id_sec');
         $validator = Validator::make($request->all(),[
             'id_sec'=>'required',
@@ -603,6 +650,24 @@ class MedecinController extends Controller
             if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
                 return Redirect::back()->withErrors(['La fin du RDV ne peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
             }
+            /*--------------------------------------------------------------- */
+            $RDV_Patient = Rendezvous::all()->where('id_pat',$request->input('id_pat'))->where('date_rdv',$request->input('date_rdv'))->values();
+            $pasDeChevauchement_Patient = true;
+            $idRdvNonChevauchement_Patient = 0;
+            for($i=0;$i<count($RDV_Patient);$i++){
+                if(!(
+                    (strtotime($request->input('heure_deb'))<strtotime($RDV_Patient->get($i)->heure_debut) && strtotime($request->input('heure_fin'))<=strtotime($RDV_Patient->get($i)->heure_debut))
+                    ||
+                    (strtotime($request->input('heure_deb'))>=strtotime($RDV_Patient->get($i)->heure_fin) && (strtotime($request->input('heure_fin'))>strtotime($RDV_Patient->get($i)->heure_fin)))
+                )){
+                    $pasDeChevauchement_Patient = false;
+                    $idRdvNonChevauchement_Patient = $i;
+                }
+            }
+            if(!$pasDeChevauchement_Patient){
+                return Redirect::back()->withErrors(['Le Patient a Deja un Rendez-Vous  de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
+            }
+            /*--------------------------------------------------------------- */
             $RDV = Rendezvous::all()->where('id_med',Auth::user()->id_med);
             $patient = Patient::find($request->input('id_pat'));
             if(count($RDV)==0){//Aucun RDV pour le Medecin Specifié
@@ -971,6 +1036,31 @@ class MedecinController extends Controller
             if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
                 return Redirect::back()->withErrors(['La fin du RDV ne peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
             }
+            /*--------------------------------------------------------------- */
+            $RDV_sauvegarde_patient = Rendezvous::find($request->input('id_rdv'));
+            if( strtotime($RDV_sauvegarde_patient->date_rdv)!=strtotime($request->input('date_rdv')) ||
+                strtotime($RDV_sauvegarde_patient->heure_debut)!=strtotime($request->input('heure_deb')) || 
+                strtotime($RDV_sauvegarde_patient->heure_fin)!=strtotime($request->input('heure_fin'))
+                ){
+                $RDV_sauvegarde_patient_id_pat = Rendezvous::find($request->input('id_rdv'))->id_pat;
+                $RDV_Patient = Rendezvous::all()->where('id_pat',$RDV_sauvegarde_patient_id_pat)->where('date_rdv',$request->input('date_rdv'))->values();
+                $pasDeChevauchement_Patient = true;
+                $idRdvNonChevauchement_Patient = 0;
+                for($i=0;$i<count($RDV_Patient);$i++){
+                    if(!(
+                        (strtotime($request->input('heure_deb'))<strtotime($RDV_Patient->get($i)->heure_debut) && strtotime($request->input('heure_fin'))<=strtotime($RDV_Patient->get($i)->heure_debut))
+                        ||
+                        (strtotime($request->input('heure_deb'))>=strtotime($RDV_Patient->get($i)->heure_fin) && (strtotime($request->input('heure_fin'))>strtotime($RDV_Patient->get($i)->heure_fin)))
+                    )){
+                        $pasDeChevauchement_Patient = false;
+                        $idRdvNonChevauchement_Patient = $i;
+                    }
+                }
+                if(!$pasDeChevauchement_Patient){
+                    return Redirect::back()->withErrors(['Le Patient '.Patient::find($RDV_sauvegarde_patient_id_pat)->nom.' '.Patient::find($RDV_sauvegarde_patient_id_pat)->prenom.' a Deja un Rendez-Vous le '.$request->input('date_rdv').' de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
+                }
+            }
+            /*--------------------------------------------------------------- */
             $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'));
             $RDV_sauvegarde = Rendezvous::find($request->input('id_rdv'));
             if(count($RDV)==0){//Aucun RDV pour le Medecin Specifié
@@ -1084,6 +1174,10 @@ class MedecinController extends Controller
     }
 
     public function detailsMedecin(Request $request){
+        $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
+        if(!$isAdmin){
+            return redirect(route('medecin.dashboard'));
+        }
         $validator = Validator::make($request->all(),[
             'id_med' => 'required'
         ]);

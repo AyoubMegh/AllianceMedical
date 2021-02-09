@@ -106,7 +106,7 @@ class SecretaireController extends Controller
         }else{
             $patient = Patient::find($request->input('id_pat'));
             if(is_null($patient)){
-               return Redirect::back()->withErrors(['Patient Intouvable']);
+               return redirect(route('secretaire.listePatients'))->withErrors(['Patient Intouvable']);
             }else{
                 $rdv = Rendezvous::all()->where('id_pat',$request->input('id_pat'));
                 $medecins = Medecin::all()->where('enService',1);
@@ -261,6 +261,25 @@ class SecretaireController extends Controller
             if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
                 return Redirect::back()->withErrors(['La fin du RDV neut peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
             }
+            /*--------------------------------------------------------------- */
+            $RDV_Patient = Rendezvous::all()->where('id_pat',$request->input('id_pat'))->where('date_rdv',$request->input('date_rdv'))->values();
+            $pasDeChevauchement_Patient = true;
+            $idRdvNonChevauchement_Patient = 0;
+            for($i=0;$i<count($RDV_Patient);$i++){
+                if(!(
+                    (strtotime($request->input('heure_deb'))<strtotime($RDV_Patient->get($i)->heure_debut) && strtotime($request->input('heure_fin'))<=strtotime($RDV_Patient->get($i)->heure_debut))
+                    ||
+                    (strtotime($request->input('heure_deb'))>=strtotime($RDV_Patient->get($i)->heure_fin) && (strtotime($request->input('heure_fin'))>strtotime($RDV_Patient->get($i)->heure_fin)))
+                )){
+                    $pasDeChevauchement_Patient = false;
+                    $idRdvNonChevauchement_Patient = $i;
+                }
+            }
+            if(!$pasDeChevauchement_Patient){
+                $medecin_rdv = Medecin::find($request->input('id_med'));
+                return Redirect::back()->withErrors(['Le Patient a Deja un Rendez-Vous Avec Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' le '.$request->input('date_rdv').' de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
+            }
+            /*--------------------------------------------------------------- */
             $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'));
             $patient = Patient::find($request->input('id_pat'));
             $id_sec = Auth::user()->id_sec;
@@ -396,6 +415,32 @@ class SecretaireController extends Controller
             if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
                 return Redirect::back()->withErrors(['La fin du RDV neut peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
             }
+            /*--------------------------------------------------------------- */
+            $RDV_sauvegarde_patient = Rendezvous::find($request->input('id_rdv'));
+            if( strtotime($RDV_sauvegarde_patient->date_rdv)!=strtotime($request->input('date_rdv')) ||
+                strtotime($RDV_sauvegarde_patient->heure_debut)!=strtotime($request->input('heure_deb')) || 
+                strtotime($RDV_sauvegarde_patient->heure_fin)!=strtotime($request->input('heure_fin'))
+              ){
+                $RDV_sauvegarde_patient_id_pat = Rendezvous::find($request->input('id_rdv'))->id_pat;
+                $RDV_Patient = Rendezvous::all()->where('id_pat',$RDV_sauvegarde_patient_id_pat)->where('date_rdv',$request->input('date_rdv'))->values();
+                $pasDeChevauchement_Patient = true;
+                $idRdvNonChevauchement_Patient = 0;
+                for($i=0;$i<count($RDV_Patient);$i++){
+                    if(!(
+                        (strtotime($request->input('heure_deb'))<strtotime($RDV_Patient->get($i)->heure_debut) && strtotime($request->input('heure_fin'))<=strtotime($RDV_Patient->get($i)->heure_debut))
+                        ||
+                        (strtotime($request->input('heure_deb'))>=strtotime($RDV_Patient->get($i)->heure_fin) && (strtotime($request->input('heure_fin'))>strtotime($RDV_Patient->get($i)->heure_fin)))
+                    )){
+                        $pasDeChevauchement_Patient = false;
+                        $idRdvNonChevauchement_Patient = $i;
+                    }
+                }
+                if(!$pasDeChevauchement_Patient){
+                    $medecin_rdv = Medecin::find($request->input('id_med'));
+                    return Redirect::back()->withErrors(['Le Patient a Deja un Rendez-Vous Avec Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' le '.$request->input('date_rdv').' de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
+                }
+            }
+            /*--------------------------------------------------------------- */
             $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'));
             $RDV_sauvegarde = Rendezvous::find($request->input('id_rdv'));
             if(count($RDV)==0){//Aucun RDV pour le Medecin Specifié
