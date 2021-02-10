@@ -100,6 +100,8 @@ class="active"
                             <tr>
                                 <th>Nom et Prenom Medecin</th>
                                 <th>Date et Heure du Certificat</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
                                 <th>Imprimer</th>
                             </tr>
                         </thead>
@@ -108,6 +110,43 @@ class="active"
                                 <tr>
                                     <td>DR. {{App\Medecin::find($lettre->id_med)->nom}} {{App\Medecin::find($lettre->id_med)->prenom}}</td>
                                     <td>{{$lettre->created_at}}</td>
+                                    <td>
+                                        <center><button class="btn" id="modifier_{{$lettre->id_lettre}}" data-toggle="modal" data-target="#lettre_{{$lettre->id_lettre}}"><i class="fas fa-edit"></i></button></center>
+                                        <div class="modal fade" id="lettre_{{$lettre->id_lettre}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title" id="exampleModalLabel">Modifier Certificat Bonne Sante</h5>
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group" id="form_certificat">
+                                                        <label for="date_cert">Date Du Certificat:</label>
+                                                        <div class="row" >
+                                                            <div class="col">
+                                                                <input type="date" class="form-control" name="date_lettre" id="date_lettre" value="{{$lettre->date_lettre}}" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                   <button type="button" class="btn btn-primary">Modifier</button>
+                                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                    </td>
+                                    <td>
+                                        <form action="{{route('medecin.supprimerLettre')}}" id="delete_form_{{$lettre->id_lettre}}" method="post">
+                                            {{ csrf_field() }}
+                                            {{method_field('DELETE')}}
+                                            <input type="hidden" name="id_lettre" value="{{$lettre->id_lettre}}">
+                                            <center><button type="submit" class="btn btn_supp" id="annuler_{{$lettre->id_lettre}}"><i class="fas fa-trash-alt"></i></button></center>
+                                        </form>
+                                    </td>
                                     <td>
                                         <center><button class="btn btn_imp" id="{{$lettre->id_lettre}}"><i class="fas fa-print"></i></button></center>
                                         <div id="imprimable_divers_{{$lettre->id_lettre}}" class="row d-none" style="position:relative;" > <!--class="d-none"-->      
@@ -223,6 +262,24 @@ class="active"
                 })
             })(i);
         }
+
+        var btn_supp = document.getElementsByClassName('btn_supp');
+        for(var i=0;i<btn_imp.length;i++){
+            (function(index) {
+                btn_supp[index].addEventListener("click", function(e) {
+                    e.preventDefault();
+                    val = this.getAttribute('id');
+                    var id_form_delete = val.split('_').pop();
+                    if(confirm('Voulez Vous Vraiment Effectuer Cette Action ?')){
+                        document.getElementById('delete_form_'+id_form_delete).submit();
+                    }else{
+                        return false;
+                    }
+                })
+            })(i);
+        }
+       
     }
+
 </script>
 @endsection

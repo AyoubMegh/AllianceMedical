@@ -183,6 +183,8 @@ Route::get('/DashMed/{id_med}',function($id_med){
         }
         return $result;
     })->name('medecin.eventsPatient');
+    /*Supprimer mettre a jour lettre */
+    Route::delete('/SupprimerLettre','MedecinController@SupprimerLettre')->name('medecin.supprimerLettre');
 
 });
 

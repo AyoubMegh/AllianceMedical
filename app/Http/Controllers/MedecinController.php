@@ -1372,9 +1372,32 @@ class MedecinController extends Controller
                     $ligne->duree = $request->input('duree');
                     $ligne->id_pres = $request->input('id_pres');
                     $ligne->save();
-                    return Redirect::back()->with('success', 'Ligne Prescription Bien Ajouter!');
+                    return Redirect::back()->with('success', 'Ligne Prescription Bien Ajouté!');
                 }
              }
+         }
+    }
+    public function SupprimerLettre(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_lettre'=>'required',
+         ]);
+         if ($validator->fails()) {
+             return Redirect::back()->withErrors($validator);
+         }else{
+            $lettre = Lettre::find($request->input('id_lettre'));
+            if(!is_null($lettre)){
+                if(Auth::user()->id_med==$lettre->id_med){
+                    if($lettre->delete()){
+                        return Redirect::back()->with('success', 'Lettre Bien Supprimé!');
+                    }else{
+                        return Redirect::back()->withErrors(['Impossible de Supprimer La Lettre !']);
+                    }
+                }else{
+                    return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
+                }
+            }else{
+                return Redirect::back()->withErrors(['Lettre Intouvable!']);
+            }
          }
     }
 }

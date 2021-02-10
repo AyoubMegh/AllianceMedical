@@ -17,11 +17,15 @@ class isEnService
     public function handle($request, Closure $next)
     {
         if(!is_null($request->input('login'))){
-            $medecin = Medecin::all()->where('login',$request->input('login'))->where('enService',1);
+            $medecin = Medecin::all()->where('login',$request->input('login'))->values();
             if(count($medecin)==1){
-                return $next($request);
+                if($medecin->get(0)->enService == 1){
+                    return $next($request);
+                }else{
+                    return redirect(route('medecin.login'))->withErrors(['Vous ne faites plus partie de l\'organisation !']);
+                }
             }else{
-                return redirect(route('medecin.login'))->withErrors(['Vous ne faites plus partie de l\'organisation!']);
+                return redirect(route('medecin.login'))->withErrors(['Login Introuvable !']);
             }
         }else{
             return redirect(route('medecin.login'))->withErrors(['Champ Login Obligatoire']);

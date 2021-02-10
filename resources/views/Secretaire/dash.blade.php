@@ -22,7 +22,7 @@
 </div>
 @foreach ($meds as $med)
 <div id="imprimable_{{$med->id_med}}" class="d-none">
-    <center><h1>Liste Des Rendez-Vous</h1></center>
+    <center><h1>Liste Des Rendez-Vous (DR.{{$med->nom}} {{$med->prenom}})</h1></center>
     <table width="100%" border="1">
         <thead>
             <tr>
