@@ -1043,7 +1043,7 @@ class MedecinController extends Controller
                 strtotime($RDV_sauvegarde_patient->heure_fin)!=strtotime($request->input('heure_fin'))
                 ){
                 $RDV_sauvegarde_patient_id_pat = Rendezvous::find($request->input('id_rdv'))->id_pat;
-                $RDV_Patient = Rendezvous::all()->where('id_pat',$RDV_sauvegarde_patient_id_pat)->where('date_rdv',$request->input('date_rdv'))->values();
+                $RDV_Patient = Rendezvous::all()->where('id_pat',$RDV_sauvegarde_patient_id_pat)->where('date_rdv',$request->input('date_rdv'))->where('id_rdv','!=',$request->input('id_rdv'))->values();
                 $pasDeChevauchement_Patient = true;
                 $idRdvNonChevauchement_Patient = 0;
                 for($i=0;$i<count($RDV_Patient);$i++){

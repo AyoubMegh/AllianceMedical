@@ -276,8 +276,7 @@ class SecretaireController extends Controller
                 }
             }
             if(!$pasDeChevauchement_Patient){
-                $medecin_rdv = Medecin::find($request->input('id_med'));
-                return Redirect::back()->withErrors(['Le Patient a Deja un Rendez-Vous Avec Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' le '.$request->input('date_rdv').' de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
+                return Redirect::back()->withErrors(['Le Patient a Deja un Rendez-Vous  de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
             }
             /*--------------------------------------------------------------- */
             $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'));
@@ -420,9 +419,10 @@ class SecretaireController extends Controller
             if( strtotime($RDV_sauvegarde_patient->date_rdv)!=strtotime($request->input('date_rdv')) ||
                 strtotime($RDV_sauvegarde_patient->heure_debut)!=strtotime($request->input('heure_deb')) || 
                 strtotime($RDV_sauvegarde_patient->heure_fin)!=strtotime($request->input('heure_fin'))
+
               ){
                 $RDV_sauvegarde_patient_id_pat = Rendezvous::find($request->input('id_rdv'))->id_pat;
-                $RDV_Patient = Rendezvous::all()->where('id_pat',$RDV_sauvegarde_patient_id_pat)->where('date_rdv',$request->input('date_rdv'))->values();
+                $RDV_Patient = Rendezvous::all()->where('id_pat',$RDV_sauvegarde_patient_id_pat)->where('date_rdv',$request->input('date_rdv'))->where('id_rdv','!=',$request->input('id_rdv'))->values();
                 $pasDeChevauchement_Patient = true;
                 $idRdvNonChevauchement_Patient = 0;
                 for($i=0;$i<count($RDV_Patient);$i++){
@@ -436,8 +436,7 @@ class SecretaireController extends Controller
                     }
                 }
                 if(!$pasDeChevauchement_Patient){
-                    $medecin_rdv = Medecin::find($request->input('id_med'));
-                    return Redirect::back()->withErrors(['Le Patient a Deja un Rendez-Vous Avec Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' le '.$request->input('date_rdv').' de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
+                    return Redirect::back()->withErrors(['Le Patient '.Patient::find($RDV_sauvegarde_patient_id_pat)->nom.' '.Patient::find($RDV_sauvegarde_patient_id_pat)->prenom.' a Deja un Rendez-Vous le '.$request->input('date_rdv').' de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
                 }
             }
             /*--------------------------------------------------------------- */
