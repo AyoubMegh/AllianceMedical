@@ -562,7 +562,7 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Patient Intouvable']);
             }else{
                 $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-                $images = Image::all()->where('id_pat',$request->input('id_pat'))->sortByDesc('created_at');
+                $images = Image::all()->where('id_pat',$request->input('id_pat'))->sortByDesc('created_at')->values();
                 return view('Medecin.Imageries',['isAdmin'=>$isAdmin,'patient'=>$patient,'images'=>$images]);
             }
         }
