@@ -183,9 +183,10 @@ Route::get('/DashMed/{id_med}',function($id_med){
         }
         return $result;
     })->name('medecin.eventsPatient');
-    /*Supprimer mettre a jour lettre */
+    /*Supprimer mettre a jour lettre et prescription */
     Route::delete('/SupprimerLettre','MedecinController@SupprimerLettre')->name('medecin.supprimerLettre');
-    
+    Route::delete('/SupprimerOrdonnance','MedecinController@SupprimerOrdonnance')->name('medecin.supprimerOrdonnance');
+
     Route::put('/MAJCertificatBonneSante','MedecinController@MAJCertificatBS')->name('medecin.majCertificatBS');
     Route::put('/MAJCertificatPneumoPhtisiologie','MedecinController@MAJCertificatPP')->name('medecin.majCertificatPP');
     Route::put('/MAJCertificatRepriseTravail','MedecinController@MAJCertificatRT')->name('medecin.majCertificatRT');

@@ -1517,4 +1517,27 @@ class MedecinController extends Controller
          }
         
     }
+    public function SupprimerOrdonnance(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_pres'=>'required',
+         ]);
+         if ($validator->fails()) {
+             return Redirect::back()->withErrors($validator);
+         }else{
+            $pres = Prescription::find($request->input('id_pres'));
+            if(!is_null($pres)){
+                if(Auth::user()->id_med==$pres->id_med){
+                    if($pres->delete()){
+                        return Redirect::back()->with('success', 'Ordonnance Bien Supprimé!');
+                    }else{
+                        return Redirect::back()->withErrors(['Impossible de Supprimer L\'Ordonnance !']);
+                    }
+                }else{
+                    return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
+                }
+            }else{
+                return Redirect::back()->withErrors(['Ordonnance Intouvable!']);
+            }
+         }
+    }
 }

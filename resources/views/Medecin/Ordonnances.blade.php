@@ -133,6 +133,7 @@ class="active"
                                                 <th>Date et Heure Ordonnance</th>
                                                 <th>Details Prescription</th>
                                                 <th>Imprimer</th>
+                                                <th>Supprimer</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -289,6 +290,14 @@ class="active"
                                                             </center>
                                                         </div>
                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <form action="{{route('medecin.supprimerOrdonnance')}}" id="delete_form_{{$prs->id_pres}}" method="post">
+                                                        {{ csrf_field() }}
+                                                        {{method_field('DELETE')}}
+                                                        <input type="hidden" name="id_pres" value="{{$prs->id_pres}}">
+                                                        <center><button type="submit" class="btn btn_supp" id="annuler_{{$prs->id_pres}}"><i class="fas fa-trash-alt"></i></button></center>
+                                                    </form>
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -503,6 +512,21 @@ class="active"
                          });
                     })
                 })(i);
+                }
+                var btn_supp = document.getElementsByClassName('btn_supp');
+                for(var i=0;i<btn_supp.length;i++){
+                    (function(index) {
+                        btn_supp[index].addEventListener("click", function(e) {
+                            e.preventDefault();
+                            val = this.getAttribute('id');
+                            var id_form_delete = val.split('_').pop();
+                            if(confirm('Voulez Vous Vraiment Effectuer Cette Action ?')){
+                                document.getElementById('delete_form_'+id_form_delete).submit();
+                            }else{
+                                return false;
+                            }
+                        })
+                    })(i);
                 }
                 </script>
 @endsection

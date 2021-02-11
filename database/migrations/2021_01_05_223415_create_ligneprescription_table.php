@@ -21,7 +21,7 @@ class CreateLigneprescriptionTable extends Migration
             $table->string('duree');
             $table->timestamps();
             $table->integer('id_pres')->unsigned();
-            $table->foreign('id_pres')->references('id_pres')->on('prescriptions');
+            $table->foreign('id_pres')->references('id_pres')->on('prescriptions')->onDelete('cascade');
         });
     }
 
