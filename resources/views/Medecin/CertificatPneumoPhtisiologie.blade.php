@@ -81,18 +81,23 @@ class="active"
                                                     <span aria-hidden="true">&times;</span>
                                                   </button>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <div class="form-group" id="form_certificat">
-                                                        <label for="date_cert">Date Du Certificat:</label>
-                                                        <div class="row" >
-                                                            <div class="col">
-                                                                <input type="date" class="form-control" name="date_lettre" id="date_lettre" value="{{$lettre->date_lettre}}" required>
+                                                <form action="{{route('medecin.majCertificatPP')}}" method="post">
+                                                    {{csrf_field() }}
+                                                    {{method_field('PUT')}}
+                                                    <div class="modal-body">
+                                                        <div class="form-group" id="form_certificat">
+                                                            <label for="date_cert">Date Du Certificat:</label>
+                                                            <div class="row" >
+                                                                <div class="col">
+                                                                    <input type="date" class="form-control" name="date_lettre" id="date_lettre" value="{{$lettre->date_lettre}}" required>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                   <button type="button" class="btn btn-primary">Modifier</button>
+                                                    <input type="hidden" name="id_lettre" value="{{$lettre->id_lettre}}">
+                                                    <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">Modifier</button>
+                                                </form>
                                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                                                 </div>
                                               </div>

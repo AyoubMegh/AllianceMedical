@@ -1400,4 +1400,121 @@ class MedecinController extends Controller
             }
          }
     }
+    public function MAJCertificatBS(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_lettre'=>'required',
+            'date_lettre'=>'required'
+         ]);
+         if ($validator->fails()) {
+             return Redirect::back()->withErrors($validator);
+         }else{
+            $lettre = Lettre::find($request->input('id_lettre'));
+            if(!is_null($lettre)){
+                if(Auth::user()->id_med==$lettre->id_med){
+                   $lettre->date_lettre = $request->input('date_lettre');
+                   $lettre->save();
+                   return Redirect::back()->with('success', 'Certificat de Bonne Santé Bien Modifié !');
+                }else{
+                    return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
+                }
+            }else{
+                return Redirect::back()->withErrors(['Lettre Intouvable!']);
+            }
+         }
+    }
+    public function MAJCertificatPP(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_lettre'=>'required',
+            'date_lettre'=>'required'
+         ]);
+         if ($validator->fails()) {
+             return Redirect::back()->withErrors($validator);
+         }else{
+            $lettre = Lettre::find($request->input('id_lettre'));
+            if(!is_null($lettre)){
+                if(Auth::user()->id_med==$lettre->id_med){
+                   $lettre->date_lettre = $request->input('date_lettre');
+                   $lettre->save();
+                   return Redirect::back()->with('success', 'Certificat de Pneumo Phtisiologie Bien Modifié !');
+                }else{
+                    return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
+                }
+            }else{
+                return Redirect::back()->withErrors(['Lettre Intouvable!']);
+            }
+         }
+    }
+    public function MAJCertificatRT(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_lettre'=>'required',
+            'date_lettre'=>'required',
+            'contenu'=>'required'
+         ]);
+         if ($validator->fails()) {
+             return Redirect::back()->withErrors($validator);
+         }else{
+            $lettre = Lettre::find($request->input('id_lettre'));
+            if(!is_null($lettre)){
+                if(Auth::user()->id_med==$lettre->id_med){
+                   $lettre->date_lettre = $request->input('date_lettre');
+                   $lettre->contenu = $request->input('contenu');
+                   $lettre->save();
+                   return Redirect::back()->with('success', 'Certificat de Reprise Bien Modifié !');
+                }else{
+                    return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
+                }
+            }else{
+                return Redirect::back()->withErrors(['Lettre Intouvable!']);
+            }
+         }
+        
+    }
+    public function MAJCertificatAT(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_lettre'=>'required',
+            'contenu'=>'required'
+         ]);
+         if ($validator->fails()) {
+             return Redirect::back()->withErrors($validator);
+         }else{
+            $lettre = Lettre::find($request->input('id_lettre'));
+            if(!is_null($lettre)){
+                if(Auth::user()->id_med==$lettre->id_med){
+                   $lettre->date_lettre = date('Y-m-d');
+                   $lettre->contenu = $request->input('contenu');
+                   $lettre->save();
+                   return Redirect::back()->with('success', 'Certificat d\'arret de Travail Bien Modifié !');
+                }else{
+                    return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
+                }
+            }else{
+                return Redirect::back()->withErrors(['Lettre Intouvable!']);
+            }
+         }
+        
+    }
+    public function MAJLettreOrientation(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_lettre'=>'required',
+            'contenu'=>'required'
+         ]);
+         if ($validator->fails()) {
+             return Redirect::back()->withErrors($validator);
+         }else{
+            $lettre = Lettre::find($request->input('id_lettre'));
+            if(!is_null($lettre)){
+                if(Auth::user()->id_med==$lettre->id_med){
+                   $lettre->date_lettre =date('Y-m-d');
+                   $lettre->contenu = $request->input('contenu');
+                   $lettre->save();
+                   return Redirect::back()->with('success', 'Lettre Orientation Bien Modifié !');
+                }else{
+                    return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
+                }
+            }else{
+                return Redirect::back()->withErrors(['Lettre Intouvable!']);
+            }
+         }
+        
+    }
 }

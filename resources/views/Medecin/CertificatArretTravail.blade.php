@@ -117,14 +117,19 @@ class="active"
                                                     <span aria-hidden="true">&times;</span>
                                                   </button>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        <label for="date_cert">Contenu  :</label>
-                                                        <textarea class="form-control" name="contenu" id="contenu" cols="30" rows="10">{{$lettre->contenu}}</textarea>
+                                                <form action="{{route('medecin.majCertificatAT')}}" method="post">
+                                                    {{csrf_field() }}
+                                                    {{method_field('PUT')}}
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="date_cert">Contenu  :</label>
+                                                            <textarea class="form-control" name="contenu" id="contenu" cols="30" rows="10">{{$lettre->contenu}}</textarea>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                   <button type="button" class="btn btn-primary">Modifier</button>
+                                                    <input type="hidden" name="id_lettre" value="{{$lettre->id_lettre}}">
+                                                    <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">Modifier</button>
+                                                </form>
                                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                                                 </div>
                                               </div>
