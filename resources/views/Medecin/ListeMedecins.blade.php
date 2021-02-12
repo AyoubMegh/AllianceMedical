@@ -55,7 +55,7 @@
                             <th>Nom et Prenom</th>
                             <th>Téléphone</th>
                             <th>Details</th>
-                            <th>Mettre a Jour</th>
+                            <th>Mettre à Jour</th>
                             <th>Supprimer</th>
                         </tr>
                     </thead>

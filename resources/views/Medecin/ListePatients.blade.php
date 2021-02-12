@@ -17,7 +17,7 @@
                             <form action="{{route('medecin.listePatients')}}" method="GET">
                                 <div class="row">
                                     <div class="col-10 mt-1">
-                                        <input type="search" name="num_ss" class="form-control form-control-sm" placeholder="N° Sécurité Sociale" aria-controls="dataTable">
+                                        <input type="search" name="nom" class="form-control form-control-sm" placeholder="Nom de Patient" aria-controls="dataTable">
                                     </div>
                                     <div class="col-2">
                                         <button type="submit" class="btn btn-submit" style="background-color: #2146b7"><i class="fa fa-search-plus" style="color: white"></i></button>

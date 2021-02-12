@@ -82,7 +82,7 @@ class MedecinController extends Controller
         }else{
             $notif = Notification::find($request->input('id_notif'));
             if($notif->delete()){
-                return redirect()->back()->with('success', 'Notification Supprimé !');
+                return redirect()->back()->with('success', 'Notification Supprimée !');
             }else{
                 return redirect(route('medecin.notifications'))->withErrors(['Impossible de Supprimer La notification !']);
             }
@@ -91,10 +91,10 @@ class MedecinController extends Controller
     }
     public function listePatients(Request $request){
         $isAdmin = Auth::user()->id_med==Clinique::find(1)->id_med_res;
-        if(is_null($request->input('num_ss'))){
+        if(is_null($request->input('nom'))){
             $patients = Patient::all();
         }else{
-            $patients = Patient::all()->where('num_ss',$request->input('num_ss'));
+            $patients = Patient::all()->where('nom',$request->input('nom'));
             if(count($patients)==0){
                 return redirect(route('medecin.listePatients'))->withErrors(['Patient Introuvable !']);
             }
@@ -308,7 +308,7 @@ class MedecinController extends Controller
             $medecin->email = $request->input('email');
             $medecin->num_tel = $request->input('tel');
             $medecin->save();
-            return redirect()->back()->with('success', 'Medecin Mis a jour !');
+            return redirect()->back()->with('success', 'Medecin Mis à jour !');
         }
     }
 
@@ -665,7 +665,7 @@ class MedecinController extends Controller
                 }
             }
             if(!$pasDeChevauchement_Patient){
-                return Redirect::back()->withErrors(['Le Patient a Deja un Rendez-Vous  de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
+                return Redirect::back()->withErrors(['Le Patient a Dejà un Rendez-Vous  de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' à '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
             }
             /*--------------------------------------------------------------- */
             $RDV = Rendezvous::all()->where('id_med',Auth::user()->id_med);
@@ -717,7 +717,7 @@ class MedecinController extends Controller
                         return redirect()->back()->with('success', 'Rendez-vous Bien Ajouté ');
                     }else{
                         $medecin_rdv = Medecin::find($request->input('id_med'));
-                        return Redirect::back()->withErrors(['Vous avez deja un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' a '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
+                        return Redirect::back()->withErrors(['Vous avez dejà un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' à '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
                     }
                 }
             }
@@ -757,7 +757,7 @@ class MedecinController extends Controller
                         $ligne_pres->save();
                     }
            }
-            return redirect()->back()->with('success', 'Ordonnance Bien Ajouté !');
+            return redirect()->back()->with('success', 'Ordonnance Bien Ajoutée !');
         }
     }
     public function certificatBonneSanteForm(Request $request){
@@ -798,7 +798,7 @@ class MedecinController extends Controller
                 $lettre->id_med = Auth::user()->id_med;
                 $lettre->id_pat = $request->input('id_pat');
                 $lettre->save();
-                return redirect()->back()->with('success', 'Certificat de bonne santé Bien Ajouté !');
+                return redirect()->back()->with('success', 'Certificat de bonne santé Bien Ajoutée !');
             }
         }
     }
@@ -850,7 +850,7 @@ class MedecinController extends Controller
                     $notif->save();
                     /*---------------------------------- */
                 }
-                return redirect()->back()->with('success', 'Lettre d\'orientation Bien Ajouté !');
+                return redirect()->back()->with('success', 'Lettre d\'orientation Bien Ajoutée !');
             }
         }
     }
@@ -897,7 +897,7 @@ class MedecinController extends Controller
                     $lettre->id_med = Auth::user()->id_med;
                     $lettre->id_pat = $request->input('id_pat');
                     $lettre->save();
-                    return redirect()->back()->with('success', 'Certificat d\'arret de travail Bien Ajouté !');
+                    return redirect()->back()->with('success', 'Certificat d\'arret de travail Bien Ajoutée !');
                 }
             }
         }
@@ -941,7 +941,7 @@ class MedecinController extends Controller
                 $lettre->id_med = Auth::user()->id_med;
                 $lettre->id_pat = $request->input('id_pat');
                 $lettre->save();
-                return redirect()->back()->with('success', 'Certificat de Pneumo Phtisiologie Bien Ajouté !');
+                return redirect()->back()->with('success', 'Certificat de Pneumo Phtisiologie Bien Ajoutée !');
             }
         }
     }
@@ -986,7 +986,7 @@ class MedecinController extends Controller
                 $lettre->id_med = Auth::user()->id_med;
                 $lettre->id_pat = $request->input('id_pat');
                 $lettre->save();
-                return redirect()->back()->with('success', 'Certificat de reprise Bien Ajouté !');
+                return redirect()->back()->with('success', 'Certificat de reprise Bien Ajoutée !');
 
             }
         }
@@ -1015,7 +1015,7 @@ class MedecinController extends Controller
             $notif->id_med = $RDV_Sauvegarde->id_med;
             $notif->save();
             /*---------------------------------- */
-            return redirect()->back()->with('success', 'RDV Bien Supprimé !');
+            return redirect()->back()->with('success', 'Rendez-vous Bien Supprimé !');
         }
     }
     public function MAJRDV(Request $request){
@@ -1057,7 +1057,7 @@ class MedecinController extends Controller
                     }
                 }
                 if(!$pasDeChevauchement_Patient){
-                    return Redirect::back()->withErrors(['Le Patient '.Patient::find($RDV_sauvegarde_patient_id_pat)->nom.' '.Patient::find($RDV_sauvegarde_patient_id_pat)->prenom.' a Deja un Rendez-Vous le '.$request->input('date_rdv').' de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
+                    return Redirect::back()->withErrors(['Le Patient '.Patient::find($RDV_sauvegarde_patient_id_pat)->nom.' '.Patient::find($RDV_sauvegarde_patient_id_pat)->prenom.' a Dejà un Rendez-Vous le '.$request->input('date_rdv').' de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' à '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
                 }
             }
             /*--------------------------------------------------------------- */
@@ -1075,17 +1075,17 @@ class MedecinController extends Controller
                  $notif = new Notification();
                  if($request->input('id_med')==$RDV_sauvegarde->id_med){
                     $notif->titre = "Rendez-vous Changé !" ;
-                    $notif->contenu = "L'ancien Rendez-vous du ".$RDV_sauvegarde->date_rdv." de ".$RDV_sauvegarde->heure_debut." a ".$RDV_sauvegarde->heure_fin."<br>est fixé pour le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                    $notif->contenu = "L'ancien Rendez-vous du ".$RDV_sauvegarde->date_rdv." de ".$RDV_sauvegarde->heure_debut." à ".$RDV_sauvegarde->heure_fin."<br>est fixé pour le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                  }else{
                      /* Notif pour l'autre Medecin */
                      $nv_notif = new Notification();
                      $nv_notif->titre = "Nouveau Rendez-vous !" ;
-                     $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                     $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                      $nv_notif->id_med = $request->input('id_med');
                      $nv_notif->save();
                      /*--------------------------- */
                     $notif->titre = "Rendez-vous Annuler !" ;
-                    $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                    $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                  }
                  $notif->id_med = $RDV_sauvegarde->id_med;
                  $notif->save();
@@ -1105,17 +1105,17 @@ class MedecinController extends Controller
                     $notif = new Notification();
                     if($request->input('id_med')==$RDV_sauvegarde->id_med){
                        $notif->titre = "Rendez-vous Changé !" ;
-                       $notif->contenu = "L'ancien Rendez-vous du ".$RDV_sauvegarde->date_rdv." de ".$RDV_sauvegarde->heure_debut." a ".$RDV_sauvegarde->heure_fin."<br>est fixé pour le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                       $notif->contenu = "L'ancien Rendez-vous du ".$RDV_sauvegarde->date_rdv." de ".$RDV_sauvegarde->heure_debut." à ".$RDV_sauvegarde->heure_fin."<br>est fixé pour le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                     }else{
                         /* Notif pour l'autre Medecin */
                         $nv_notif = new Notification();
                         $nv_notif->titre = "Nouveau Rendez-vous !" ;
-                        $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                        $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                         $nv_notif->id_med = $request->input('id_med');
                         $nv_notif->save();
                         /*--------------------------- */
                        $notif->titre = "Rendez-vous Annuler !" ;
-                       $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                       $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                     }
                     $notif->id_med = $RDV_sauvegarde->id_med;
                     $notif->save();
@@ -1148,17 +1148,17 @@ class MedecinController extends Controller
                         $notif = new Notification();
                         if($request->input('id_med')==$RDV_sauvegarde->id_med){
                         $notif->titre = "Rendez-vous Changé !" ;
-                        $notif->contenu = "L'ancien Rendez-vous du ".$RDV_sauvegarde->date_rdv." de ".$RDV_sauvegarde->heure_debut." a ".$RDV_sauvegarde->heure_fin."<br>est fixé pour le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                        $notif->contenu = "L'ancien Rendez-vous du ".$RDV_sauvegarde->date_rdv." de ".$RDV_sauvegarde->heure_debut." à ".$RDV_sauvegarde->heure_fin."<br>est fixé pour le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                         }else{
                             /* Notif pour l'autre Medecin */
                             $nv_notif = new Notification();
                             $nv_notif->titre = "Nouveau Rendez-vous !" ;
-                            $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                            $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                             $nv_notif->id_med = $request->input('id_med');
                             $nv_notif->save();
                             /*--------------------------- */
                         $notif->titre = "Rendez-vous Annuler !" ;
-                        $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                        $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                         }
                         $notif->id_med = $RDV_sauvegarde->id_med;
                         $notif->save();
@@ -1166,7 +1166,7 @@ class MedecinController extends Controller
                         return redirect()->back()->with('success', 'Rendez-Vous Mis à Jour');
                     }else{
                         $medecin_rdv = Medecin::find($request->input('id_med'));
-                        return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a deja un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' a '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
+                        return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a dejà un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' à '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
                     }
                 }
             }
@@ -1241,11 +1241,11 @@ class MedecinController extends Controller
                 /*-Notification--------------------- */
                 $notif = new Notification();
                 $notif->titre = "Nouveau Rendez-vous !" ;
-                $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Medecin Responsable : ".Auth::user()->nom." ".Auth::user()->prenom;
+                $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Medecin Responsable : ".Auth::user()->nom." ".Auth::user()->prenom;
                 $notif->id_med = $request->input('id_med');
                 $notif->save();
                 /*---------------------------------- */
-                return redirect()->back()->with('success', 'Patient Et R.D.V Bien Ajouté ');
+                return redirect()->back()->with('success', 'Patient avec son Rendez-vous Bien Ajoutés ');
             }else{
                 $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'))->where('date_rdv',$request->input('date_rdv'))->values();
                 if(count($RDV)==0){//Aucun RDV pour Le Medecin Specifié dans la date Specifié
@@ -1260,11 +1260,11 @@ class MedecinController extends Controller
                     /*-Notification--------------------- */
                     $notif = new Notification();
                     $notif->titre = "Nouveau Rendez-vous !";
-                    $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Medecin Responsable : ".Auth::user()->nom." ".Auth::user()->prenom;
+                    $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Medecin Responsable : ".Auth::user()->nom." ".Auth::user()->prenom;
                     $notif->id_med = $request->input('id_med');
                     $notif->save();
                     /*---------------------------------- */
-                    return redirect()->back()->with('success', 'Patient Et R.D.V Bien Ajouté ');
+                    return redirect()->back()->with('success', 'Patient avec son Rendez-vous Bien Ajoutés ');
                 }else{
                     $pasDeChevauchement = true;
                     $idRdvNonChevauchement = 0;
@@ -1290,15 +1290,15 @@ class MedecinController extends Controller
                         /*-Notification--------------------- */
                         $notif = new Notification();
                         $notif->titre = "Nouveau Rendez-vous !";
-                        $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Medecin Responsable : ".Auth::user()->nom." ".Auth::user()->prenom;
+                        $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Medecin Responsable : ".Auth::user()->nom." ".Auth::user()->prenom;
                         $notif->id_med = $request->input('id_med');
                         $notif->save();
                         /*---------------------------------- */
-                        return redirect()->back()->with('success', 'Patient Et R.D.V Bien Ajouté ');
+                        return redirect()->back()->with('success', 'Patient avec son Rendez-vous Bien Ajoutés ');
                     }else{
                         $patient_deja_eng = Patient::all()->where('num_ss',$request->input('num_ss'))->first()->delete();
                         $medecin_rdv = Medecin::find($request->input('id_med'));
-                        return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a deja un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' a '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
+                        return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a dejà un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' à '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
                     }
                 }
             }
@@ -1324,7 +1324,7 @@ class MedecinController extends Controller
                 $ligne_pres->moment =$request->input('moment');
                 $ligne_pres->duree = $request->input('duree');
                 $ligne_pres->save();
-                return Redirect::back()->with('success', 'Ligne Prescription Bien Modifier!');
+                return Redirect::back()->with('success', 'Ligne Prescription Bien Modifiée!');
             }
         }
     }
@@ -1340,7 +1340,7 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Vous n\'etes pas autorisé a effectuer cette action !']);
             }else{
                 if($ligne_pres->delete()){
-                    return Redirect::back()->with('success', 'Ligne Prescription Bien Supprimer!');
+                    return Redirect::back()->with('success', 'Ligne Prescription Bien Supprimée!');
                 }else{
                     return Redirect::back()->withErrors(['Impossible de Supprimer La ligne']);
                 }
@@ -1372,7 +1372,7 @@ class MedecinController extends Controller
                     $ligne->duree = $request->input('duree');
                     $ligne->id_pres = $request->input('id_pres');
                     $ligne->save();
-                    return Redirect::back()->with('success', 'Ligne Prescription Bien Ajouté!');
+                    return Redirect::back()->with('success', 'Ligne Prescription Bien Ajoutée!');
                 }
              }
          }
@@ -1388,7 +1388,7 @@ class MedecinController extends Controller
             if(!is_null($lettre)){
                 if(Auth::user()->id_med==$lettre->id_med){
                     if($lettre->delete()){
-                        return Redirect::back()->with('success', 'Lettre Bien Supprimé!');
+                        return Redirect::back()->with('success', 'Lettre Bien Supprimée!');
                     }else{
                         return Redirect::back()->withErrors(['Impossible de Supprimer La Lettre !']);
                     }
@@ -1413,7 +1413,7 @@ class MedecinController extends Controller
                 if(Auth::user()->id_med==$lettre->id_med){
                    $lettre->date_lettre = $request->input('date_lettre');
                    $lettre->save();
-                   return Redirect::back()->with('success', 'Certificat de Bonne Santé Bien Modifié !');
+                   return Redirect::back()->with('success', 'Certificat de Bonne Santé Bien Modifiée !');
                 }else{
                     return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
                 }
@@ -1435,7 +1435,7 @@ class MedecinController extends Controller
                 if(Auth::user()->id_med==$lettre->id_med){
                    $lettre->date_lettre = $request->input('date_lettre');
                    $lettre->save();
-                   return Redirect::back()->with('success', 'Certificat de Pneumo Phtisiologie Bien Modifié !');
+                   return Redirect::back()->with('success', 'Certificat de Pneumo Phtisiologie Bien Modifiée !');
                 }else{
                     return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
                 }
@@ -1459,7 +1459,7 @@ class MedecinController extends Controller
                    $lettre->date_lettre = $request->input('date_lettre');
                    $lettre->contenu = $request->input('contenu');
                    $lettre->save();
-                   return Redirect::back()->with('success', 'Certificat de Reprise Bien Modifié !');
+                   return Redirect::back()->with('success', 'Certificat de Reprise Bien Modifiée !');
                 }else{
                     return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
                 }
@@ -1483,7 +1483,7 @@ class MedecinController extends Controller
                    $lettre->date_lettre = date('Y-m-d');
                    $lettre->contenu = $request->input('contenu');
                    $lettre->save();
-                   return Redirect::back()->with('success', 'Certificat d\'arret de Travail Bien Modifié !');
+                   return Redirect::back()->with('success', 'Certificat d\'arret de Travail Bien Modifiée !');
                 }else{
                     return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
                 }
@@ -1507,7 +1507,7 @@ class MedecinController extends Controller
                    $lettre->date_lettre =date('Y-m-d');
                    $lettre->contenu = $request->input('contenu');
                    $lettre->save();
-                   return Redirect::back()->with('success', 'Lettre Orientation Bien Modifié !');
+                   return Redirect::back()->with('success', 'Lettre Orientation Bien Modifiée !');
                 }else{
                     return Redirect::back()->withErrors(['Vous n\'avez par l\'autorisation d\'effectuer cette action !']);
                 }
@@ -1528,7 +1528,7 @@ class MedecinController extends Controller
             if(!is_null($pres)){
                 if(Auth::user()->id_med==$pres->id_med){
                     if($pres->delete()){
-                        return Redirect::back()->with('success', 'Ordonnance Bien Supprimé!');
+                        return Redirect::back()->with('success', 'Ordonnance Bien Supprimée!');
                     }else{
                         return Redirect::back()->withErrors(['Impossible de Supprimer L\'Ordonnance !']);
                     }

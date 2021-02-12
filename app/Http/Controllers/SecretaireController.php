@@ -35,10 +35,10 @@ class SecretaireController extends Controller
         return view('Secretaire.dash',["meds"=>$liste_med,"rdvs"=>$rdv_today]);
     }
     public function listePatients(Request $request){
-        if(is_null($request->input('num_ss'))){
+        if(is_null($request->input('nom'))){
             $patients = Patient::all();
         }else{
-            $patients = Patient::all()->where('num_ss',$request->input('num_ss'));
+            $patients = Patient::all()->where('nom',$request->input('nom'));
             if(count($patients)==0){
                 return redirect(route('secretaire.listePatients'))->withErrors(['Patient Introuvable !']);
             }
@@ -152,7 +152,7 @@ class SecretaireController extends Controller
                 return Redirect::back()->withErrors(['Impossible d\'effectuer un Rendez-vous Dans le Passé !'])->withInput();
             }
             if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
-                return Redirect::back()->withErrors(['La fin du RDV neut peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
+                return Redirect::back()->withErrors(['La fin du RDV ne peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
             }
             /*Phase Ajouter Patient */
             $patient = new Patient();
@@ -179,11 +179,11 @@ class SecretaireController extends Controller
                 /*-Notification--------------------- */
                 $notif = new Notification();
                 $notif->titre = "Nouveau Rendez-vous !" ;
-                $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                 $notif->id_med = $request->input('id_med');
                 $notif->save();
                 /*---------------------------------- */
-                return redirect()->back()->with('success', 'Patient Et R.D.V Bien Ajouté ');
+                return redirect()->back()->with('success', 'Patient avec son Rendez-vous Bien Ajoutés');
             }else{
                 $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'))->where('date_rdv',$request->input('date_rdv'))->values();
                 if(count($RDV)==0){//Aucun RDV pour Le Medecin Specifié dans la date Specifié
@@ -199,11 +199,11 @@ class SecretaireController extends Controller
                     /*-Notification--------------------- */
                     $notif = new Notification();
                     $notif->titre = "Nouveau Rendez-vous !";
-                    $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                    $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                     $notif->id_med = $request->input('id_med');
                     $notif->save();
                     /*---------------------------------- */
-                    return redirect()->back()->with('success', 'Patient Et R.D.V Bien Ajouté ');
+                    return redirect()->back()->with('success', 'Patient avec son Rendez-vous Bien Ajoutés ');
                 }else{
                     $pasDeChevauchement = true;
                     $idRdvNonChevauchement = 0;
@@ -230,15 +230,15 @@ class SecretaireController extends Controller
                         /*-Notification--------------------- */
                         $notif = new Notification();
                         $notif->titre = "Nouveau Rendez-vous !";
-                        $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                        $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')."à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                         $notif->id_med = $request->input('id_med');
                         $notif->save();
                         /*---------------------------------- */
-                        return redirect()->back()->with('success', 'Patient Et R.D.V Bien Ajouté ');
+                        return redirect()->back()->with('success', 'Patient avec son Rendez-vous Bien Ajoutés ');
                     }else{
                         $patient_deja_eng = Patient::all()->where('num_ss',$request->input('num_ss'))->first()->delete();
                         $medecin_rdv = Medecin::find($request->input('id_med'));
-                        return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a deja un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' a '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
+                        return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a dejà un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' à '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
                     }
                 }
             }
@@ -259,7 +259,7 @@ class SecretaireController extends Controller
                 return Redirect::back()->withErrors(['Impossible d\'effectuer un Rendez-vous Dans le Passé !'])->withInput();
             }
             if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
-                return Redirect::back()->withErrors(['La fin du RDV neut peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
+                return Redirect::back()->withErrors(['La fin du RDV ne peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
             }
             /*--------------------------------------------------------------- */
             $RDV_Patient = Rendezvous::all()->where('id_pat',$request->input('id_pat'))->where('date_rdv',$request->input('date_rdv'))->values();
@@ -276,7 +276,7 @@ class SecretaireController extends Controller
                 }
             }
             if(!$pasDeChevauchement_Patient){
-                return Redirect::back()->withErrors(['Le Patient a Deja un Rendez-Vous  de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
+                return Redirect::back()->withErrors(['Le Patient a Dejà un Rendez-Vous  de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' à '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
             }
             /*--------------------------------------------------------------- */
             $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'));
@@ -295,11 +295,11 @@ class SecretaireController extends Controller
                 /*-Notification--------------------- */
                 $notif = new Notification();
                 $notif->titre = "Nouveau Rendez-vous !";
-                $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                 $notif->id_med = $request->input('id_med');
                 $notif->save();
                 /*---------------------------------- */
-                return redirect()->back()->with('success', 'R.D.V Bien Ajouté ');
+                return redirect()->back()->with('success', 'Rendez-vous Bien Ajouté ');
             }else{
                 $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'))->where('date_rdv',$request->input('date_rdv'))->values();
                 if(count($RDV)==0){//Aucun RDV pour Le Medecin Specifié dans la date Specifié
@@ -315,11 +315,11 @@ class SecretaireController extends Controller
                     /*-Notification--------------------- */
                     $notif = new Notification();
                     $notif->titre = "Nouveau Rendez-vous !";
-                    $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                    $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                     $notif->id_med = $request->input('id_med');
                     $notif->save();
                     /*---------------------------------- */
-                    return redirect()->back()->with('success', 'R.D.V Bien Ajouté ');
+                    return redirect()->back()->with('success', 'Rendez-vous Bien Ajouté ');
                 }else{
                     $pasDeChevauchement = true;
                     $idRdvNonChevauchement = 0;
@@ -346,14 +346,14 @@ class SecretaireController extends Controller
                         /*-Notification--------------------- */
                         $notif = new Notification();
                         $notif->titre = "Nouveau Rendez-vous !" ;
-                        $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                        $notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                         $notif->id_med = $request->input('id_med');
                         $notif->save();
                         /*---------------------------------- */
-                        return redirect()->back()->with('success', 'R.D.V Bien Ajouté ');
+                        return redirect()->back()->with('success', 'Rendez-vous Bien Ajouté ');
                     }else{
                         $medecin_rdv = Medecin::find($request->input('id_med'));
-                        return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a deja un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' a '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
+                        return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a dejà un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' à '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
                     }
                 }
             }
@@ -389,11 +389,11 @@ class SecretaireController extends Controller
             /*-Notification--------------------- */
             $notif = new Notification();
             $notif->titre = "Rendez-vous Annuler !" ;
-            $notif->contenu = "Le Rendez-vous du ".$RDV_Sauvegarde->date_rdv." de ".$RDV_Sauvegarde->heure_debut." a ".$RDV_Sauvegarde->heure_debut." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+            $notif->contenu = "Le Rendez-vous du ".$RDV_Sauvegarde->date_rdv." de ".$RDV_Sauvegarde->heure_debut." à ".$RDV_Sauvegarde->heure_debut." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
             $notif->id_med = $RDV_Sauvegarde->id_med;
             $notif->save();
             /*---------------------------------- */
-            return redirect()->back()->with('success', 'RDV Bien Supprimé !');
+            return redirect()->back()->with('success', 'Rendez-vous Bien Supprimé !');
         }
     }
     public function MAJRDV(Request $request){
@@ -412,7 +412,7 @@ class SecretaireController extends Controller
                 return Redirect::back()->withErrors(['Impossible d\'effectuer un Rendez-vous Dans le Passé !'])->withInput();
             }
             if(strtotime($request->input('heure_deb'))>=strtotime($request->input('heure_fin'))){
-                return Redirect::back()->withErrors(['La fin du RDV neut peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
+                return Redirect::back()->withErrors(['La fin du RDV ne peut pas etre avant le Debut, Veuillez verifier vos heures !'])->withInput();
             }
             /*--------------------------------------------------------------- */
             $RDV_sauvegarde_patient = Rendezvous::find($request->input('id_rdv'));
@@ -436,7 +436,7 @@ class SecretaireController extends Controller
                     }
                 }
                 if(!$pasDeChevauchement_Patient){
-                    return Redirect::back()->withErrors(['Le Patient '.Patient::find($RDV_sauvegarde_patient_id_pat)->nom.' '.Patient::find($RDV_sauvegarde_patient_id_pat)->prenom.' a Deja un Rendez-Vous le '.$request->input('date_rdv').' de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' a '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
+                    return Redirect::back()->withErrors(['Le Patient '.Patient::find($RDV_sauvegarde_patient_id_pat)->nom.' '.Patient::find($RDV_sauvegarde_patient_id_pat)->prenom.' a Dejà un Rendez-Vous le '.$request->input('date_rdv').' de '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_debut.' à '.$RDV_Patient->get($idRdvNonChevauchement_Patient)->heure_fin])->withInput();
                 }
             }
             /*--------------------------------------------------------------- */
@@ -454,22 +454,22 @@ class SecretaireController extends Controller
                  $notif = new Notification();
                  if($request->input('id_med')==$RDV_sauvegarde->id_med){
                     $notif->titre = "Rendez-vous Changé !" ;
-                    $notif->contenu = "L'ancien Rendez-vous du ".$RDV_sauvegarde->date_rdv." de ".$RDV_sauvegarde->heure_debut." a ".$RDV_sauvegarde->heure_fin."<br>est fixé pour le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                    $notif->contenu = "L'ancien Rendez-vous du ".$RDV_sauvegarde->date_rdv." de ".$RDV_sauvegarde->heure_debut." à ".$RDV_sauvegarde->heure_fin."<br>est fixé pour le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                  }else{
                      /* Notif pour l'autre Medecin */
                      $nv_notif = new Notification();
                      $nv_notif->titre = "Nouveau Rendez-vous !" ;
-                     $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                     $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                      $nv_notif->id_med = $request->input('id_med');
                      $nv_notif->save();
                      /*--------------------------- */
                     $notif->titre = "Rendez-vous Annuler !" ;
-                    $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                    $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                  }
                  $notif->id_med = $RDV_sauvegarde->id_med;
                  $notif->save();
                  /*---------------------------------- */
-                return redirect()->back()->with('success', 'Rendez-Vous Mis a Jour');
+                return redirect()->back()->with('success', 'Rendez-Vous Mis à Jour');
             }else{
                 $RDV = Rendezvous::all()->where('id_med',$request->input('id_med'))->where('date_rdv',$request->input('date_rdv'))->values();
                 if(count($RDV)==0){//Aucun RDV pour Le Medecin Specifié dans la date Specifié
@@ -489,17 +489,17 @@ class SecretaireController extends Controller
                         /* Notif pour l'autre Medecin */
                         $nv_notif = new Notification();
                         $nv_notif->titre = "Nouveau Rendez-vous !" ;
-                        $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                        $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                         $nv_notif->id_med = $request->input('id_med');
                         $nv_notif->save();
                         /*--------------------------- */
                        $notif->titre = "Rendez-vous Annuler !" ;
-                       $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                       $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                     }
                     $notif->id_med = $RDV_sauvegarde->id_med;
                     $notif->save();
                     /*---------------------------------- */
-                    return redirect()->back()->with('success', 'Rendez-Vous Mis a Jour');
+                    return redirect()->back()->with('success', 'Rendez-Vous Mis à Jour');
                 }else{
                     $pasDeChevauchement = true;
                     $idRdvNonChevauchement = 0;
@@ -527,25 +527,25 @@ class SecretaireController extends Controller
                         $notif = new Notification();
                         if($request->input('id_med')==$RDV_sauvegarde->id_med){
                         $notif->titre = "Rendez-vous Changé !" ;
-                        $notif->contenu = "L'ancien Rendez-vous du ".$RDV_sauvegarde->date_rdv." de ".$RDV_sauvegarde->heure_debut." a ".$RDV_sauvegarde->heure_fin."<br>est fixé pour le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                        $notif->contenu = "L'ancien Rendez-vous du ".$RDV_sauvegarde->date_rdv." de ".$RDV_sauvegarde->heure_debut." à ".$RDV_sauvegarde->heure_fin."<br>est fixé pour le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                         }else{
                             /* Notif pour l'autre Medecin */
                             $nv_notif = new Notification();
                             $nv_notif->titre = "Nouveau Rendez-vous !" ;
-                            $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                            $nv_notif->contenu = "Vous avez un nouveau rendez-vous le ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')."<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                             $nv_notif->id_med = $request->input('id_med');
                             $nv_notif->save();
                             /*--------------------------- */
                         $notif->titre = "Rendez-vous Annuler !" ;
-                        $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." a ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
+                        $notif->contenu = "Le Rendez-vous du ".$request->input('date_rdv')." de ".$request->input('heure_deb')." à ".$request->input('heure_fin')." est Annulé<br>Secretaire : ".Auth::user()->nom." ".Auth::user()->prenom;
                         }
                         $notif->id_med = $RDV_sauvegarde->id_med;
                         $notif->save();
                         /*---------------------------------- */
-                        return redirect()->back()->with('success', 'Rendez-Vous Mis a Jour');
+                        return redirect()->back()->with('success', 'Rendez-Vous Mis à Jour');
                     }else{
                         $medecin_rdv = Medecin::find($request->input('id_med'));
-                        return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a deja un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' a '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
+                        return Redirect::back()->withErrors(['Dr '.$medecin_rdv->nom.' '.$medecin_rdv->prenom.' a dejà un Rendez-vous le '.$request->input('date_rdv').' de '.$RDV->get($idRdvNonChevauchement)->heure_debut.' à '.$RDV->get($idRdvNonChevauchement)->heure_fin])->withInput();
                     }
                 }
             }
@@ -655,7 +655,7 @@ class SecretaireController extends Controller
                 $patient->num_tel = $request->input('num_tel');
                 $patient->email = $request->input('email');
                 $patient->save();
-                return Redirect::back()->with('success','Patient Bien Mis A Jour !');
+                return Redirect::back()->with('success','Patient Bien Mis à Jour !');
             }
         }
     }
