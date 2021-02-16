@@ -261,7 +261,7 @@ class MedecinController extends Controller
             $medecin = Medecin::find($request->input('id_med'));
             $medecin->enService = 0;
             $medecin->save();
-            return redirect()->back()->with('success', 'Medecin Bien Supprimé !');
+            return redirect(route('medecin.listeMedecins'))->with('success', 'Medecin Bien Supprimé !');
         }
     }
     public function MettreAjourMedecinForm(Request $request){

@@ -59,14 +59,14 @@
                                          </form>
                                       </div>
                                         <div class="col">
-                                        <form action="{{route('medecin.supprimerMedecin')}}" id="delete_form" method="post">
-                                        <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
-                                        {{ csrf_field() }}
-                                        {{ method_field('PUT') }}
-                                        <button type="submit" id="annuler" class="btn btn-danger">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
+                                            <form action="{{route('medecin.supprimerMedecin')}}" id="delete_form" method="post">
+                                                <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
+                                                {{ csrf_field() }}
+                                                {{ method_field('PUT') }}
+                                                <button type="submit" id="annuler" class="btn btn-danger">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 

@@ -50,14 +50,14 @@
         </div>
     </form>
     <div class="row mt-5">
-    <div class="col-md-10">
-    </div>
-        <div class="col-md-2">
-            <form action="{{route('medecin.detailsMedecin')}}" method="get">
-                 <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
-                 <input class="btn btn-primary" type="submit" value="Revoire Le détail du Medecin ?">
-             </form>
-        </div>
+            <div class="col-md-9">
+            </div>
+            <div class="col-md-3">
+                <form action="{{route('medecin.detailsMedecin')}}" method="get">
+                    <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
+                    <input class="btn btn-primary" type="submit" value="Revoire Le détail du Medecin ?">
+                </form>
+            </div>
     </div>
 </div>
 @endsection
