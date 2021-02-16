@@ -86,11 +86,11 @@
                             </td>
                             <td>
                                 <center>
-                                    <form action="{{route('medecin.supprimerMedecin')}}" id="delete_form" method="post">
+                                    <form action="{{route('medecin.supprimerMedecin')}}" id="delete_form_{{$medecin->id_med}}" method="post">
                                         <input type="hidden" name="id_med" value="{{$medecin->id_med}}">
                                         {{ csrf_field() }}
                                         {{ method_field('PUT') }}
-                                        <button type="submit" id="annuler" class="btn">
+                                        <button type="submit" id="annuler_{{$medecin->id_med}}" class="btn btn_supp">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
@@ -107,12 +107,21 @@
 @endsection
 @section('scripts')
 <script>
-     $('#annuler').click(function(e){
-        e.preventDefault();
-        if(confirm('Voulez Vous Vraiment Effectuer Cette Action ?')){
-            $('#delete_form').submit();
-        }else{
-            return false;
+    $(document).ready(function(e){
+        var btn_supp = document.getElementsByClassName('btn_supp');
+        for(var i=0;i<btn_supp.length;i++){
+            (function(index) {
+                btn_supp[index].addEventListener("click", function(e) {
+                    e.preventDefault();
+                    val = this.getAttribute('id');
+                    var id_form_delete = val.split('_').pop();
+                    if(confirm('Voulez Vous Vraiment Effectuer Cette Action ?')){
+                        document.getElementById('delete_form_'+id_form_delete).submit();
+                    }else{
+                        return false;
+                    }
+                })
+            })(i);
         }
     });
 </script>

@@ -209,8 +209,8 @@ class MedecinController extends Controller
         $validator = Validator::make($request->all(),[
             'nom' => 'required|min:3|max:255',
             'prenom' => 'required|min:3|max:255',
-            'login' => 'required|unique:medecins|max:255',
-            'email' => 'required|unique:medecins|max:255',
+            'login' => 'required|unique:medecins|unique:secretaires|max:255',
+            'email' => 'required|unique:medecins|unique:secretaires|max:255',
             'password' => 'min:8|required_with:confirmPassword|same:confirmPassword',
             'confirmPassword' => 'min:8',
             'specialite'=> 'required|min:3|max:255',
@@ -320,8 +320,8 @@ class MedecinController extends Controller
         $validator = Validator::make($request->all(),[
             'nom' => 'required|min:3|max:255',
             'prenom' => 'required|min:3|max:255',
-            'login' => 'required|unique:medecins|max:255',
-            'email' => 'required|unique:medecins|max:255',
+            'login' => 'required|unique:secretaires|unique:medecins|max:255',
+            'email' => 'required|unique:secretaires|unique:medecins|max:255',
             'password' => 'min:8|required_with:confirmPassword|same:confirmPassword',
             'confirmPassword' => 'min:8',
             'tel' => 'required'
