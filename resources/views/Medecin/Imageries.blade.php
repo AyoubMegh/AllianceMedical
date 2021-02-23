@@ -30,6 +30,13 @@ class="active"
                                                                 <div class="carousel-caption d-none d-md-block">
                                                                     <h5 style="color: black;">{{$images->get($i)->nom}}</h5>
                                                                     <h5 style="color: black;">{{$images->get($i)->date_img}}</h5>
+                                                                    <form action="{{route('medecin.suppimg')}}" method="post">
+                                                                        {{csrf_field()}}
+                                                                        {{method_field('DELETE')}}
+                                                                        <input type="hidden" value="{{$patient->id_pat}}" name="id_pat" id="id_pat">
+                                                                        <input type="hidden" name="id_img" id="id_img" value="{{$images->get($i)->id_img}}">
+                                                                        <button type="submit"><i class="fas fa-trash-alt"></i></button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         @else
@@ -40,6 +47,13 @@ class="active"
                                                                 <div class="carousel-caption d-none d-md-block">
                                                                     <h5 style="color: black;">{{$images->get($i)->nom}}</h5>
                                                                     <h5 style="color: black;">{{$images->get($i)->date_img}}</h5>
+                                                                    <form action="{{route('medecin.suppimg')}}" method="post">
+                                                                        {{csrf_field()}}
+                                                                        {{method_field('DELETE')}}
+                                                                        <input type="hidden" value="{{$patient->id_pat}}" name="id_pat" id="id_pat">
+                                                                        <input type="hidden" name="id_img" id="id_img" value="{{$images->get($i)->id_img}}">
+                                                                        <button type="submit"><i class="fas fa-trash-alt"></i></button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         @endif

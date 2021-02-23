@@ -193,6 +193,8 @@ Route::get('/DashMed/{id_med}',function($id_med){
     Route::put('/MAJCertificatArretTravail','MedecinController@MAJCertificatAT')->name('medecin.majCertificatAT');
     Route::put('/MAJLettreOrientation','MedecinController@MAJLettreOrientation')->name('medecin.majLettreO');
 
+    Route::delete('/SuppImage','MedecinController@suppimg')->name('medecin.suppimg');
+
 });
 
 Route::prefix('secretaire')->group(function(){

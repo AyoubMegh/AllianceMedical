@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 use App\Rendezvous;
 use App\Clinique;
 use App\Medecin;
@@ -1539,5 +1540,22 @@ class MedecinController extends Controller
                 return Redirect::back()->withErrors(['Ordonnance Intouvable!']);
             }
          }
+    }
+    public function suppimg(Request $request){
+        $validator = Validator::make($request->all(),[
+            'id_img'=>'required',
+            'id_pat'=>'required',
+         ]);
+         if ($validator->fails()) {
+             return Redirect::back()->withErrors($validator);
+         }else{
+            $patient = Patient::find($request->input('id_pat'));
+            $image = Image::find($request->input('id_img'));
+            if($image->delete()){
+               return Redirect::back()->with('success', 'Image Bien Supprimée !');
+            }else{
+               return Redirect::back()->withErrors(['Impossible de supprimer l\'image !']);
+            }
+         }   
     }
 }
